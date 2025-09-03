@@ -1,0 +1,9 @@
+I:/VS_Code_Programs/Portfolio/Desktop-Applications/OpenTournament/build/CMakeFiles/OpenTournament.dir
+I:/VS_Code_Programs/Portfolio/Desktop-Applications/OpenTournament/build/CMakeFiles/edit_cache.dir
+I:/VS_Code_Programs/Portfolio/Desktop-Applications/OpenTournament/build/CMakeFiles/rebuild_cache.dir
+I:/VS_Code_Programs/Portfolio/Desktop-Applications/OpenTournament/build/CMakeFiles/list_install_components.dir
+I:/VS_Code_Programs/Portfolio/Desktop-Applications/OpenTournament/build/CMakeFiles/install.dir
+I:/VS_Code_Programs/Portfolio/Desktop-Applications/OpenTournament/build/CMakeFiles/install/local.dir
+I:/VS_Code_Programs/Portfolio/Desktop-Applications/OpenTournament/build/CMakeFiles/install/strip.dir
+I:/VS_Code_Programs/Portfolio/Desktop-Applications/OpenTournament/build/CMakeFiles/OpenTournament_autogen_timestamp_deps.dir
+I:/VS_Code_Programs/Portfolio/Desktop-Applications/OpenTournament/build/CMakeFiles/OpenTournament_autogen.dir

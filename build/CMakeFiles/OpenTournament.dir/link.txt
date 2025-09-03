@@ -1,0 +1,3 @@
+H:\Python\Lib\site-packages\cmake\data\bin\cmake.exe -E rm -f CMakeFiles\OpenTournament.dir/objects.a
+H:\Qt\Tools\mingw1310_64\bin\ar.exe qc CMakeFiles\OpenTournament.dir/objects.a @CMakeFiles\OpenTournament.dir\objects1.rsp
+H:\Qt\Tools\mingw1310_64\bin\g++.exe -g -Wl,--whole-archive CMakeFiles\OpenTournament.dir/objects.a -Wl,--no-whole-archive -o OpenTournament.exe -Wl,--out-implib,libOpenTournament.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\OpenTournament.dir\linkLibs.rsp

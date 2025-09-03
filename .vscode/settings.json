@@ -1,0 +1,24 @@
+{
+    "C_Cpp.errorSquiggles": "Enabled",
+    "C_Cpp.intelliSenseEngine": "Default",
+    "C_Cpp.default.compilerPath": "",
+    "C_Cpp.default.cppStandard": "c++17",
+    "C_Cpp.default.cStandard": "c17",
+    "C_Cpp.autocomplete": "Default",
+    "C_Cpp.formatting": "Default",
+    "C_Cpp.enhancedColorization": "Enabled",
+    "C_Cpp.dimInactiveRegions": true,
+    "C_Cpp.inlayHints.autoDeclarationTypes.enabled": true,
+    "C_Cpp.inlayHints.parameterNames.enabled": "Literals",
+    "C_Cpp.inlayHints.referenceOperator.enabled": true,
+    "files.associations": {
+        "*.h": "cpp",
+        "*.cpp": "cpp"
+    },
+    "cmake.configureOnOpen": true,
+    "cmake.buildDirectory": "${workspaceFolder}/build",
+    "cmake.configureSettings": {
+    "CMAKE_PREFIX_PATH": "H:/Qt/6.9.2/mingw_64/lib/cmake/Qt6"
+    }
+}
+

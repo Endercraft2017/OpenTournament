@@ -1,0 +1,3 @@
+# Hashes of file build rules.
+1262b99cb95f8ddb4ae814e8f3ed5326 CMakeFiles/OpenTournament_autogen
+7d642423a504bc79ae9e51e95f362472 OpenTournament_autogen/timestamp

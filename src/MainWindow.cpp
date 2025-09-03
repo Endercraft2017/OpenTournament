@@ -28,6 +28,7 @@
 // Forward declarations for theme functions
 void setFusionDark(QApplication &app);
 void setFusionLight(QApplication &app);
+void setFusionWhite(QApplication &app);
 void setCustomQss(QApplication &app);
 
 MainWindow::MainWindow(QWidget *parent)
@@ -101,10 +102,12 @@ void MainWindow::setupMenu()
     QMenu *themeMenu = menuBar->addMenu("&Themes");
     fusionDarkAction = themeMenu->addAction("Fusion Dark");
     fusionLightAction = themeMenu->addAction("Fusion Light");
+    fusionWhiteAction = themeMenu->addAction("Fusion White");
     customQssAction = themeMenu->addAction("Custom QSS");
 
     connect(fusionDarkAction, &QAction::triggered, this, &MainWindow::onFusionDarkSelected);
     connect(fusionLightAction, &QAction::triggered, this, &MainWindow::onFusionLightSelected);
+    connect(fusionWhiteAction, &QAction::triggered, this, &MainWindow::onFusionWhiteSelected);
     connect(customQssAction, &QAction::triggered, this, &MainWindow::onCustomQssSelected);
 
     // Icons menu
@@ -143,6 +146,14 @@ void MainWindow::onFusionLightSelected()
     settings->setTheme("fusion_light");
     settings->save();
     mainStatusBar->showMessage("Theme set to Fusion Light");
+}
+
+void MainWindow::onFusionWhiteSelected()
+{
+    setFusionWhite(*app);
+    settings->setTheme("fusion_white");
+    settings->save();
+    mainStatusBar->showMessage("Theme set to Fusion White");
 }
 
 void MainWindow::onCustomQssSelected()
@@ -1556,29 +1567,25 @@ void MainWindow::showSettingsDialog()
     QGroupBox *themeGroupBox = new QGroupBox("Theme", &settingsDialog);
     QVBoxLayout *themeLayout = new QVBoxLayout(themeGroupBox);
 
-    // Create radio buttons for themes
-    QRadioButton *fusionDarkRadio = new QRadioButton("Fusion Dark", themeGroupBox);
-    QRadioButton *fusionLightRadio = new QRadioButton("Fusion Light", themeGroupBox);
-    QRadioButton *customQssRadio = new QRadioButton("Custom QSS", themeGroupBox);
+    // Create combo box for themes
+    QComboBox *themeComboBox = new QComboBox(themeGroupBox);
+    themeComboBox->addItem("Fusion Dark", "fusion_dark");
+    themeComboBox->addItem("Fusion Light", "fusion_light");
+    themeComboBox->addItem("Fusion White", "fusion_white");
+    themeComboBox->addItem("Custom QSS", "custom");
 
     // Set current selection based on settings
     QString currentTheme = settings->getTheme();
-    if (currentTheme == "fusion_dark")
+    for (int i = 0; i < themeComboBox->count(); ++i)
     {
-        fusionDarkRadio->setChecked(true);
-    }
-    else if (currentTheme == "fusion_light")
-    {
-        fusionLightRadio->setChecked(true);
-    }
-    else if (currentTheme == "custom")
-    {
-        customQssRadio->setChecked(true);
+        if (themeComboBox->itemData(i).toString() == currentTheme)
+        {
+            themeComboBox->setCurrentIndex(i);
+            break;
+        }
     }
 
-    themeLayout->addWidget(fusionDarkRadio);
-    themeLayout->addWidget(fusionLightRadio);
-    themeLayout->addWidget(customQssRadio);
+    themeLayout->addWidget(themeComboBox);
     themeLayout->addStretch();
 
     // Create icon set group box
@@ -1647,19 +1654,23 @@ void MainWindow::showSettingsDialog()
         }
 
         // Update theme settings
-        if (fusionDarkRadio->isChecked())
+        QString selectedTheme = themeComboBox->itemData(themeComboBox->currentIndex()).toString();
+        settings->setTheme(selectedTheme);
+
+        if (selectedTheme == "fusion_dark")
         {
-            settings->setTheme("fusion_dark");
             setFusionDark(*app);
         }
-        else if (fusionLightRadio->isChecked())
+        else if (selectedTheme == "fusion_light")
         {
-            settings->setTheme("fusion_light");
             setFusionLight(*app);
         }
-        else if (customQssRadio->isChecked())
+        else if (selectedTheme == "fusion_white")
         {
-            settings->setTheme("custom");
+            setFusionWhite(*app);
+        }
+        else if (selectedTheme == "custom")
+        {
             setCustomQss(*app);
         }
 

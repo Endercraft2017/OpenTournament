@@ -57,6 +57,7 @@ template <> constexpr inline auto MainWindow::qt_create_metaobjectdata<qt_meta_t
         "onTiebreakerClicked",
         "onFusionDarkSelected",
         "onFusionLightSelected",
+        "onFusionWhiteSelected",
         "onCustomQssSelected",
         "onDefaultIconsSelected",
         "onModernIconsSelected"
@@ -95,12 +96,14 @@ template <> constexpr inline auto MainWindow::qt_create_metaobjectdata<qt_meta_t
         QtMocHelpers::SlotData<void()>(16, 2, QMC::AccessPrivate, QMetaType::Void),
         // Slot 'onFusionLightSelected'
         QtMocHelpers::SlotData<void()>(17, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'onCustomQssSelected'
+        // Slot 'onFusionWhiteSelected'
         QtMocHelpers::SlotData<void()>(18, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'onDefaultIconsSelected'
+        // Slot 'onCustomQssSelected'
         QtMocHelpers::SlotData<void()>(19, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'onModernIconsSelected'
+        // Slot 'onDefaultIconsSelected'
         QtMocHelpers::SlotData<void()>(20, 2, QMC::AccessPrivate, QMetaType::Void),
+        // Slot 'onModernIconsSelected'
+        QtMocHelpers::SlotData<void()>(21, 2, QMC::AccessPrivate, QMetaType::Void),
     };
     QtMocHelpers::UintData qt_properties {
     };
@@ -139,9 +142,10 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 12: _t->onTiebreakerClicked(); break;
         case 13: _t->onFusionDarkSelected(); break;
         case 14: _t->onFusionLightSelected(); break;
-        case 15: _t->onCustomQssSelected(); break;
-        case 16: _t->onDefaultIconsSelected(); break;
-        case 17: _t->onModernIconsSelected(); break;
+        case 15: _t->onFusionWhiteSelected(); break;
+        case 16: _t->onCustomQssSelected(); break;
+        case 17: _t->onDefaultIconsSelected(); break;
+        case 18: _t->onModernIconsSelected(); break;
         default: ;
         }
     }
@@ -166,14 +170,14 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 18)
+        if (_id < 19)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 18;
+        _id -= 19;
     }
     if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 18)
+        if (_id < 19)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 18;
+        _id -= 19;
     }
     return _id;
 }

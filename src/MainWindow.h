@@ -50,6 +50,7 @@ private slots:
     // Theme and icon slots
     void onFusionDarkSelected();
     void onFusionLightSelected();
+    void onFusionWhiteSelected();
     void onCustomQssSelected();
     void onDefaultIconsSelected();
     void onModernIconsSelected();
@@ -72,6 +73,7 @@ private:
     // Theme actions
     QAction *fusionDarkAction;
     QAction *fusionLightAction;
+    QAction *fusionWhiteAction;
     QAction *customQssAction;
     QAction *defaultIconsAction;
     QAction *modernIconsAction;

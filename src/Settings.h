@@ -15,6 +15,10 @@ public:
     QString getPairingSystem() const;
     bool getAutoStartTournament() const;
 
+    // Theme settings
+    QString getTheme() const;
+    QString getIconSet() const;
+
     // Tiebreaker settings
     bool getUseSeriesTiebreakers() const;
     int getSingleTiebreaker() const;
@@ -23,6 +27,10 @@ public:
     // Setters
     void setPairingSystem(const QString &system);
     void setAutoStartTournament(bool autoStart);
+
+    // Theme settings
+    void setTheme(const QString &theme);
+    void setIconSet(const QString &iconSet);
 
     // Tiebreaker settings
     void setUseSeriesTiebreakers(bool useSeries);
@@ -36,6 +44,10 @@ public:
 private:
     QString pairingSystem; // "round_robin" or "swiss"
     bool autoStartTournament;
+
+    // Theme settings
+    QString theme;   // "fusion_dark", "fusion_light", "custom"
+    QString iconSet; // "default", "modern"
 
     // Tiebreaker settings
     bool useSeriesTiebreakers;

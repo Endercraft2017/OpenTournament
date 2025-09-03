@@ -382,6 +382,45 @@ CMakeFiles/OpenTournament.dir/src/main.cpp.obj: \
  H:/Qt/6.9.2/mingw_64/include/QtCore/qhash.h \
  H:/Qt/6.9.2/mingw_64/include/QtCore/qvarlengtharray.h \
  H:/Qt/6.9.2/mingw_64/include/QtGui/qguiapplication_platform.h \
+ H:/Qt/6.9.2/mingw_64/include/QtCore/QFile \
+ H:/Qt/6.9.2/mingw_64/include/QtCore/qfile.h \
+ H:/Qt/6.9.2/mingw_64/include/QtCore/qfiledevice.h \
+ H:/Qt/6.9.2/mingw_64/include/QtCore/qiodevice.h \
+ H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/filesystem \
+ H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/fs_fwd.h \
+ H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/fs_path.h \
+ H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/locale \
+ H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/locale_facets.h \
+ H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/cwctype \
+ H:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/wctype.h \
+ H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/x86_64-w64-mingw32/bits/ctype_base.h \
+ H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/x86_64-w64-mingw32/bits/ctype_inline.h \
+ H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/locale_facets.tcc \
+ H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/locale_facets_nonio.h \
+ H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/x86_64-w64-mingw32/bits/time_members.h \
+ H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/x86_64-w64-mingw32/bits/messages_members.h \
+ H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/codecvt.h \
+ H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/locale_facets_nonio.tcc \
+ H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/locale_conv.h \
+ H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/iomanip \
+ H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/quoted_string.h \
+ H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/sstream \
+ H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/istream \
+ H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/ios \
+ H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/basic_ios.h \
+ H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/basic_ios.tcc \
+ H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/ostream \
+ H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/ostream.tcc \
+ H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/istream.tcc \
+ H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/sstream.tcc \
+ H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/codecvt \
+ H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/fs_dir.h \
+ H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/fs_ops.h \
+ H:/Qt/6.9.2/mingw_64/include/QtWidgets/QStyleFactory \
+ H:/Qt/6.9.2/mingw_64/include/QtWidgets/qstylefactory.h \
+ H:/Qt/6.9.2/mingw_64/include/QtGui/QPalette \
+ H:/Qt/6.9.2/mingw_64/include/QtGui/qpalette.h \
+ H:/Qt/6.9.2/mingw_64/include/QtGui/qbrush.h \
  I:\VS_Code_Programs\Portfolio\Desktop-Applications\OpenTournament\src\MainWindow.h \
  H:/Qt/6.9.2/mingw_64/include/QtWidgets/QMainWindow \
  H:/Qt/6.9.2/mingw_64/include/QtWidgets/qmainwindow.h \
@@ -390,7 +429,6 @@ CMakeFiles/OpenTournament.dir/src/main.cpp.obj: \
  H:/Qt/6.9.2/mingw_64/include/QtGui/qkeysequence.h \
  H:/Qt/6.9.2/mingw_64/include/QtGui/qicon.h \
  H:/Qt/6.9.2/mingw_64/include/QtGui/qpalette.h \
- H:/Qt/6.9.2/mingw_64/include/QtGui/qbrush.h \
  H:/Qt/6.9.2/mingw_64/include/QtGui/qfont.h \
  H:/Qt/6.9.2/mingw_64/include/QtCore/qendian.h \
  H:/Qt/6.9.2/mingw_64/include/QtGui/qfontmetrics.h \
@@ -434,7 +472,6 @@ CMakeFiles/OpenTournament.dir/src/main.cpp.obj: \
  H:/Qt/6.9.2/mingw_64/include/QtCore/qlist.h \
  H:/Qt/6.9.2/mingw_64/include/QtGui/QCloseEvent \
  H:/Qt/6.9.2/mingw_64/include/QtGui/qevent.h \
- H:/Qt/6.9.2/mingw_64/include/QtCore/qiodevice.h \
  H:/Qt/6.9.2/mingw_64/include/QtCore/qurl.h \
  H:/Qt/6.9.2/mingw_64/include/QtGui/qeventpoint.h \
  H:/Qt/6.9.2/mingw_64/include/QtGui/qvector2d.h \

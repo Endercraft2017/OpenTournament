@@ -25,8 +25,13 @@
 #include <string>
 #include <numeric>
 
+// Forward declarations for theme functions
+void setFusionDark(QApplication &app);
+void setFusionLight(QApplication &app);
+void setCustomQss(QApplication &app);
+
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent), database(new Database()), settings(new Settings())
+    : QMainWindow(parent), database(new Database()), settings(new Settings()), app(qApp)
 {
     // Connect to database
     if (!database->connect())
@@ -92,6 +97,24 @@ void MainWindow::setupMenu()
     connect(exportResultsAction, &QAction::triggered, this, &MainWindow::onExportResultsClicked);
     connect(exitAction, &QAction::triggered, this, &QMainWindow::close);
 
+    // Themes menu
+    QMenu *themeMenu = menuBar->addMenu("&Themes");
+    fusionDarkAction = themeMenu->addAction("Fusion Dark");
+    fusionLightAction = themeMenu->addAction("Fusion Light");
+    customQssAction = themeMenu->addAction("Custom QSS");
+
+    connect(fusionDarkAction, &QAction::triggered, this, &MainWindow::onFusionDarkSelected);
+    connect(fusionLightAction, &QAction::triggered, this, &MainWindow::onFusionLightSelected);
+    connect(customQssAction, &QAction::triggered, this, &MainWindow::onCustomQssSelected);
+
+    // Icons menu
+    QMenu *iconsMenu = menuBar->addMenu("&Icons");
+    defaultIconsAction = iconsMenu->addAction("Default");
+    modernIconsAction = iconsMenu->addAction("Modern");
+
+    connect(defaultIconsAction, &QAction::triggered, this, &MainWindow::onDefaultIconsSelected);
+    connect(modernIconsAction, &QAction::triggered, this, &MainWindow::onModernIconsSelected);
+
     // Settings menu
     QMenu *settingsMenu = menuBar->addMenu("&Settings");
     settingsAction = settingsMenu->addAction("&Preferences");
@@ -104,6 +127,68 @@ void MainWindow::setupMenu()
             { QMessageBox::about(this, "About OpenTournament",
                                  "OpenTournament v0.1\n\n"
                                  "A desktop application for managing tournament brackets using a round-robin pairing system."); });
+}
+
+void MainWindow::onFusionDarkSelected()
+{
+    setFusionDark(*app);
+    settings->setTheme("fusion_dark");
+    settings->save();
+    mainStatusBar->showMessage("Theme set to Fusion Dark");
+}
+
+void MainWindow::onFusionLightSelected()
+{
+    setFusionLight(*app);
+    settings->setTheme("fusion_light");
+    settings->save();
+    mainStatusBar->showMessage("Theme set to Fusion Light");
+}
+
+void MainWindow::onCustomQssSelected()
+{
+    setCustomQss(*app);
+    settings->setTheme("custom");
+    settings->save();
+    mainStatusBar->showMessage("Theme set to Custom QSS");
+}
+
+void MainWindow::onDefaultIconsSelected()
+{
+    setDefaultIcons();
+    settings->setIconSet("default");
+    settings->save();
+    mainStatusBar->showMessage("Icons set to Default");
+}
+
+void MainWindow::onModernIconsSelected()
+{
+    setModernIcons();
+    settings->setIconSet("modern");
+    settings->save();
+    mainStatusBar->showMessage("Icons set to Modern");
+}
+
+void MainWindow::setDefaultIcons()
+{
+    // Revert to Qt standard icons for all buttons
+    addPlayerButton->setIcon(style()->standardIcon(QStyle::SP_FileIcon));
+    resetTournamentButton->setIcon(style()->standardIcon(QStyle::SP_BrowserReload));
+    exportResultsButton->setIcon(style()->standardIcon(QStyle::SP_DialogSaveButton));
+    startTournamentButton->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
+    endTournamentButton->setIcon(style()->standardIcon(QStyle::SP_DialogCloseButton));
+    tiebreakerButton->setIcon(style()->standardIcon(QStyle::SP_ComputerIcon));
+}
+
+void MainWindow::setModernIcons()
+{
+    // Load custom icons from icons/ directory
+    addPlayerButton->setIcon(QIcon("icons/add.png"));
+    resetTournamentButton->setIcon(QIcon("icons/reset.png"));
+    exportResultsButton->setIcon(QIcon("icons/export.png"));
+    startTournamentButton->setIcon(QIcon("icons/start.png"));
+    endTournamentButton->setIcon(QIcon("icons/end.png"));
+    tiebreakerButton->setIcon(QIcon("icons/tiebreaker.png"));
 }
 
 void MainWindow::onNewTournamentClicked()
@@ -1467,6 +1552,58 @@ void MainWindow::showSettingsDialog()
     tiebreakerLayout->addWidget(tiebreakerInfoLabel);
     tiebreakerLayout->addStretch();
 
+    // Create theme group box
+    QGroupBox *themeGroupBox = new QGroupBox("Theme", &settingsDialog);
+    QVBoxLayout *themeLayout = new QVBoxLayout(themeGroupBox);
+
+    // Create radio buttons for themes
+    QRadioButton *fusionDarkRadio = new QRadioButton("Fusion Dark", themeGroupBox);
+    QRadioButton *fusionLightRadio = new QRadioButton("Fusion Light", themeGroupBox);
+    QRadioButton *customQssRadio = new QRadioButton("Custom QSS", themeGroupBox);
+
+    // Set current selection based on settings
+    QString currentTheme = settings->getTheme();
+    if (currentTheme == "fusion_dark")
+    {
+        fusionDarkRadio->setChecked(true);
+    }
+    else if (currentTheme == "fusion_light")
+    {
+        fusionLightRadio->setChecked(true);
+    }
+    else if (currentTheme == "custom")
+    {
+        customQssRadio->setChecked(true);
+    }
+
+    themeLayout->addWidget(fusionDarkRadio);
+    themeLayout->addWidget(fusionLightRadio);
+    themeLayout->addWidget(customQssRadio);
+    themeLayout->addStretch();
+
+    // Create icon set group box
+    QGroupBox *iconGroupBox = new QGroupBox("Icon Set", &settingsDialog);
+    QVBoxLayout *iconLayout = new QVBoxLayout(iconGroupBox);
+
+    // Create radio buttons for icon sets
+    QRadioButton *defaultIconsRadio = new QRadioButton("Default", iconGroupBox);
+    QRadioButton *modernIconsRadio = new QRadioButton("Modern", iconGroupBox);
+
+    // Set current selection based on settings
+    QString currentIconSet = settings->getIconSet();
+    if (currentIconSet == "default")
+    {
+        defaultIconsRadio->setChecked(true);
+    }
+    else if (currentIconSet == "modern")
+    {
+        modernIconsRadio->setChecked(true);
+    }
+
+    iconLayout->addWidget(defaultIconsRadio);
+    iconLayout->addWidget(modernIconsRadio);
+    iconLayout->addStretch();
+
     // Create auto-start tournament checkbox
     QCheckBox *autoStartCheckbox = new QCheckBox("Auto-start tournament when enough players are added", &settingsDialog);
     autoStartCheckbox->setChecked(settings->getAutoStartTournament());
@@ -1474,6 +1611,8 @@ void MainWindow::showSettingsDialog()
     // Add widgets to main layout
     layout->addWidget(pairingGroupBox);
     layout->addWidget(tiebreakerGroupBox);
+    layout->addWidget(themeGroupBox);
+    layout->addWidget(iconGroupBox);
     layout->addWidget(autoStartCheckbox);
     layout->addStretch();
 
@@ -1507,6 +1646,35 @@ void MainWindow::showSettingsDialog()
             settings->setSingleTiebreaker(selectedTiebreaker);
         }
 
+        // Update theme settings
+        if (fusionDarkRadio->isChecked())
+        {
+            settings->setTheme("fusion_dark");
+            setFusionDark(*app);
+        }
+        else if (fusionLightRadio->isChecked())
+        {
+            settings->setTheme("fusion_light");
+            setFusionLight(*app);
+        }
+        else if (customQssRadio->isChecked())
+        {
+            settings->setTheme("custom");
+            setCustomQss(*app);
+        }
+
+        // Update icon settings
+        if (defaultIconsRadio->isChecked())
+        {
+            settings->setIconSet("default");
+            setDefaultIcons();
+        }
+        else if (modernIconsRadio->isChecked())
+        {
+            settings->setIconSet("modern");
+            setModernIcons();
+        }
+
         settings->setAutoStartTournament(autoStartCheckbox->isChecked());
 
         // Save settings
@@ -1515,6 +1683,7 @@ void MainWindow::showSettingsDialog()
         mainStatusBar->showMessage("Settings saved successfully");
     }
 }
+
 void MainWindow::onTiebreakerClicked()
 {
     calculateAndDisplayTiebreakers();

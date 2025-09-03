@@ -6,8 +6,31 @@
 
 Settings::Settings()
     : pairingSystem("round_robin"), autoStartTournament(false),
+      theme("fusion_dark"), iconSet("default"),
       useSeriesTiebreakers(false), singleTiebreaker(0)
 {
+}
+
+// Theme settings getters
+QString Settings::getTheme() const
+{
+    return theme;
+}
+
+QString Settings::getIconSet() const
+{
+    return iconSet;
+}
+
+// Theme settings setters
+void Settings::setTheme(const QString &theme)
+{
+    this->theme = theme;
+}
+
+void Settings::setIconSet(const QString &iconSet)
+{
+    this->iconSet = iconSet;
 }
 
 bool Settings::getUseSeriesTiebreakers() const
@@ -68,6 +91,10 @@ bool Settings::load()
     pairingSystem = settings.value("pairingSystem", "round_robin").toString();
     autoStartTournament = settings.value("autoStartTournament", false).toBool();
 
+    // Load theme settings
+    theme = settings.value("theme", "fusion_dark").toString();
+    iconSet = settings.value("iconSet", "default").toString();
+
     // Load tiebreaker settings
     useSeriesTiebreakers = settings.value("useSeriesTiebreakers", false).toBool();
     singleTiebreaker = settings.value("singleTiebreaker", 0).toInt();
@@ -83,6 +110,10 @@ bool Settings::save() const
     // Save settings
     settings.setValue("pairingSystem", pairingSystem);
     settings.setValue("autoStartTournament", autoStartTournament);
+
+    // Save theme settings
+    settings.setValue("theme", theme);
+    settings.setValue("iconSet", iconSet);
 
     // Save tiebreaker settings
     settings.setValue("useSeriesTiebreakers", useSeriesTiebreakers);

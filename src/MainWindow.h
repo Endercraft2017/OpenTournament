@@ -22,6 +22,8 @@
 #include "Settings.h"
 #include "Tiebreaker.h"
 
+class QApplication; // Forward declaration
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -45,6 +47,13 @@ private slots:
     void onEndTournamentClicked();   // New slot for end tournament button
     void onTiebreakerClicked();      // New slot for tiebreaker button
 
+    // Theme and icon slots
+    void onFusionDarkSelected();
+    void onFusionLightSelected();
+    void onCustomQssSelected();
+    void onDefaultIconsSelected();
+    void onModernIconsSelected();
+
 private:
     // UI components
     QMenuBar *menuBar;
@@ -60,6 +69,13 @@ private:
     QAction *aboutAction;
     QAction *settingsAction; // New settings action
 
+    // Theme actions
+    QAction *fusionDarkAction;
+    QAction *fusionLightAction;
+    QAction *customQssAction;
+    QAction *defaultIconsAction;
+    QAction *modernIconsAction;
+
     // Buttons
     QPushButton *addPlayerButton;
     QPushButton *resetTournamentButton;
@@ -71,6 +87,9 @@ private:
     // Data managers
     Database *database;
     Settings *settings; // New settings manager
+
+    // Application reference for theme changes
+    QApplication *app;
 
     // Helper methods
     void setupUI();
@@ -89,6 +108,10 @@ private:
     void showSettingsDialog();             // New method for showing settings dialog
     void calculateAndDisplayTiebreakers(); // New method for calculating tiebreakers
     void showTiebreakerSettingsDialog();   // New method for showing tiebreaker settings dialog
+
+    // Theme and icon methods
+    void setDefaultIcons();
+    void setModernIcons();
 
     // Event handlers
     void closeEvent(QCloseEvent *event) override;

@@ -24,6 +24,8 @@ set(SOURCES
     src/Player.cpp
     src/Match.cpp
     src/Tournament.cpp
+    src/Tiebreaker.cpp
+    src/Settings.cpp
 )
 
 set(HEADERS
@@ -32,6 +34,7 @@ set(HEADERS
     src/Player.h
     src/Match.h
     src/Tournament.h
+    src/Tiebreaker.h
 )
 
 add_executable(OpenTournament ${SOURCES} ${HEADERS})

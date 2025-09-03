@@ -452,6 +452,19 @@ CMakeFiles/OpenTournament.dir/OpenTournament_autogen/mocs_compilation.cpp.obj: \
  H:/Qt/6.9.2/mingw_64/include/QtCore/qcoreapplication_platform.h \
  H:/Qt/6.9.2/mingw_64/include/QtGui/qinputmethod.h \
  H:/Qt/6.9.2/mingw_64/include/QtGui/qguiapplication_platform.h \
+ H:/Qt/6.9.2/mingw_64/include/QtCore/QPoint \
+ H:/Qt/6.9.2/mingw_64/include/QtCore/qpoint.h \
+ H:/Qt/6.9.2/mingw_64/include/QtWidgets/QMenu \
+ H:/Qt/6.9.2/mingw_64/include/QtWidgets/qmenu.h \
+ H:/Qt/6.9.2/mingw_64/include/QtWidgets/QInputDialog \
+ H:/Qt/6.9.2/mingw_64/include/QtWidgets/qinputdialog.h \
+ H:/Qt/6.9.2/mingw_64/include/QtWidgets/qlineedit.h \
+ H:/Qt/6.9.2/mingw_64/include/QtGui/qtextcursor.h \
+ H:/Qt/6.9.2/mingw_64/include/QtGui/qtextdocument.h \
+ H:/Qt/6.9.2/mingw_64/include/QtGui/qtextformat.h \
+ H:/Qt/6.9.2/mingw_64/include/QtGui/qpen.h \
+ H:/Qt/6.9.2/mingw_64/include/QtGui/qtextoption.h \
+ H:/Qt/6.9.2/mingw_64/include/QtWidgets/qdialog.h \
  I:/VS_Code_Programs/Portfolio/Desktop-Applications/OpenTournament/src/Database.h \
  H:/Qt/6.9.2/mingw_64/include/QtSql/QSqlDatabase \
  H:/Qt/6.9.2/mingw_64/include/QtSql/qsqldatabase.h \
@@ -467,6 +480,10 @@ CMakeFiles/OpenTournament.dir/OpenTournament_autogen/mocs_compilation.cpp.obj: \
  H:/Qt/6.9.2/mingw_64/include/QtCore/QDateTime \
  H:/Qt/6.9.2/mingw_64/include/QtCore/qdatetime.h \
  H:/Qt/6.9.2/mingw_64/include/QtCore/qcalendar.h \
+ I:/VS_Code_Programs/Portfolio/Desktop-Applications/OpenTournament/src/Settings.h \
+ H:/Qt/6.9.2/mingw_64/include/QtCore/QMap \
+ H:/Qt/6.9.2/mingw_64/include/QtCore/qmap.h \
+ I:/VS_Code_Programs/Portfolio/Desktop-Applications/OpenTournament/src/Tiebreaker.h \
  H:/Qt/6.9.2/mingw_64/include/QtCore/qtmochelpers.h \
  H:/Qt/6.9.2/mingw_64/include/QtCore/qtmocconstants.h \
  H:/Qt/6.9.2/mingw_64/include/QtCore/q20algorithm.h \

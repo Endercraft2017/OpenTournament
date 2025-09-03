@@ -367,6 +367,18 @@
 			null
 		],
 		[
+			"I:/VS_Code_Programs/Portfolio/Desktop-Applications/OpenTournament/src/Settings.h",
+			"MU",
+			"UVLADIE3JM/moc_Settings.cpp",
+			null
+		],
+		[
+			"I:/VS_Code_Programs/Portfolio/Desktop-Applications/OpenTournament/src/Tiebreaker.h",
+			"MU",
+			"UVLADIE3JM/moc_Tiebreaker.cpp",
+			null
+		],
+		[
 			"I:/VS_Code_Programs/Portfolio/Desktop-Applications/OpenTournament/src/Tournament.h",
 			"MU",
 			"UVLADIE3JM/moc_Tournament.cpp",
@@ -462,6 +474,16 @@
 		],
 		[
 			"I:/VS_Code_Programs/Portfolio/Desktop-Applications/OpenTournament/src/Player.cpp",
+			"MU",
+			null
+		],
+		[
+			"I:/VS_Code_Programs/Portfolio/Desktop-Applications/OpenTournament/src/Settings.cpp",
+			"MU",
+			null
+		],
+		[
+			"I:/VS_Code_Programs/Portfolio/Desktop-Applications/OpenTournament/src/Tiebreaker.cpp",
 			"MU",
 			null
 		],

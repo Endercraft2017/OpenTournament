@@ -11,11 +11,16 @@
 #include <QAction>
 #include <QList>
 #include <QCloseEvent>
+#include <QPoint>
+#include <QMenu>
+#include <QInputDialog>
 
 #include "Database.h"
 #include "Player.h"
 #include "Match.h"
 #include "Tournament.h"
+#include "Settings.h"
+#include "Tiebreaker.h"
 
 class MainWindow : public QMainWindow
 {
@@ -28,10 +33,17 @@ public:
 private slots:
     void onAddPlayerClicked();
     void onResetTournamentClicked();
+    void onNewTournamentClicked();
     void onExportResultsClicked();
     void onMatchResultClicked();
     void onEditMatchClicked();
     void onPlayerSelectionChanged();
+    void onPlayerContextMenuRequested(const QPoint &pos);
+    void onEditPlayer();
+    void onDeletePlayer();
+    void onStartTournamentClicked(); // New slot for start tournament button
+    void onEndTournamentClicked();   // New slot for end tournament button
+    void onTiebreakerClicked();      // New slot for tiebreaker button
 
 private:
     // UI components
@@ -46,14 +58,19 @@ private:
     QAction *exportResultsAction;
     QAction *exitAction;
     QAction *aboutAction;
+    QAction *settingsAction; // New settings action
 
     // Buttons
     QPushButton *addPlayerButton;
     QPushButton *resetTournamentButton;
     QPushButton *exportResultsButton;
+    QPushButton *startTournamentButton; // New start tournament button
+    QPushButton *endTournamentButton;   // New end tournament button
+    QPushButton *tiebreakerButton;      // New tiebreaker button
 
     // Data managers
     Database *database;
+    Settings *settings; // New settings manager
 
     // Helper methods
     void setupUI();
@@ -66,11 +83,18 @@ private:
     void showAddPlayerDialog();
     void showConfirmationDialog(const QString &message);
     void generateRoundRobinPairings();
+    void generateSwissPairings(); // New method for Swiss pairing
     void updateLeaderboard();
     void exportToCSV(const QString &filename);
+    void showSettingsDialog();             // New method for showing settings dialog
+    void calculateAndDisplayTiebreakers(); // New method for calculating tiebreakers
+    void showTiebreakerSettingsDialog();   // New method for showing tiebreaker settings dialog
 
     // Event handlers
     void closeEvent(QCloseEvent *event) override;
+
+    // Helper methods
+    int getCurrentTournamentId();
 };
 
 #endif // MAINWINDOW_H

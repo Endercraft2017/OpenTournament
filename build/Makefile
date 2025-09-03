@@ -319,6 +319,54 @@ src/Player.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\OpenTournament.dir\build.make CMakeFiles/OpenTournament.dir/src/Player.cpp.s
 .PHONY : src/Player.cpp.s
 
+src/Settings.obj: src/Settings.cpp.obj
+.PHONY : src/Settings.obj
+
+# target to build an object file
+src/Settings.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\OpenTournament.dir\build.make CMakeFiles/OpenTournament.dir/src/Settings.cpp.obj
+.PHONY : src/Settings.cpp.obj
+
+src/Settings.i: src/Settings.cpp.i
+.PHONY : src/Settings.i
+
+# target to preprocess a source file
+src/Settings.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\OpenTournament.dir\build.make CMakeFiles/OpenTournament.dir/src/Settings.cpp.i
+.PHONY : src/Settings.cpp.i
+
+src/Settings.s: src/Settings.cpp.s
+.PHONY : src/Settings.s
+
+# target to generate assembly for a file
+src/Settings.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\OpenTournament.dir\build.make CMakeFiles/OpenTournament.dir/src/Settings.cpp.s
+.PHONY : src/Settings.cpp.s
+
+src/Tiebreaker.obj: src/Tiebreaker.cpp.obj
+.PHONY : src/Tiebreaker.obj
+
+# target to build an object file
+src/Tiebreaker.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\OpenTournament.dir\build.make CMakeFiles/OpenTournament.dir/src/Tiebreaker.cpp.obj
+.PHONY : src/Tiebreaker.cpp.obj
+
+src/Tiebreaker.i: src/Tiebreaker.cpp.i
+.PHONY : src/Tiebreaker.i
+
+# target to preprocess a source file
+src/Tiebreaker.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\OpenTournament.dir\build.make CMakeFiles/OpenTournament.dir/src/Tiebreaker.cpp.i
+.PHONY : src/Tiebreaker.cpp.i
+
+src/Tiebreaker.s: src/Tiebreaker.cpp.s
+.PHONY : src/Tiebreaker.s
+
+# target to generate assembly for a file
+src/Tiebreaker.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\OpenTournament.dir\build.make CMakeFiles/OpenTournament.dir/src/Tiebreaker.cpp.s
+.PHONY : src/Tiebreaker.cpp.s
+
 src/Tournament.obj: src/Tournament.cpp.obj
 .PHONY : src/Tournament.obj
 
@@ -397,6 +445,12 @@ help:
 	@echo ... src/Player.obj
 	@echo ... src/Player.i
 	@echo ... src/Player.s
+	@echo ... src/Settings.obj
+	@echo ... src/Settings.i
+	@echo ... src/Settings.s
+	@echo ... src/Tiebreaker.obj
+	@echo ... src/Tiebreaker.i
+	@echo ... src/Tiebreaker.s
 	@echo ... src/Tournament.obj
 	@echo ... src/Tournament.i
 	@echo ... src/Tournament.s

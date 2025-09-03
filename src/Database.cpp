@@ -70,15 +70,37 @@ bool Database::initializeSchema()
         return false;
     }
 
-    // Create matches table
+    // Create tournaments table
+    QString createTournamentsTable = R"(
+        CREATE TABLE IF NOT EXISTS tournaments (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT,
+            pairing_system TEXT DEFAULT 'round_robin',
+            status TEXT DEFAULT 'setup',
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            started_at TIMESTAMP NULL,
+            completed_at TIMESTAMP NULL
+        )
+    )";
+
+    if (!query.exec(createTournamentsTable))
+    {
+        qDebug() << "Failed to create tournaments table:" << query.lastError().text();
+        return false;
+    }
+
+    // Create matches table with tournament_id
     QString createMatchesTable = R"(
         CREATE TABLE IF NOT EXISTS matches (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id INTEGER NOT NULL,
+            tournament_id INTEGER NOT NULL,
             round INTEGER NOT NULL,
             p1 INTEGER NOT NULL,
             p2 INTEGER NOT NULL,
             result TEXT DEFAULT NULL,
             locked INTEGER DEFAULT 0,
+            PRIMARY KEY (id, tournament_id),
+            FOREIGN KEY (tournament_id) REFERENCES tournaments(id),
             FOREIGN KEY (p1) REFERENCES players(id),
             FOREIGN KEY (p2) REFERENCES players(id)
         )
@@ -90,18 +112,18 @@ bool Database::initializeSchema()
         return false;
     }
 
-    // Create tournaments table
-    QString createTournamentsTable = R"(
-        CREATE TABLE IF NOT EXISTS tournaments (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    // Create match_id_sequence table to track next match ID for each tournament
+    QString createMatchIdSequenceTable = R"(
+        CREATE TABLE IF NOT EXISTS match_id_sequence (
+            tournament_id INTEGER PRIMARY KEY,
+            next_id INTEGER NOT NULL DEFAULT 1,
+            FOREIGN KEY (tournament_id) REFERENCES tournaments(id)
         )
     )";
 
-    if (!query.exec(createTournamentsTable))
+    if (!query.exec(createMatchIdSequenceTable))
     {
-        qDebug() << "Failed to create tournaments table:" << query.lastError().text();
+        qDebug() << "Failed to create match_id_sequence table:" << query.lastError().text();
         return false;
     }
 
@@ -198,10 +220,39 @@ bool Database::deletePlayer(int id)
 }
 
 // Match operations
-int Database::addMatch(int round, int p1, int p2)
+int Database::addMatch(int tournamentId, int round, int p1, int p2)
 {
     QSqlQuery query(db);
-    query.prepare("INSERT INTO matches (round, p1, p2) VALUES (?, ?, ?)");
+
+    // Begin transaction for atomicity
+    db.transaction();
+
+    // Get the next match ID for this tournament
+    int nextMatchId = 1;
+    query.prepare("SELECT next_id FROM match_id_sequence WHERE tournament_id = ?");
+    query.addBindValue(tournamentId);
+
+    if (query.exec() && query.next())
+    {
+        // Tournament exists in sequence table, get next ID
+        nextMatchId = query.value(0).toInt();
+    }
+    else
+    {
+        // Tournament doesn't exist in sequence table, check if there are existing matches
+        query.prepare("SELECT COALESCE(MAX(id), 0) + 1 FROM matches WHERE tournament_id = ?");
+        query.addBindValue(tournamentId);
+
+        if (query.exec() && query.next())
+        {
+            nextMatchId = query.value(0).toInt();
+        }
+    }
+
+    // Insert the match with the calculated ID
+    query.prepare("INSERT INTO matches (id, tournament_id, round, p1, p2) VALUES (?, ?, ?, ?, ?)");
+    query.addBindValue(nextMatchId);
+    query.addBindValue(tournamentId);
     query.addBindValue(round);
     query.addBindValue(p1);
     query.addBindValue(p2);
@@ -209,17 +260,38 @@ int Database::addMatch(int round, int p1, int p2)
     if (!query.exec())
     {
         qDebug() << "Failed to add match:" << query.lastError().text();
+        db.rollback();
         return -1;
     }
 
-    return query.lastInsertId().toInt();
+    // Update the next ID for this tournament
+    query.prepare("INSERT OR REPLACE INTO match_id_sequence (tournament_id, next_id) VALUES (?, ?)");
+    query.addBindValue(tournamentId);
+    query.addBindValue(nextMatchId + 1);
+
+    if (!query.exec())
+    {
+        qDebug() << "Failed to update match ID sequence:" << query.lastError().text();
+        db.rollback();
+        return -1;
+    }
+
+    // Commit transaction
+    if (!db.commit())
+    {
+        qDebug() << "Failed to commit transaction:" << db.lastError().text();
+        return -1;
+    }
+
+    return nextMatchId;
 }
 
-QList<Match> Database::getMatchesForRound(int round)
+QList<Match> Database::getMatchesForRound(int tournamentId, int round)
 {
     QList<Match> matches;
     QSqlQuery query(db);
-    query.prepare("SELECT id, round, p1, p2, result, locked FROM matches WHERE round = ? ORDER BY id");
+    query.prepare("SELECT id, tournament_id, round, p1, p2, result, locked FROM matches WHERE tournament_id = ? AND round = ? ORDER BY id");
+    query.addBindValue(tournamentId);
     query.addBindValue(round);
 
     if (!query.exec())
@@ -231,22 +303,34 @@ QList<Match> Database::getMatchesForRound(int round)
     while (query.next())
     {
         int id = query.value(0).toInt();
-        int round = query.value(1).toInt();
-        int p1 = query.value(2).toInt();
-        int p2 = query.value(3).toInt();
-        QString result = query.value(4).toString();
-        bool locked = query.value(5).toBool();
-        matches.append(Match(id, round, p1, p2, result, locked));
+        int tournamentId = query.value(1).toInt();
+        int round = query.value(2).toInt();
+        int p1 = query.value(3).toInt();
+        int p2 = query.value(4).toInt();
+        QString result = query.value(5).toString();
+        bool locked = query.value(6).toBool();
+        matches.append(Match(id, tournamentId, round, p1, p2, result, locked));
     }
 
     return matches;
 }
 
-QList<Match> Database::getAllMatches()
+QList<Match> Database::getAllMatches(int tournamentId)
 {
     QList<Match> matches;
     QSqlQuery query(db);
-    query.prepare("SELECT id, round, p1, p2, result, locked FROM matches ORDER BY round, id");
+
+    if (tournamentId == -1)
+    {
+        // Get all matches
+        query.prepare("SELECT id, tournament_id, round, p1, p2, result, locked FROM matches ORDER BY round, id");
+    }
+    else
+    {
+        // Get matches for specific tournament
+        query.prepare("SELECT id, tournament_id, round, p1, p2, result, locked FROM matches WHERE tournament_id = ? ORDER BY round, id");
+        query.addBindValue(tournamentId);
+    }
 
     if (!query.exec())
     {
@@ -257,12 +341,13 @@ QList<Match> Database::getAllMatches()
     while (query.next())
     {
         int id = query.value(0).toInt();
-        int round = query.value(1).toInt();
-        int p1 = query.value(2).toInt();
-        int p2 = query.value(3).toInt();
-        QString result = query.value(4).toString();
-        bool locked = query.value(5).toBool();
-        matches.append(Match(id, round, p1, p2, result, locked));
+        int tournamentId = query.value(1).toInt();
+        int round = query.value(2).toInt();
+        int p1 = query.value(3).toInt();
+        int p2 = query.value(4).toInt();
+        QString result = query.value(5).toString();
+        bool locked = query.value(6).toBool();
+        matches.append(Match(id, tournamentId, round, p1, p2, result, locked));
     }
 
     return matches;
@@ -333,8 +418,10 @@ bool Database::deleteMatch(int id)
 int Database::addTournament(const QString &name)
 {
     QSqlQuery query(db);
-    query.prepare("INSERT INTO tournaments (name) VALUES (?)");
+    query.prepare("INSERT INTO tournaments (name, pairing_system, status) VALUES (?, ?, ?)");
     query.addBindValue(name);
+    query.addBindValue("round_robin"); // default pairing system
+    query.addBindValue("setup");       // default status
 
     if (!query.exec())
     {
@@ -349,7 +436,7 @@ QList<Tournament> Database::getAllTournaments()
 {
     QList<Tournament> tournaments;
     QSqlQuery query(db);
-    query.prepare("SELECT id, name, created_at FROM tournaments ORDER BY created_at DESC");
+    query.prepare("SELECT id, name, pairing_system, status, created_at, started_at, completed_at FROM tournaments ORDER BY created_at DESC");
 
     if (!query.exec())
     {
@@ -361,8 +448,19 @@ QList<Tournament> Database::getAllTournaments()
     {
         int id = query.value(0).toInt();
         QString name = query.value(1).toString();
-        QDateTime createdAt = query.value(2).toDateTime();
-        tournaments.append(Tournament(id, name, createdAt));
+        QString pairingSystem = query.value(2).toString();
+        QString statusString = query.value(3).toString();
+        QDateTime createdAt = query.value(4).toDateTime();
+        QDateTime startedAt = query.value(5).toDateTime();
+        QDateTime completedAt = query.value(6).toDateTime();
+
+        Tournament tournament(id, name, createdAt);
+        tournament.setPairingSystem(pairingSystem);
+        tournament.setStatusFromString(statusString);
+        tournament.setStartedAt(startedAt);
+        tournament.setCompletedAt(completedAt);
+
+        tournaments.append(tournament);
     }
 
     return tournaments;
@@ -371,7 +469,7 @@ QList<Tournament> Database::getAllTournaments()
 Tournament Database::getTournamentById(int id)
 {
     QSqlQuery query(db);
-    query.prepare("SELECT id, name, created_at FROM tournaments WHERE id = ?");
+    query.prepare("SELECT id, name, pairing_system, status, created_at, started_at, completed_at FROM tournaments WHERE id = ?");
     query.addBindValue(id);
 
     if (!query.exec() || !query.next())
@@ -381,21 +479,68 @@ Tournament Database::getTournamentById(int id)
     }
 
     QString name = query.value(1).toString();
-    QDateTime createdAt = query.value(2).toDateTime();
-    return Tournament(id, name, createdAt);
+    QString pairingSystem = query.value(2).toString();
+    QString statusString = query.value(3).toString();
+    QDateTime createdAt = query.value(4).toDateTime();
+    QDateTime startedAt = query.value(5).toDateTime();
+    QDateTime completedAt = query.value(6).toDateTime();
+
+    Tournament tournament(id, name, createdAt);
+    tournament.setPairingSystem(pairingSystem);
+    tournament.setStatusFromString(statusString);
+    tournament.setStartedAt(startedAt);
+    tournament.setCompletedAt(completedAt);
+
+    return tournament;
 }
 
 bool Database::updateTournament(const Tournament &tournament)
 {
     QSqlQuery query(db);
-    query.prepare("UPDATE tournaments SET name = ?, created_at = ? WHERE id = ?");
+    query.prepare("UPDATE tournaments SET name = ?, pairing_system = ?, status = ?, created_at = ?, started_at = ?, completed_at = ? WHERE id = ?");
     query.addBindValue(tournament.getName());
+    query.addBindValue(tournament.getPairingSystem());
+    query.addBindValue(tournament.getStatusString());
     query.addBindValue(tournament.getCreatedAt());
+    query.addBindValue(tournament.getStartedAt());
+    query.addBindValue(tournament.getCompletedAt());
     query.addBindValue(tournament.getId());
 
     if (!query.exec())
     {
         qDebug() << "Failed to update tournament:" << query.lastError().text();
+        return false;
+    }
+
+    return query.numRowsAffected() > 0;
+}
+
+bool Database::startTournament(int id)
+{
+    QSqlQuery query(db);
+    query.prepare("UPDATE tournaments SET status = ?, started_at = datetime('now') WHERE id = ?");
+    query.addBindValue("active");
+    query.addBindValue(id);
+
+    if (!query.exec())
+    {
+        qDebug() << "Failed to start tournament:" << query.lastError().text();
+        return false;
+    }
+
+    return query.numRowsAffected() > 0;
+}
+
+bool Database::completeTournament(int id)
+{
+    QSqlQuery query(db);
+    query.prepare("UPDATE tournaments SET status = ?, completed_at = datetime('now') WHERE id = ?");
+    query.addBindValue("completed");
+    query.addBindValue(id);
+
+    if (!query.exec())
+    {
+        qDebug() << "Failed to complete tournament:" << query.lastError().text();
         return false;
     }
 
@@ -446,6 +591,64 @@ bool Database::resetDatabase()
     if (!query.exec("DELETE FROM sqlite_sequence WHERE name = 'tournaments'"))
     {
         qDebug() << "Failed to reset tournaments sequence:" << query.lastError().text();
+        return false;
+    }
+
+    return true;
+}
+
+QList<Match> Database::getMatchesForTournament(int tournamentId)
+{
+    QList<Match> matches;
+    QSqlQuery query(db);
+    query.prepare("SELECT id, tournament_id, round, p1, p2, result, locked FROM matches WHERE tournament_id = ? ORDER BY round, id");
+    query.addBindValue(tournamentId);
+
+    if (!query.exec())
+    {
+        qDebug() << "Failed to get matches for tournament:" << query.lastError().text();
+        return matches;
+    }
+
+    while (query.next())
+    {
+        int id = query.value(0).toInt();
+        int tournamentId = query.value(1).toInt();
+        int round = query.value(2).toInt();
+        int p1 = query.value(3).toInt();
+        int p2 = query.value(4).toInt();
+        QString result = query.value(5).toString();
+        bool locked = query.value(6).toBool();
+        matches.append(Match(id, tournamentId, round, p1, p2, result, locked));
+    }
+
+    return matches;
+}
+
+bool Database::deleteMatchesForTournament(int tournamentId)
+{
+    QSqlQuery query(db);
+    query.prepare("DELETE FROM matches WHERE tournament_id = ?");
+    query.addBindValue(tournamentId);
+
+    if (!query.exec())
+    {
+        qDebug() << "Failed to delete matches for tournament:" << query.lastError().text();
+        return false;
+    }
+
+    return query.numRowsAffected() > 0;
+}
+
+bool Database::resetMatchIdSequence(int tournamentId)
+{
+    QSqlQuery query(db);
+    query.prepare("DELETE FROM match_id_sequence WHERE tournament_id = ?");
+    query.addBindValue(tournamentId);
+
+    if (!query.exec())
+    {
+        qDebug() << "Failed to reset match ID sequence for tournament:" << query.lastError().text();
         return false;
     }
 

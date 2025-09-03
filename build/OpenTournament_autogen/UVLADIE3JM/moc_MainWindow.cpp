@@ -7,6 +7,7 @@
 *****************************************************************************/
 
 #include "../../../src/MainWindow.h"
+#include <QtGui/qtextcursor.h>
 #include <QtCore/qmetatype.h>
 
 #include <QtCore/qtmochelpers.h>
@@ -42,10 +43,18 @@ template <> constexpr inline auto MainWindow::qt_create_metaobjectdata<qt_meta_t
         "onAddPlayerClicked",
         "",
         "onResetTournamentClicked",
+        "onNewTournamentClicked",
         "onExportResultsClicked",
         "onMatchResultClicked",
         "onEditMatchClicked",
-        "onPlayerSelectionChanged"
+        "onPlayerSelectionChanged",
+        "onPlayerContextMenuRequested",
+        "pos",
+        "onEditPlayer",
+        "onDeletePlayer",
+        "onStartTournamentClicked",
+        "onEndTournamentClicked",
+        "onTiebreakerClicked"
     };
 
     QtMocHelpers::UintData qt_methods {
@@ -53,14 +62,30 @@ template <> constexpr inline auto MainWindow::qt_create_metaobjectdata<qt_meta_t
         QtMocHelpers::SlotData<void()>(1, 2, QMC::AccessPrivate, QMetaType::Void),
         // Slot 'onResetTournamentClicked'
         QtMocHelpers::SlotData<void()>(3, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'onExportResultsClicked'
+        // Slot 'onNewTournamentClicked'
         QtMocHelpers::SlotData<void()>(4, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'onMatchResultClicked'
+        // Slot 'onExportResultsClicked'
         QtMocHelpers::SlotData<void()>(5, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'onEditMatchClicked'
+        // Slot 'onMatchResultClicked'
         QtMocHelpers::SlotData<void()>(6, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'onPlayerSelectionChanged'
+        // Slot 'onEditMatchClicked'
         QtMocHelpers::SlotData<void()>(7, 2, QMC::AccessPrivate, QMetaType::Void),
+        // Slot 'onPlayerSelectionChanged'
+        QtMocHelpers::SlotData<void()>(8, 2, QMC::AccessPrivate, QMetaType::Void),
+        // Slot 'onPlayerContextMenuRequested'
+        QtMocHelpers::SlotData<void(const QPoint &)>(9, 2, QMC::AccessPrivate, QMetaType::Void, {{
+            { QMetaType::QPoint, 10 },
+        }}),
+        // Slot 'onEditPlayer'
+        QtMocHelpers::SlotData<void()>(11, 2, QMC::AccessPrivate, QMetaType::Void),
+        // Slot 'onDeletePlayer'
+        QtMocHelpers::SlotData<void()>(12, 2, QMC::AccessPrivate, QMetaType::Void),
+        // Slot 'onStartTournamentClicked'
+        QtMocHelpers::SlotData<void()>(13, 2, QMC::AccessPrivate, QMetaType::Void),
+        // Slot 'onEndTournamentClicked'
+        QtMocHelpers::SlotData<void()>(14, 2, QMC::AccessPrivate, QMetaType::Void),
+        // Slot 'onTiebreakerClicked'
+        QtMocHelpers::SlotData<void()>(15, 2, QMC::AccessPrivate, QMetaType::Void),
     };
     QtMocHelpers::UintData qt_properties {
     };
@@ -86,14 +111,20 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         switch (_id) {
         case 0: _t->onAddPlayerClicked(); break;
         case 1: _t->onResetTournamentClicked(); break;
-        case 2: _t->onExportResultsClicked(); break;
-        case 3: _t->onMatchResultClicked(); break;
-        case 4: _t->onEditMatchClicked(); break;
-        case 5: _t->onPlayerSelectionChanged(); break;
+        case 2: _t->onNewTournamentClicked(); break;
+        case 3: _t->onExportResultsClicked(); break;
+        case 4: _t->onMatchResultClicked(); break;
+        case 5: _t->onEditMatchClicked(); break;
+        case 6: _t->onPlayerSelectionChanged(); break;
+        case 7: _t->onPlayerContextMenuRequested((*reinterpret_cast< std::add_pointer_t<QPoint>>(_a[1]))); break;
+        case 8: _t->onEditPlayer(); break;
+        case 9: _t->onDeletePlayer(); break;
+        case 10: _t->onStartTournamentClicked(); break;
+        case 11: _t->onEndTournamentClicked(); break;
+        case 12: _t->onTiebreakerClicked(); break;
         default: ;
         }
     }
-    (void)_a;
 }
 
 const QMetaObject *MainWindow::metaObject() const
@@ -115,14 +146,14 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 6)
+        if (_id < 13)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 6;
+        _id -= 13;
     }
     if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 6)
+        if (_id < 13)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 6;
+        _id -= 13;
     }
     return _id;
 }

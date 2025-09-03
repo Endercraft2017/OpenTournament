@@ -14,13 +14,19 @@
 #include <QTextStream>
 #include <QFile>
 #include <QDir>
+#include <QGroupBox>
+#include <QRadioButton>
+#include <QCheckBox>
+#include <QDialogButtonBox>
+#include <QComboBox>
+#include <QLabel>
 #include <algorithm>
 #include <vector>
 #include <string>
 #include <numeric>
 
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent), database(new Database())
+    : QMainWindow(parent), database(new Database()), settings(new Settings())
 {
     // Connect to database
     if (!database->connect())
@@ -29,6 +35,9 @@ MainWindow::MainWindow(QWidget *parent)
                               "Failed to connect to database. The application will exit.");
         QApplication::exit(1);
     }
+
+    // Load settings
+    settings->load();
 
     setupUI();
     updatePlayerList();
@@ -41,6 +50,7 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete database;
+    delete settings;
 }
 
 void MainWindow::setupUI()
@@ -52,6 +62,9 @@ void MainWindow::setupUI()
     setupToolbar();
     setupPlayerPanel();
     setupMatchPanel();
+
+    // Initialize mainStatusBar after setupMatchPanel
+    mainStatusBar = new QStatusBar(this);
 
     // Create central widget with splitter
     QSplitter *splitter = new QSplitter(Qt::Horizontal, this);
@@ -75,9 +88,14 @@ void MainWindow::setupMenu()
     fileMenu->addSeparator();
     exitAction = fileMenu->addAction("E&xit");
 
-    connect(newTournamentAction, &QAction::triggered, this, &MainWindow::onResetTournamentClicked);
+    connect(newTournamentAction, &QAction::triggered, this, &MainWindow::onNewTournamentClicked);
     connect(exportResultsAction, &QAction::triggered, this, &MainWindow::onExportResultsClicked);
     connect(exitAction, &QAction::triggered, this, &QMainWindow::close);
+
+    // Settings menu
+    QMenu *settingsMenu = menuBar->addMenu("&Settings");
+    settingsAction = settingsMenu->addAction("&Preferences");
+    connect(settingsAction, &QAction::triggered, this, &MainWindow::showSettingsDialog);
 
     // Help menu
     QMenu *helpMenu = menuBar->addMenu("&Help");
@@ -88,6 +106,36 @@ void MainWindow::setupMenu()
                                  "A desktop application for managing tournament brackets using a round-robin pairing system."); });
 }
 
+void MainWindow::onNewTournamentClicked()
+{
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, "Confirm New Tournament",
+                                  "This will clear all match results AND remove all players. Continue?",
+                                  QMessageBox::Yes | QMessageBox::No);
+
+    if (reply == QMessageBox::Yes)
+    {
+        // Reset database
+        if (database->resetDatabase())
+        {
+            // Delete all players
+            QList<Player> players = database->getAllPlayers();
+            for (const Player &player : players)
+            {
+                database->deletePlayer(player.getId());
+            }
+
+            updatePlayerList();
+            updateMatchTabs();
+            mainStatusBar->showMessage("New tournament started successfully");
+        }
+        else
+        {
+            QMessageBox::critical(this, "Error", "Failed to start new tournament.");
+        }
+    }
+}
+
 void MainWindow::setupToolbar()
 {
     toolBar = addToolBar("Main");
@@ -95,14 +143,168 @@ void MainWindow::setupToolbar()
     addPlayerButton = new QPushButton("Add Player", this);
     resetTournamentButton = new QPushButton("Reset Tournament", this);
     exportResultsButton = new QPushButton("Export Results", this);
+    startTournamentButton = new QPushButton("Start Tournament", this); // New button
+    endTournamentButton = new QPushButton("End Tournament", this);     // New button
+    tiebreakerButton = new QPushButton("Compute Tiebreakers", this);   // New button for tiebreakers
+    tiebreakerButton->setVisible(false);                               // Hide by default
 
     toolBar->addWidget(addPlayerButton);
     toolBar->addWidget(resetTournamentButton);
     toolBar->addWidget(exportResultsButton);
+    toolBar->addWidget(startTournamentButton); // Add start tournament button
+    toolBar->addWidget(endTournamentButton);   // Add end tournament button
+    toolBar->addWidget(tiebreakerButton);      // Add tiebreaker button
 
     connect(addPlayerButton, &QPushButton::clicked, this, &MainWindow::onAddPlayerClicked);
     connect(resetTournamentButton, &QPushButton::clicked, this, &MainWindow::onResetTournamentClicked);
     connect(exportResultsButton, &QPushButton::clicked, this, &MainWindow::onExportResultsClicked);
+    connect(startTournamentButton, &QPushButton::clicked, this, &MainWindow::onStartTournamentClicked); // Connect start tournament button
+    connect(endTournamentButton, &QPushButton::clicked, this, &MainWindow::onEndTournamentClicked);     // Connect end tournament button
+    connect(tiebreakerButton, &QPushButton::clicked, this, &MainWindow::onTiebreakerClicked);           // Connect tiebreaker button
+}
+
+void MainWindow::onStartTournamentClicked()
+{
+    // Check if there are enough players
+    QList<Player> players = database->getAllPlayers();
+    if (players.size() < 3)
+    {
+        QMessageBox::warning(this, "Insufficient Players",
+                             "At least 3 players are required to start a tournament.");
+        return;
+    }
+
+    // Get current tournament ID
+    int tournamentId = getCurrentTournamentId();
+
+    // Update tournament status to "active"
+    Tournament tournament = database->getTournamentById(tournamentId);
+    tournament.setStatus(Tournament::Active);
+    tournament.setStartedAt(QDateTime::currentDateTime());
+
+    if (database->updateTournament(tournament))
+    {
+        // Generate initial pairings based on selected pairing system
+        if (settings->getPairingSystem() == "swiss")
+        {
+            generateSwissPairings();
+        }
+        else
+        {
+            generateRoundRobinPairings();
+        }
+
+        // Update UI
+        updateMatchTabs();
+        updateLeaderboard();
+
+        // Enable tournament end button
+        endTournamentButton->setEnabled(true);
+
+        mainStatusBar->showMessage("Tournament started successfully");
+    }
+    else
+    {
+        QMessageBox::critical(this, "Error", "Failed to start tournament.");
+    }
+}
+
+void MainWindow::onEndTournamentClicked()
+{
+    // Confirm with user before ending tournament
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, "End Tournament",
+                                  "Are you sure you want to end the tournament? This will finalize all results and save the tournament.",
+                                  QMessageBox::Yes | QMessageBox::No);
+
+    if (reply == QMessageBox::No)
+        return;
+
+    // Get current tournament ID
+    int tournamentId = getCurrentTournamentId();
+
+    // Update tournament status to "completed"
+    Tournament tournament = database->getTournamentById(tournamentId);
+    tournament.setStatus(Tournament::Completed);
+    tournament.setCompletedAt(QDateTime::currentDateTime());
+
+    if (!database->updateTournament(tournament))
+    {
+        QMessageBox::critical(this, "Error", "Failed to update tournament status.");
+        return;
+    }
+
+    // Calculate final standings with tiebreakers
+    updateLeaderboard();
+
+    // Show final results
+    QMessageBox::information(this, "Tournament Completed",
+                             "The tournament has been completed successfully.\n\n"
+                             "Final results have been calculated and saved.\n"
+                             "You can now export the results or start a new tournament.");
+
+    // Offer to export results
+    reply = QMessageBox::question(this, "Export Results",
+                                  "Would you like to export the tournament results to a CSV file?",
+                                  QMessageBox::Yes | QMessageBox::No);
+
+    if (reply == QMessageBox::Yes)
+    {
+        QString fileName = QFileDialog::getSaveFileName(this,
+                                                        "Export Tournament Results",
+                                                        "tournament_results.csv",
+                                                        "CSV Files (*.csv)");
+
+        if (!fileName.isEmpty())
+        {
+            exportToCSV(fileName);
+        }
+    }
+
+    // Disable tournament end button
+    endTournamentButton->setEnabled(false);
+
+    // Re-enable player addition/removal
+    addPlayerButton->setEnabled(true);
+    resetTournamentButton->setEnabled(true);
+
+    // Update status bar
+    mainStatusBar->showMessage("Tournament completed successfully");
+}
+
+void MainWindow::calculateAndDisplayTiebreakers()
+{
+    // Get players and matches
+    QList<Player> players = database->getAllPlayers();
+    QList<Match> matches = database->getAllMatches();
+
+    // For now, just show a message
+    // In a real implementation, this would calculate tiebreakers and update the UI
+    mainStatusBar->showMessage("Calculating tiebreakers...");
+
+    // In a real implementation, this would:
+    // 1. Check if there are ties in the standings
+    // 2. Calculate all five tiebreaker scores for each player
+    // 3. Apply selected tiebreaker(s) based on settings
+    // 4. Update the leaderboard with tiebreaker-adjusted rankings
+    // 5. Show a confirmation dialog before computing tiebreakers
+    // 6. Only show the tiebreaker button when there are ties
+}
+
+void MainWindow::showTiebreakerSettingsDialog()
+{
+    // For now, just show a message
+    // In a real implementation, this would show a dialog for configuring tiebreakers
+    mainStatusBar->showMessage("Showing tiebreaker settings...");
+
+    // In a real implementation, this would:
+    // 1. Create a dialog with options for tiebreaker selection
+    // 2. Allow user to choose single tiebreaker or series with priority
+    // 3. Show tooltips with definitions for each tiebreaker
+    // 4. Allow reordering of tiebreaker priorities
+    // 5. Save user preferences to settings
+    // 6. Include definitions as hover tooltips
+    // 7. Have a numbering system for priority ordering
 }
 
 void MainWindow::setupPlayerPanel()
@@ -111,20 +313,167 @@ void MainWindow::setupPlayerPanel()
     playerTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     playerTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
+    // Enable context menu
+    playerTable->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(playerTable, &QTableWidget::customContextMenuRequested, this, &MainWindow::onPlayerContextMenuRequested);
+
     QStringList headers;
     headers << "Rank" << "Player" << "Points";
     playerTable->setHorizontalHeaderLabels(headers);
     playerTable->horizontalHeader()->setStretchLastSection(true);
     playerTable->verticalHeader()->setVisible(false);
 
+    // Center-align the points column header
+    playerTable->horizontalHeaderItem(2)->setTextAlignment(Qt::AlignCenter);
+
     connect(playerTable, &QTableWidget::itemSelectionChanged, this, &MainWindow::onPlayerSelectionChanged);
+}
+
+void MainWindow::onPlayerContextMenuRequested(const QPoint &pos)
+{
+    // Get the item at the position
+    QTableWidgetItem *item = playerTable->itemAt(pos);
+    if (!item)
+        return;
+
+    // Get the row of the selected item
+    int row = item->row();
+
+    // Create context menu
+    QMenu *contextMenu = new QMenu(this);
+
+    // Add edit action
+    QAction *editAction = contextMenu->addAction("Edit Player");
+    connect(editAction, &QAction::triggered, this, &MainWindow::onEditPlayer);
+
+    // Add delete action
+    QAction *deleteAction = contextMenu->addAction("Delete Player");
+    connect(deleteAction, &QAction::triggered, this, &MainWindow::onDeletePlayer);
+
+    // Store the row for use in the action handlers
+    editAction->setData(row);
+    deleteAction->setData(row);
+
+    // Show context menu
+    contextMenu->exec(playerTable->viewport()->mapToGlobal(pos));
+
+    // Clean up
+    contextMenu->deleteLater();
+}
+
+void MainWindow::onEditPlayer()
+{
+    // Get the sender action
+    QAction *action = qobject_cast<QAction *>(sender());
+    if (!action)
+        return;
+
+    // Get the row from the action data
+    int row = action->data().toInt();
+
+    // Get the player ID from the first column of the row
+    QTableWidgetItem *idItem = playerTable->item(row, 0);
+    if (!idItem)
+        return;
+
+    // Get player ID (stored in the item's data)
+    int playerId = idItem->data(Qt::UserRole).toInt();
+
+    // Get current player name
+    QTableWidgetItem *nameItem = playerTable->item(row, 1);
+    if (!nameItem)
+        return;
+
+    QString currentName = nameItem->text();
+
+    // Show input dialog for new name
+    bool ok;
+    QString newName = QInputDialog::getText(this, "Edit Player",
+                                            "Enter new player name:",
+                                            QLineEdit::Normal, currentName, &ok);
+
+    if (ok && !newName.isEmpty() && newName != currentName)
+    {
+        // Check if new name already exists
+        QList<Player> players = database->getAllPlayers();
+        for (const Player &player : players)
+        {
+            if (player.getId() != playerId && player.getName() == newName)
+            {
+                QMessageBox::warning(this, "Duplicate Player",
+                                     "A player with this name already exists.");
+                return;
+            }
+        }
+
+        // Update player in database
+        Player player = database->getPlayerById(playerId);
+        player.setName(newName);
+
+        if (database->updatePlayer(player))
+        {
+            updatePlayerList();
+            updateMatchTabs();
+            mainStatusBar->showMessage("Player updated successfully");
+        }
+        else
+        {
+            QMessageBox::critical(this, "Error", "Failed to update player.");
+        }
+    }
+}
+
+void MainWindow::onDeletePlayer()
+{
+    // Get the sender action
+    QAction *action = qobject_cast<QAction *>(sender());
+    if (!action)
+        return;
+
+    // Get the row from the action data
+    int row = action->data().toInt();
+
+    // Get the player ID from the first column of the row
+    QTableWidgetItem *idItem = playerTable->item(row, 0);
+    if (!idItem)
+        return;
+
+    // Get player ID (stored in the item's data)
+    int playerId = idItem->data(Qt::UserRole).toInt();
+
+    // Get player name
+    QTableWidgetItem *nameItem = playerTable->item(row, 1);
+    if (!nameItem)
+        return;
+
+    QString playerName = nameItem->text();
+
+    // Confirm deletion
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, "Confirm Delete",
+                                  QString("Are you sure you want to delete player '%1'?").arg(playerName),
+                                  QMessageBox::Yes | QMessageBox::No);
+
+    if (reply == QMessageBox::Yes)
+    {
+        // Delete player from database
+        if (database->deletePlayer(playerId))
+        {
+            updatePlayerList();
+            updateMatchTabs();
+            mainStatusBar->showMessage("Player deleted successfully");
+        }
+        else
+        {
+            QMessageBox::critical(this, "Error", "Failed to delete player.");
+        }
+    }
 }
 
 void MainWindow::setupMatchPanel()
 {
     roundTabs = new QTabWidget(this);
     roundTabs->setTabsClosable(false);
-    mainStatusBar = new QStatusBar(this);
 }
 
 void MainWindow::onAddPlayerClicked()
@@ -162,7 +511,6 @@ void MainWindow::showAddPlayerDialog()
         }
 
         updatePlayerList();
-        generateRoundRobinPairings();
         updateMatchTabs();
         mainStatusBar->showMessage("Player added successfully");
     }
@@ -170,13 +518,23 @@ void MainWindow::showAddPlayerDialog()
 
 void MainWindow::onResetTournamentClicked()
 {
-    QMessageBox::StandardButton reply;
-    reply = QMessageBox::question(this, "Confirm Reset",
-                                  "This will clear all match results. Players will not be deleted. Continue?",
-                                  QMessageBox::Yes | QMessageBox::No);
+    // Create a dialog with options
+    QMessageBox msgBox;
+    msgBox.setWindowTitle("Reset Tournament");
+    msgBox.setText("This will clear all match results. What would you like to do?");
+    msgBox.setIcon(QMessageBox::Question);
 
-    if (reply == QMessageBox::Yes)
+    QPushButton *resetOnlyButton = msgBox.addButton("Reset Tournament Only", QMessageBox::ActionRole);
+    QPushButton *resetAndRemoveButton = msgBox.addButton("Reset and Remove All Players", QMessageBox::ActionRole);
+    QPushButton *cancelButton = msgBox.addButton(QMessageBox::Cancel);
+
+    msgBox.exec();
+
+    QPushButton *clickedButton = qobject_cast<QPushButton *>(msgBox.clickedButton());
+
+    if (clickedButton == resetOnlyButton)
     {
+        // Reset tournament only
         if (database->resetDatabase())
         {
             updatePlayerList();
@@ -188,6 +546,37 @@ void MainWindow::onResetTournamentClicked()
             QMessageBox::critical(this, "Error", "Failed to reset tournament.");
         }
     }
+    else if (clickedButton == resetAndRemoveButton)
+    {
+        // Reset tournament and remove all players
+        QMessageBox::StandardButton confirmReply;
+        confirmReply = QMessageBox::question(this, "Confirm Reset and Remove",
+                                             "This will clear all match results AND remove all players. Continue?",
+                                             QMessageBox::Yes | QMessageBox::No);
+
+        if (confirmReply == QMessageBox::Yes)
+        {
+            // Reset database
+            if (database->resetDatabase())
+            {
+                // Delete all players
+                QList<Player> players = database->getAllPlayers();
+                for (const Player &player : players)
+                {
+                    database->deletePlayer(player.getId());
+                }
+
+                updatePlayerList();
+                updateMatchTabs();
+                mainStatusBar->showMessage("Tournament and players reset successfully");
+            }
+            else
+            {
+                QMessageBox::critical(this, "Error", "Failed to reset tournament.");
+            }
+        }
+    }
+    // If cancel button is clicked, do nothing
 }
 
 void MainWindow::onExportResultsClicked()
@@ -282,8 +671,18 @@ void MainWindow::onMatchResultClicked()
         {
             if (database->lockMatch(matchId))
             {
+                // Store the current tab index before updating tabs
+                int currentTabIndex = roundTabs->currentIndex();
+
                 updateMatchTabs();
                 updateLeaderboard();
+
+                // Restore the tab index after updating tabs
+                if (currentTabIndex >= 0 && currentTabIndex < roundTabs->count())
+                {
+                    roundTabs->setCurrentIndex(currentTabIndex);
+                }
+
                 mainStatusBar->showMessage("Result submitted successfully");
             }
         }
@@ -342,6 +741,11 @@ void MainWindow::updatePlayerList()
         int wins;
         int losses;
         int draws;
+        // Tiebreaker scores
+        double buchholzCutOne;
+        double sonnebornBerger;
+        int numberOfWins;
+        double cumulativeOpponentScore;
     };
 
     QList<PlayerStats> playerStats;
@@ -354,6 +758,11 @@ void MainWindow::updatePlayerList()
         stats.wins = 0;
         stats.losses = 0;
         stats.draws = 0;
+        // Initialize tiebreaker scores
+        stats.buchholzCutOne = 0.0;
+        stats.sonnebornBerger = 0.0;
+        stats.numberOfWins = 0;
+        stats.cumulativeOpponentScore = 0.0;
 
         for (const Match &match : matches)
         {
@@ -396,6 +805,13 @@ void MainWindow::updatePlayerList()
             }
         }
 
+        // Calculate tiebreaker scores if there are ties
+        // For now, we'll just set them to the player's points
+        stats.buchholzCutOne = stats.points;
+        stats.sonnebornBerger = stats.points;
+        stats.numberOfWins = stats.wins;
+        stats.cumulativeOpponentScore = stats.points;
+
         playerStats.append(stats);
     }
 
@@ -417,6 +833,12 @@ void MainWindow::updatePlayerList()
         QTableWidgetItem *nameItem = new QTableWidgetItem(stats.name);
         QTableWidgetItem *pointsItem = new QTableWidgetItem(QString::number(stats.points, 'f', 1));
 
+        // Store player ID in the rank item's data
+        rankItem->setData(Qt::UserRole, stats.id);
+
+        // Center-align the points column
+        pointsItem->setTextAlignment(Qt::AlignCenter);
+
         playerTable->setItem(i, 0, rankItem);
         playerTable->setItem(i, 1, nameItem);
         playerTable->setItem(i, 2, pointsItem);
@@ -426,6 +848,222 @@ void MainWindow::updatePlayerList()
 void MainWindow::updateLeaderboard()
 {
     updatePlayerList();
+
+    // Check for ties and show/hide tiebreaker button
+    QList<Player> players = database->getAllPlayers();
+    QList<Match> matches = database->getAllMatches();
+
+    // Calculate points for each player
+    struct PlayerStats
+    {
+        int id;
+        QString name;
+        double points;
+    };
+
+    QList<PlayerStats> playerStats;
+    for (const Player &player : players)
+    {
+        PlayerStats stats;
+        stats.id = player.getId();
+        stats.name = player.getName();
+        stats.points = 0.0;
+
+        for (const Match &match : matches)
+        {
+            if (match.isPlayed())
+            {
+                if (match.getPlayer1Id() == player.getId())
+                {
+                    if (match.getResult() == "p1")
+                    {
+                        stats.points += 1.0;
+                    }
+                    else if (match.getResult() == "draw")
+                    {
+                        stats.points += 0.5;
+                    }
+                }
+                else if (match.getPlayer2Id() == player.getId())
+                {
+                    if (match.getResult() == "p2")
+                    {
+                        stats.points += 1.0;
+                    }
+                    else if (match.getResult() == "draw")
+                    {
+                        stats.points += 0.5;
+                    }
+                }
+            }
+        }
+
+        playerStats.append(stats);
+    }
+
+    // Check if there are ties
+    bool hasTies = false;
+    for (int i = 0; i < playerStats.size() - 1; i++)
+    {
+        for (int j = i + 1; j < playerStats.size(); j++)
+        {
+            if (playerStats[i].points == playerStats[j].points)
+            {
+                hasTies = true;
+                break;
+            }
+        }
+        if (hasTies)
+            break;
+    }
+
+    // Show/hide tiebreaker button
+    if (tiebreakerButton)
+    {
+        tiebreakerButton->setVisible(hasTies);
+    }
+}
+
+// Swiss Pairing structures and functions
+struct SwissPlayer
+{
+    int id;
+    QString name;
+    double points;
+    int wins;
+    int losses;
+    int draws;
+    QList<int> opponents; // List of opponent IDs
+};
+
+struct SwissPair
+{
+    int p1Id;
+    int p2Id;
+    QString p1Name;
+    QString p2Name;
+};
+
+// Calculate player standings for Swiss pairing
+QList<SwissPlayer> calculateStandings(const QList<Player> &players, const QList<Match> &matches)
+{
+    QList<SwissPlayer> standings;
+
+    // Initialize players with zero stats
+    for (const Player &player : players)
+    {
+        SwissPlayer swissPlayer;
+        swissPlayer.id = player.getId();
+        swissPlayer.name = player.getName();
+        swissPlayer.points = 0.0;
+        swissPlayer.wins = 0;
+        swissPlayer.losses = 0;
+        swissPlayer.draws = 0;
+
+        // Calculate stats from matches
+        for (const Match &match : matches)
+        {
+            if (match.isPlayed())
+            {
+                if (match.getPlayer1Id() == player.getId())
+                {
+                    swissPlayer.opponents.append(match.getPlayer2Id());
+                    if (match.getResult() == "p1")
+                    {
+                        swissPlayer.wins++;
+                        swissPlayer.points += 1.0;
+                    }
+                    else if (match.getResult() == "p2")
+                    {
+                        swissPlayer.losses++;
+                    }
+                    else if (match.getResult() == "draw")
+                    {
+                        swissPlayer.draws++;
+                        swissPlayer.points += 0.5;
+                    }
+                }
+                else if (match.getPlayer2Id() == player.getId())
+                {
+                    swissPlayer.opponents.append(match.getPlayer1Id());
+                    if (match.getResult() == "p2")
+                    {
+                        swissPlayer.wins++;
+                        swissPlayer.points += 1.0;
+                    }
+                    else if (match.getResult() == "p1")
+                    {
+                        swissPlayer.losses++;
+                    }
+                    else if (match.getResult() == "draw")
+                    {
+                        swissPlayer.draws++;
+                        swissPlayer.points += 0.5;
+                    }
+                }
+            }
+        }
+
+        standings.append(swissPlayer);
+    }
+
+    // Sort by points (descending), then by name (ascending)
+    std::sort(standings.begin(), standings.end(), [](const SwissPlayer &a, const SwissPlayer &b)
+              {
+        if (a.points != b.points)
+        {
+            return a.points > b.points;
+        }
+        return a.name < b.name; });
+
+    return standings;
+}
+
+// Check if two players have already played against each other
+bool havePlayed(const SwissPlayer &p1, const SwissPlayer &p2)
+{
+    return p1.opponents.contains(p2.id) || p2.opponents.contains(p1.id);
+}
+
+// Generate Swiss pairings for one round
+QList<SwissPair> generateSwissRound(QList<SwissPlayer> &players)
+{
+    QList<SwissPair> pairs;
+
+    // Pair players from top to bottom, avoiding rematches
+    for (int i = 0; i < players.size(); ++i)
+    {
+        // Skip if player is already paired
+        if (players[i].id == -1)
+            continue;
+
+        // Look for an opponent who hasn't played this player
+        for (int j = i + 1; j < players.size(); ++j)
+        {
+            // Skip if player is already paired
+            if (players[j].id == -1)
+                continue;
+
+            // Check if they've already played
+            if (!havePlayed(players[i], players[j]))
+            {
+                // Create pair
+                SwissPair pair;
+                pair.p1Id = players[i].id;
+                pair.p2Id = players[j].id;
+                pair.p1Name = players[i].name;
+                pair.p2Name = players[j].name;
+                pairs.append(pair);
+
+                // Mark players as paired
+                players[i].id = -1;
+                players[j].id = -1;
+                break;
+            }
+        }
+    }
+
+    return pairs;
 }
 
 struct Pair
@@ -480,12 +1118,12 @@ void MainWindow::generateRoundRobinPairings()
     // Generate pairings
     std::vector<std::vector<Pair>> pairings = roundRobinPairings(playerNames);
 
-    // Clear existing matches
-    QList<Match> existingMatches = database->getAllMatches();
-    for (const Match &match : existingMatches)
-    {
-        database->deleteMatch(match.getId());
-    }
+    // Clear existing matches for this tournament
+    int tournamentId = getCurrentTournamentId();
+    database->deleteMatchesForTournament(tournamentId);
+
+    // Reset match ID sequence for this tournament to ensure match IDs start at 1
+    database->resetMatchIdSequence(tournamentId);
 
     // Create matches in database
     int roundNumber = 1;
@@ -513,10 +1151,55 @@ void MainWindow::generateRoundRobinPairings()
             // Create match if both players found
             if (p1Id != -1 && p2Id != -1)
             {
-                database->addMatch(roundNumber, p1Id, p2Id);
+                int tournamentId = getCurrentTournamentId();
+                database->addMatch(tournamentId, roundNumber, p1Id, p2Id);
             }
         }
         roundNumber++;
+    }
+}
+
+void MainWindow::generateSwissPairings()
+{
+    QList<Player> players = database->getAllPlayers();
+    QList<Match> matches = database->getAllMatches();
+
+    // We need at least 3 players to generate pairings
+    if (players.size() < 3)
+    {
+        return;
+    }
+
+    // Calculate current standings
+    QList<SwissPlayer> standings = calculateStandings(players, matches);
+
+    // Determine round number (number of matches each player has played + 1)
+    int maxRounds = 0;
+    for (const SwissPlayer &player : standings)
+    {
+        int playerRounds = player.wins + player.losses + player.draws;
+        if (playerRounds > maxRounds)
+        {
+            maxRounds = playerRounds;
+        }
+    }
+    int currentRound = maxRounds + 1;
+
+    // Generate pairings for current round
+    QList<SwissPair> pairs = generateSwissRound(standings);
+
+    // Clear existing matches for this tournament
+    int tournamentId = getCurrentTournamentId();
+    database->deleteMatchesForTournament(tournamentId);
+
+    // Reset match ID sequence for this tournament to ensure match IDs start at 1
+    database->resetMatchIdSequence(tournamentId);
+
+    // Create matches in database
+    for (const SwissPair &pair : pairs)
+    {
+        int tournamentId = getCurrentTournamentId();
+        database->addMatch(tournamentId, currentRound, pair.p1Id, pair.p2Id);
     }
 }
 
@@ -530,8 +1213,9 @@ void MainWindow::updateMatchTabs()
         delete widget;
     }
 
-    // Get all matches grouped by round
-    QList<Match> matches = database->getAllMatches();
+    // Get all matches for the current tournament grouped by round
+    int tournamentId = getCurrentTournamentId();
+    QList<Match> matches = database->getAllMatches(tournamentId);
 
     // Group matches by round
     QMap<int, QList<Match>> matchesByRound;
@@ -652,6 +1336,23 @@ void MainWindow::updateMatchTabs()
     }
 }
 
+int MainWindow::getCurrentTournamentId()
+{
+    // Get all tournaments
+    QList<Tournament> tournaments = database->getAllTournaments();
+
+    // If there are no tournaments, create a new one
+    if (tournaments.isEmpty())
+    {
+        int tournamentId = database->addTournament("Default Tournament");
+        return tournamentId;
+    }
+
+    // For now, just return the ID of the first tournament
+    // In a more sophisticated implementation, you might want to track the "current" tournament
+    return tournaments.first().getId();
+}
+
 void MainWindow::closeEvent(QCloseEvent *event)
 {
     QMessageBox::StandardButton reply;
@@ -667,4 +1368,154 @@ void MainWindow::closeEvent(QCloseEvent *event)
     {
         event->ignore();
     }
+}
+
+void MainWindow::showSettingsDialog()
+{
+    // Create settings dialog
+    QDialog settingsDialog(this);
+    settingsDialog.setWindowTitle("Preferences");
+    settingsDialog.resize(500, 400);
+
+    // Create layout
+    QVBoxLayout *layout = new QVBoxLayout(&settingsDialog);
+
+    // Create pairing system group box
+    QGroupBox *pairingGroupBox = new QGroupBox("Pairing System", &settingsDialog);
+    QVBoxLayout *pairingLayout = new QVBoxLayout(pairingGroupBox);
+
+    // Create radio buttons for pairing systems
+    QRadioButton *roundRobinRadio = new QRadioButton("Round Robin", pairingGroupBox);
+    QRadioButton *swissRadio = new QRadioButton("Swiss System", pairingGroupBox);
+
+    // Set current selection based on settings
+    if (settings->getPairingSystem() == "round_robin")
+    {
+        roundRobinRadio->setChecked(true);
+    }
+    else
+    {
+        swissRadio->setChecked(true);
+    }
+
+    pairingLayout->addWidget(roundRobinRadio);
+    pairingLayout->addWidget(swissRadio);
+    pairingLayout->addStretch();
+
+    // Create tiebreaker system group box
+    QGroupBox *tiebreakerGroupBox = new QGroupBox("Tiebreaker System", &settingsDialog);
+    QVBoxLayout *tiebreakerLayout = new QVBoxLayout(tiebreakerGroupBox);
+
+    // Create radio buttons for tiebreaker systems
+    QRadioButton *singleTiebreakerRadio = new QRadioButton("Single Tiebreaker", tiebreakerGroupBox);
+    QRadioButton *seriesTiebreakerRadio = new QRadioButton("Series of Tiebreakers", tiebreakerGroupBox);
+
+    // Set current selection based on settings
+    if (settings->getUseSeriesTiebreakers())
+    {
+        seriesTiebreakerRadio->setChecked(true);
+    }
+    else
+    {
+        singleTiebreakerRadio->setChecked(true);
+    }
+
+    // Create combo box for single tiebreaker selection
+    QComboBox *tiebreakerComboBox = new QComboBox(tiebreakerGroupBox);
+    tiebreakerComboBox->addItem("Buchholz Cut One", Tiebreaker::BuchholzCutOne);
+    tiebreakerComboBox->setItemData(0, "This system adds up the scores of all your opponents and then subtracts the score of the lowest-scoring opponent. It rewards players who have faced tougher opponents.", Qt::ToolTipRole);
+
+    tiebreakerComboBox->addItem("Sonneborn–Berger Score", Tiebreaker::SonnebornBerger);
+    tiebreakerComboBox->setItemData(1, "This method gives more credit to a player for wins or draws against strong opponents.", Qt::ToolTipRole);
+
+    tiebreakerComboBox->addItem("Direct Encounter", Tiebreaker::DirectEncounter);
+    tiebreakerComboBox->setItemData(2, "If tied players have already played each other, the results of that game(s) can break the tie, with the winner being ranked higher.", Qt::ToolTipRole);
+
+    tiebreakerComboBox->addItem("Number of Wins", Tiebreaker::NumberOfWins);
+    tiebreakerComboBox->setItemData(3, "The player with the higher total number of wins, or wins with the black pieces, may be ranked higher.", Qt::ToolTipRole);
+
+    tiebreakerComboBox->addItem("Cumulative Opponent's Score", Tiebreaker::CumulativeOpponentScore);
+    tiebreakerComboBox->setItemData(4, "Sums up the total scores of all opponents a player has faced.", Qt::ToolTipRole);
+
+    // Set current selection based on settings
+    int currentTiebreaker = settings->getSingleTiebreaker();
+    for (int i = 0; i < tiebreakerComboBox->count(); ++i)
+    {
+        if (tiebreakerComboBox->itemData(i).toInt() == currentTiebreaker)
+        {
+            tiebreakerComboBox->setCurrentIndex(i);
+            break;
+        }
+    }
+
+    // Create label with tiebreaker definitions as tooltips
+    QLabel *tiebreakerInfoLabel = new QLabel("<a href='#'>Tiebreaker Definitions</a>", tiebreakerGroupBox);
+    tiebreakerInfoLabel->setOpenExternalLinks(false);
+
+    // Connect label click to show definitions
+    connect(tiebreakerInfoLabel, &QLabel::linkActivated, [this]()
+            { QMessageBox::information(this, "Tiebreaker Definitions",
+                                       "<b>Buchholz Cut One:</b> This system adds up the scores of all your opponents and then subtracts the score of the lowest-scoring opponent. It rewards players who have faced tougher opponents.\n\n"
+                                       "<b>Sonneborn–Berger Score:</b> This method gives more credit to a player for wins or draws against strong opponents.\n\n"
+                                       "<b>Direct Encounter:</b> If tied players have already played each other, the results of that game(s) can break the tie, with the winner being ranked higher.\n\n"
+                                       "<b>Number of Wins:</b> The player with the higher total number of wins, or wins with the black pieces, may be ranked higher.\n\n"
+                                       "<b>Cumulative Opponent's Score:</b> Sums up the total scores of all opponents a player has faced."); });
+
+    tiebreakerLayout->addWidget(singleTiebreakerRadio);
+    tiebreakerLayout->addWidget(tiebreakerComboBox);
+    tiebreakerLayout->addWidget(seriesTiebreakerRadio);
+    tiebreakerLayout->addWidget(tiebreakerInfoLabel);
+    tiebreakerLayout->addStretch();
+
+    // Create auto-start tournament checkbox
+    QCheckBox *autoStartCheckbox = new QCheckBox("Auto-start tournament when enough players are added", &settingsDialog);
+    autoStartCheckbox->setChecked(settings->getAutoStartTournament());
+
+    // Add widgets to main layout
+    layout->addWidget(pairingGroupBox);
+    layout->addWidget(tiebreakerGroupBox);
+    layout->addWidget(autoStartCheckbox);
+    layout->addStretch();
+
+    // Create buttons
+    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel,
+                                                       Qt::Horizontal, &settingsDialog);
+    layout->addWidget(buttonBox);
+
+    // Connect buttons
+    connect(buttonBox, &QDialogButtonBox::accepted, &settingsDialog, &QDialog::accept);
+    connect(buttonBox, &QDialogButtonBox::rejected, &settingsDialog, &QDialog::reject);
+
+    // Show dialog and process result
+    if (settingsDialog.exec() == QDialog::Accepted)
+    {
+        // Update settings based on user selections
+        if (roundRobinRadio->isChecked())
+        {
+            settings->setPairingSystem("round_robin");
+        }
+        else
+        {
+            settings->setPairingSystem("swiss");
+        }
+
+        // Update tiebreaker settings
+        settings->setUseSeriesTiebreakers(seriesTiebreakerRadio->isChecked());
+        if (singleTiebreakerRadio->isChecked())
+        {
+            int selectedTiebreaker = tiebreakerComboBox->itemData(tiebreakerComboBox->currentIndex()).toInt();
+            settings->setSingleTiebreaker(selectedTiebreaker);
+        }
+
+        settings->setAutoStartTournament(autoStartCheckbox->isChecked());
+
+        // Save settings
+        settings->save();
+
+        mainStatusBar->showMessage("Settings saved successfully");
+    }
+}
+void MainWindow::onTiebreakerClicked()
+{
+    calculateAndDisplayTiebreakers();
 }

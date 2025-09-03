@@ -183,6 +183,36 @@ CMakeFiles/OpenTournament.dir/src/Tournament.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/OpenTournament.dir/src/Tournament.cpp.s"
 	H:\Qt\Tools\mingw1310_64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S I:\VS_Code_Programs\Portfolio\Desktop-Applications\OpenTournament\src\Tournament.cpp -o CMakeFiles\OpenTournament.dir\src\Tournament.cpp.s
 
+CMakeFiles/OpenTournament.dir/src/Tiebreaker.cpp.obj: CMakeFiles/OpenTournament.dir/flags.make
+CMakeFiles/OpenTournament.dir/src/Tiebreaker.cpp.obj: CMakeFiles/OpenTournament.dir/includes_CXX.rsp
+CMakeFiles/OpenTournament.dir/src/Tiebreaker.cpp.obj: I:/VS_Code_Programs/Portfolio/Desktop-Applications/OpenTournament/src/Tiebreaker.cpp
+CMakeFiles/OpenTournament.dir/src/Tiebreaker.cpp.obj: CMakeFiles/OpenTournament.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=I:\VS_Code_Programs\Portfolio\Desktop-Applications\OpenTournament\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/OpenTournament.dir/src/Tiebreaker.cpp.obj"
+	H:\Qt\Tools\mingw1310_64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/OpenTournament.dir/src/Tiebreaker.cpp.obj -MF CMakeFiles\OpenTournament.dir\src\Tiebreaker.cpp.obj.d -o CMakeFiles\OpenTournament.dir\src\Tiebreaker.cpp.obj -c I:\VS_Code_Programs\Portfolio\Desktop-Applications\OpenTournament\src\Tiebreaker.cpp
+
+CMakeFiles/OpenTournament.dir/src/Tiebreaker.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/OpenTournament.dir/src/Tiebreaker.cpp.i"
+	H:\Qt\Tools\mingw1310_64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E I:\VS_Code_Programs\Portfolio\Desktop-Applications\OpenTournament\src\Tiebreaker.cpp > CMakeFiles\OpenTournament.dir\src\Tiebreaker.cpp.i
+
+CMakeFiles/OpenTournament.dir/src/Tiebreaker.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/OpenTournament.dir/src/Tiebreaker.cpp.s"
+	H:\Qt\Tools\mingw1310_64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S I:\VS_Code_Programs\Portfolio\Desktop-Applications\OpenTournament\src\Tiebreaker.cpp -o CMakeFiles\OpenTournament.dir\src\Tiebreaker.cpp.s
+
+CMakeFiles/OpenTournament.dir/src/Settings.cpp.obj: CMakeFiles/OpenTournament.dir/flags.make
+CMakeFiles/OpenTournament.dir/src/Settings.cpp.obj: CMakeFiles/OpenTournament.dir/includes_CXX.rsp
+CMakeFiles/OpenTournament.dir/src/Settings.cpp.obj: I:/VS_Code_Programs/Portfolio/Desktop-Applications/OpenTournament/src/Settings.cpp
+CMakeFiles/OpenTournament.dir/src/Settings.cpp.obj: CMakeFiles/OpenTournament.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=I:\VS_Code_Programs\Portfolio\Desktop-Applications\OpenTournament\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/OpenTournament.dir/src/Settings.cpp.obj"
+	H:\Qt\Tools\mingw1310_64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/OpenTournament.dir/src/Settings.cpp.obj -MF CMakeFiles\OpenTournament.dir\src\Settings.cpp.obj.d -o CMakeFiles\OpenTournament.dir\src\Settings.cpp.obj -c I:\VS_Code_Programs\Portfolio\Desktop-Applications\OpenTournament\src\Settings.cpp
+
+CMakeFiles/OpenTournament.dir/src/Settings.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/OpenTournament.dir/src/Settings.cpp.i"
+	H:\Qt\Tools\mingw1310_64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E I:\VS_Code_Programs\Portfolio\Desktop-Applications\OpenTournament\src\Settings.cpp > CMakeFiles\OpenTournament.dir\src\Settings.cpp.i
+
+CMakeFiles/OpenTournament.dir/src/Settings.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/OpenTournament.dir/src/Settings.cpp.s"
+	H:\Qt\Tools\mingw1310_64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S I:\VS_Code_Programs\Portfolio\Desktop-Applications\OpenTournament\src\Settings.cpp -o CMakeFiles\OpenTournament.dir\src\Settings.cpp.s
+
 # Object files for target OpenTournament
 OpenTournament_OBJECTS = \
 "CMakeFiles/OpenTournament.dir/OpenTournament_autogen/mocs_compilation.cpp.obj" \
@@ -191,7 +221,9 @@ OpenTournament_OBJECTS = \
 "CMakeFiles/OpenTournament.dir/src/Database.cpp.obj" \
 "CMakeFiles/OpenTournament.dir/src/Player.cpp.obj" \
 "CMakeFiles/OpenTournament.dir/src/Match.cpp.obj" \
-"CMakeFiles/OpenTournament.dir/src/Tournament.cpp.obj"
+"CMakeFiles/OpenTournament.dir/src/Tournament.cpp.obj" \
+"CMakeFiles/OpenTournament.dir/src/Tiebreaker.cpp.obj" \
+"CMakeFiles/OpenTournament.dir/src/Settings.cpp.obj"
 
 # External object files for target OpenTournament
 OpenTournament_EXTERNAL_OBJECTS =
@@ -203,6 +235,8 @@ OpenTournament.exe: CMakeFiles/OpenTournament.dir/src/Database.cpp.obj
 OpenTournament.exe: CMakeFiles/OpenTournament.dir/src/Player.cpp.obj
 OpenTournament.exe: CMakeFiles/OpenTournament.dir/src/Match.cpp.obj
 OpenTournament.exe: CMakeFiles/OpenTournament.dir/src/Tournament.cpp.obj
+OpenTournament.exe: CMakeFiles/OpenTournament.dir/src/Tiebreaker.cpp.obj
+OpenTournament.exe: CMakeFiles/OpenTournament.dir/src/Settings.cpp.obj
 OpenTournament.exe: CMakeFiles/OpenTournament.dir/build.make
 OpenTournament.exe: H:/Qt/6.9.2/mingw_64/lib/libQt6Widgets.a
 OpenTournament.exe: H:/Qt/6.9.2/mingw_64/lib/libQt6Sql.a
@@ -211,7 +245,7 @@ OpenTournament.exe: H:/Qt/6.9.2/mingw_64/lib/libQt6Core.a
 OpenTournament.exe: CMakeFiles/OpenTournament.dir/linkLibs.rsp
 OpenTournament.exe: CMakeFiles/OpenTournament.dir/objects1.rsp
 OpenTournament.exe: CMakeFiles/OpenTournament.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=I:\VS_Code_Programs\Portfolio\Desktop-Applications\OpenTournament\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Linking CXX executable OpenTournament.exe"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=I:\VS_Code_Programs\Portfolio\Desktop-Applications\OpenTournament\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Linking CXX executable OpenTournament.exe"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles\OpenTournament.dir\link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

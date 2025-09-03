@@ -14,6 +14,8 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "I:/VS_Code_Programs/Portfolio/Desktop-Applications/OpenTournament/src/MainWindow.cpp" "CMakeFiles/OpenTournament.dir/src/MainWindow.cpp.obj" "gcc" "CMakeFiles/OpenTournament.dir/src/MainWindow.cpp.obj.d"
   "I:/VS_Code_Programs/Portfolio/Desktop-Applications/OpenTournament/src/Match.cpp" "CMakeFiles/OpenTournament.dir/src/Match.cpp.obj" "gcc" "CMakeFiles/OpenTournament.dir/src/Match.cpp.obj.d"
   "I:/VS_Code_Programs/Portfolio/Desktop-Applications/OpenTournament/src/Player.cpp" "CMakeFiles/OpenTournament.dir/src/Player.cpp.obj" "gcc" "CMakeFiles/OpenTournament.dir/src/Player.cpp.obj.d"
+  "I:/VS_Code_Programs/Portfolio/Desktop-Applications/OpenTournament/src/Settings.cpp" "CMakeFiles/OpenTournament.dir/src/Settings.cpp.obj" "gcc" "CMakeFiles/OpenTournament.dir/src/Settings.cpp.obj.d"
+  "I:/VS_Code_Programs/Portfolio/Desktop-Applications/OpenTournament/src/Tiebreaker.cpp" "CMakeFiles/OpenTournament.dir/src/Tiebreaker.cpp.obj" "gcc" "CMakeFiles/OpenTournament.dir/src/Tiebreaker.cpp.obj.d"
   "I:/VS_Code_Programs/Portfolio/Desktop-Applications/OpenTournament/src/Tournament.cpp" "CMakeFiles/OpenTournament.dir/src/Tournament.cpp.obj" "gcc" "CMakeFiles/OpenTournament.dir/src/Tournament.cpp.obj.d"
   "I:/VS_Code_Programs/Portfolio/Desktop-Applications/OpenTournament/src/main.cpp" "CMakeFiles/OpenTournament.dir/src/main.cpp.obj" "gcc" "CMakeFiles/OpenTournament.dir/src/main.cpp.obj.d"
   )

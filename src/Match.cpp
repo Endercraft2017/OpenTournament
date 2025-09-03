@@ -1,14 +1,19 @@
 #include "Match.h"
 
-Match::Match() : id(0), round(0), p1(0), p2(0), result(""), locked(false) {}
+Match::Match() : id(0), tournamentId(0), round(0), p1(0), p2(0), result(""), locked(false) {}
 
-Match::Match(int id, int round, int p1, int p2, const QString &result, bool locked)
-    : id(id), round(round), p1(p1), p2(p2), result(result), locked(locked) {}
+Match::Match(int id, int tournamentId, int round, int p1, int p2, const QString &result, bool locked)
+    : id(id), tournamentId(tournamentId), round(round), p1(p1), p2(p2), result(result), locked(locked) {}
 
 // Getters
 int Match::getId() const
 {
     return id;
+}
+
+int Match::getTournamentId() const
+{
+    return tournamentId;
 }
 
 int Match::getRound() const
@@ -40,6 +45,11 @@ bool Match::isLocked() const
 void Match::setId(int id)
 {
     this->id = id;
+}
+
+void Match::setTournamentId(int tournamentId)
+{
+    this->tournamentId = tournamentId;
 }
 
 void Match::setRound(int round)

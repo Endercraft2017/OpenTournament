@@ -2,7 +2,9 @@ I:/VS_Code_Programs/Portfolio/Desktop-Applications/OpenTournament/build/OpenTour
   I:/VS_Code_Programs/Portfolio/Desktop-Applications/OpenTournament/build/OpenTournament_autogen/moc_predefs.h \
   H:/Qt/6.9.2/mingw_64/include/QtCore/QDateTime \
   H:/Qt/6.9.2/mingw_64/include/QtCore/QList \
+  H:/Qt/6.9.2/mingw_64/include/QtCore/QMap \
   H:/Qt/6.9.2/mingw_64/include/QtCore/QObject \
+  H:/Qt/6.9.2/mingw_64/include/QtCore/QPoint \
   H:/Qt/6.9.2/mingw_64/include/QtCore/QRect \
   H:/Qt/6.9.2/mingw_64/include/QtCore/QSize \
   H:/Qt/6.9.2/mingw_64/include/QtCore/QSizeF \
@@ -173,6 +175,7 @@ I:/VS_Code_Programs/Portfolio/Desktop-Applications/OpenTournament/build/OpenTour
   H:/Qt/6.9.2/mingw_64/include/QtGui/qkeysequence.h \
   H:/Qt/6.9.2/mingw_64/include/QtGui/qpaintdevice.h \
   H:/Qt/6.9.2/mingw_64/include/QtGui/qpalette.h \
+  H:/Qt/6.9.2/mingw_64/include/QtGui/qpen.h \
   H:/Qt/6.9.2/mingw_64/include/QtGui/qpixelformat.h \
   H:/Qt/6.9.2/mingw_64/include/QtGui/qpixmap.h \
   H:/Qt/6.9.2/mingw_64/include/QtGui/qpointingdevice.h \
@@ -182,6 +185,10 @@ I:/VS_Code_Programs/Portfolio/Desktop-Applications/OpenTournament/build/OpenTour
   H:/Qt/6.9.2/mingw_64/include/QtGui/qrgba64.h \
   H:/Qt/6.9.2/mingw_64/include/QtGui/qscreen.h \
   H:/Qt/6.9.2/mingw_64/include/QtGui/qscreen_platform.h \
+  H:/Qt/6.9.2/mingw_64/include/QtGui/qtextcursor.h \
+  H:/Qt/6.9.2/mingw_64/include/QtGui/qtextdocument.h \
+  H:/Qt/6.9.2/mingw_64/include/QtGui/qtextformat.h \
+  H:/Qt/6.9.2/mingw_64/include/QtGui/qtextoption.h \
   H:/Qt/6.9.2/mingw_64/include/QtGui/qtgui-config.h \
   H:/Qt/6.9.2/mingw_64/include/QtGui/qtguiexports.h \
   H:/Qt/6.9.2/mingw_64/include/QtGui/qtguiglobal.h \
@@ -196,7 +203,9 @@ I:/VS_Code_Programs/Portfolio/Desktop-Applications/OpenTournament/build/OpenTour
   H:/Qt/6.9.2/mingw_64/include/QtSql/qtsql-config.h \
   H:/Qt/6.9.2/mingw_64/include/QtSql/qtsqlexports.h \
   H:/Qt/6.9.2/mingw_64/include/QtSql/qtsqlglobal.h \
+  H:/Qt/6.9.2/mingw_64/include/QtWidgets/QInputDialog \
   H:/Qt/6.9.2/mingw_64/include/QtWidgets/QMainWindow \
+  H:/Qt/6.9.2/mingw_64/include/QtWidgets/QMenu \
   H:/Qt/6.9.2/mingw_64/include/QtWidgets/QMenuBar \
   H:/Qt/6.9.2/mingw_64/include/QtWidgets/QPushButton \
   H:/Qt/6.9.2/mingw_64/include/QtWidgets/QStatusBar \
@@ -209,7 +218,10 @@ I:/VS_Code_Programs/Portfolio/Desktop-Applications/OpenTournament/build/OpenTour
   H:/Qt/6.9.2/mingw_64/include/QtWidgets/qabstractscrollarea.h \
   H:/Qt/6.9.2/mingw_64/include/QtWidgets/qabstractslider.h \
   H:/Qt/6.9.2/mingw_64/include/QtWidgets/qabstractspinbox.h \
+  H:/Qt/6.9.2/mingw_64/include/QtWidgets/qdialog.h \
   H:/Qt/6.9.2/mingw_64/include/QtWidgets/qframe.h \
+  H:/Qt/6.9.2/mingw_64/include/QtWidgets/qinputdialog.h \
+  H:/Qt/6.9.2/mingw_64/include/QtWidgets/qlineedit.h \
   H:/Qt/6.9.2/mingw_64/include/QtWidgets/qmainwindow.h \
   H:/Qt/6.9.2/mingw_64/include/QtWidgets/qmenu.h \
   H:/Qt/6.9.2/mingw_64/include/QtWidgets/qmenubar.h \
@@ -445,4 +457,6 @@ I:/VS_Code_Programs/Portfolio/Desktop-Applications/OpenTournament/build/OpenTour
   I:/VS_Code_Programs/Portfolio/Desktop-Applications/OpenTournament/src/Database.h \
   I:/VS_Code_Programs/Portfolio/Desktop-Applications/OpenTournament/src/Match.h \
   I:/VS_Code_Programs/Portfolio/Desktop-Applications/OpenTournament/src/Player.h \
+  I:/VS_Code_Programs/Portfolio/Desktop-Applications/OpenTournament/src/Settings.h \
+  I:/VS_Code_Programs/Portfolio/Desktop-Applications/OpenTournament/src/Tiebreaker.h \
   I:/VS_Code_Programs/Portfolio/Desktop-Applications/OpenTournament/src/Tournament.h

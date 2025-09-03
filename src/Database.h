@@ -28,13 +28,18 @@ public:
     bool deletePlayer(int id);
 
     // Match operations
-    int addMatch(int round, int p1, int p2);
-    QList<Match> getMatchesForRound(int round);
-    QList<Match> getAllMatches();
+    int addMatch(int tournamentId, int round, int p1, int p2);
+    QList<Match> getMatchesForRound(int tournamentId, int round);
+    QList<Match> getAllMatches(int tournamentId = -1); // -1 for all matches
     bool updateMatchResult(int matchId, const QString &result);
     bool lockMatch(int matchId);
     bool unlockMatch(int matchId);
     bool deleteMatch(int id);
+
+    // Tournament match operations
+    QList<Match> getMatchesForTournament(int tournamentId);
+    bool deleteMatchesForTournament(int tournamentId);
+    bool resetMatchIdSequence(int tournamentId);
 
     // Tournament operations
     int addTournament(const QString &name);
@@ -42,6 +47,8 @@ public:
     Tournament getTournamentById(int id);
     bool updateTournament(const Tournament &tournament);
     bool deleteTournament(int id);
+    bool startTournament(int id);
+    bool completeTournament(int id);
 
     // Utility methods
     bool initializeSchema();

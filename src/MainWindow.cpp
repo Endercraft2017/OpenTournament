@@ -249,6 +249,10 @@ void MainWindow::setupToolbar()
     tournamentSelector->setMinimumWidth(200);
     populateTournamentSelector();
 
+    // Enable context menu for tournament selector
+    tournamentSelector->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(tournamentSelector, &QComboBox::customContextMenuRequested, this, &MainWindow::onTournamentContextMenuRequested);
+
     // Add tournament button
     addTournamentButton = new QPushButton("Add Tournament", this);
 
@@ -932,10 +936,12 @@ void MainWindow::onResetTournamentClicked()
 
     QPushButton *clickedButton = qobject_cast<QPushButton *>(msgBox.clickedButton());
 
+    int tournamentId = getCurrentTournamentId();
+
     if (clickedButton == resetOnlyButton)
     {
         // Reset tournament only
-        if (database->resetDatabase())
+        if (database->resetDatabase(tournamentId))
         {
             updatePlayerList();
             updateMatchTabs();
@@ -957,7 +963,7 @@ void MainWindow::onResetTournamentClicked()
         if (confirmReply == QMessageBox::Yes)
         {
             // Reset database
-            if (database->resetDatabase())
+            if (database->resetDatabase(tournamentId))
             {
                 // Delete all players
                 QList<Player> players = database->getAllPlayers();
@@ -1587,7 +1593,7 @@ void MainWindow::generateSwissPairings(const QList<Player> &players)
         }
     }
     int currentRound = maxRounds + 1;
-    
+
     // Ensure we don't exceed the maximum number of rounds
     if (currentRound > settings->getSwissRounds())
     {
@@ -1741,6 +1747,58 @@ void MainWindow::updateMatchTabs()
 
         // Add tab
         roundTabs->addTab(table, QString("Round %1").arg(round));
+    }
+    
+    // Add "+" button for Swiss tournaments if conditions are met
+    Tournament tournament = database->getTournamentById(tournamentId);
+    if (tournament.getPairingSystem() == "swiss" && tournament.getStatus() == Tournament::Active)
+    {
+        // Check if we can add another round:
+        // 1. Current round count is within the limit set in swissRounds
+        // 2. All matches in the last completed round have results (or it's the first round)
+        bool canAddRound = true;
+        int maxRound = 0;
+        
+        // Find the maximum round number
+        if (!rounds.isEmpty())
+        {
+            maxRound = rounds.last();
+        }
+        
+        // Check if we've reached the Swiss rounds limit
+        if (maxRound >= settings->getSwissRounds())
+        {
+            canAddRound = false;
+        }
+        else if (maxRound > 0)
+        {
+            // Check if all matches in the last completed round have results
+            QList<Match> lastRoundMatches = matchesByRound[maxRound];
+            for (const Match &match : lastRoundMatches)
+            {
+                if (!match.isPlayed())
+                {
+                    canAddRound = false;
+                    break;
+                }
+            }
+        }
+        
+        // Add "+" button if conditions are met
+        if (canAddRound)
+        {
+            QWidget *plusWidget = new QWidget();
+            QVBoxLayout *layout = new QVBoxLayout(plusWidget);
+            layout->setAlignment(Qt::AlignCenter);
+            
+            QPushButton *plusButton = new QPushButton("+");
+            plusButton->setFixedSize(50, 50);
+            plusButton->setStyleSheet("font-size: 20px; font-weight: bold;");
+            connect(plusButton, &QPushButton::clicked, this, &MainWindow::onAddSwissRoundClicked);
+            
+            layout->addWidget(plusButton);
+            roundTabs->addTab(plusWidget, "+");
+        }
     }
 }
 
@@ -2264,4 +2322,22 @@ void MainWindow::populateTournamentSelector()
     {
         tournamentSelector->setCurrentIndex(0);
     }
+}
+
+void MainWindow::onAddSwissRoundClicked()
+{
+    // Get current tournament ID
+    int tournamentId = getCurrentTournamentId();
+    
+    // Get players for this tournament
+    QList<Player> players = database->getPlayersForTournament(tournamentId);
+    
+    // Generate next Swiss round
+    generateSwissPairings(players);
+    
+    // Update UI
+    updateMatchTabs();
+    updateLeaderboard();
+    
+    mainStatusBar->showMessage("Added new Swiss round");
 }

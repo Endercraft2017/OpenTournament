@@ -839,21 +839,38 @@ bool Database::deleteTournament(int id)
 }
 
 // Utility methods
-bool Database::resetDatabase()
+bool Database::removeTournament(int tournamentId)
 {
     QSqlQuery query(db);
 
-    // Delete all matches
-    if (!query.exec("DELETE FROM matches"))
+    // Delete the tournament itself
+    query.prepare("DELETE FROM tournaments WHERE id = :tournamentId");
+    query.bindValue(":tournamentId", tournamentId);
+    if (!query.exec())
     {
-        qDebug() << "Failed to delete matches:" << query.lastError().text();
+        qDebug() << "Failed to delete tournament:" << query.lastError().text();
         return false;
     }
 
-    // Delete all tournaments
-    if (!query.exec("DELETE FROM tournaments"))
+    if (!query.exec("DELETE FROM sqlite_sequence WHERE name = 'tournaments'"))
     {
-        qDebug() << "Failed to delete tournaments:" << query.lastError().text();
+        qDebug() << "Failed to reset tournaments sequence:" << query.lastError().text();
+        return false;
+    }
+
+    return true;
+}
+
+bool Database::resetDatabase(int tournamentId)
+{
+    QSqlQuery query(db);
+
+    // Delete all matches for this tournament
+    query.prepare("DELETE FROM matches WHERE tournament_id = :tournamentId");
+    query.bindValue(":tournamentId", tournamentId);
+    if (!query.exec())
+    {
+        qDebug() << "Failed to delete matches:" << query.lastError().text();
         return false;
     }
 
@@ -861,12 +878,6 @@ bool Database::resetDatabase()
     if (!query.exec("DELETE FROM sqlite_sequence WHERE name = 'matches'"))
     {
         qDebug() << "Failed to reset matches sequence:" << query.lastError().text();
-        return false;
-    }
-
-    if (!query.exec("DELETE FROM sqlite_sequence WHERE name = 'tournaments'"))
-    {
-        qDebug() << "Failed to reset tournaments sequence:" << query.lastError().text();
         return false;
     }
 

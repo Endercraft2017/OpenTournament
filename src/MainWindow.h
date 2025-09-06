@@ -52,6 +52,7 @@ private slots:
     void onTournamentContextMenuRequested(const QPoint &pos); // New slot for tournament context menu
     void onEditTournamentClicked(); // New slot for editing tournament
     void onDeleteTournamentClicked(); // New slot for deleting tournament
+    void onAddSwissRoundClicked(); // New slot for adding Swiss round
 
     // Theme and icon slots
     void onFusionDarkSelected();

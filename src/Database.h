@@ -80,7 +80,8 @@ public:
 
     // Utility methods
     bool initializeSchema();
-    bool resetDatabase();
+    bool resetDatabase(int tournamentId);
+    bool removeTournament(int tournamentId);
 
 private:
     QSqlDatabase db;

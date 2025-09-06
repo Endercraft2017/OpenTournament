@@ -25,6 +25,7 @@
 #include <vector>
 #include <string>
 #include <numeric>
+#include <iostream>
 
 // Forward declarations for theme functions
 void setFusionDark(QApplication &app);
@@ -281,17 +282,22 @@ void MainWindow::setupToolbar()
 
 void MainWindow::onStartTournamentClicked()
 {
-    // Check if there are enough players
-    QList<Player> players = database->getAllPlayers();
+    // Get current tournament ID
+    int tournamentId = getCurrentTournamentId();
+
+    // Check if there are enough players in the current tournament
+    QList<Player> players = database->getPlayersForTournament(tournamentId);
     if (players.size() < 3)
     {
         QMessageBox::warning(this, "Insufficient Players",
                              "At least 3 players are required to start a tournament.");
-        return;
     }
-
-    // Get current tournament ID
-    int tournamentId = getCurrentTournamentId();
+    // Debug output
+    qDebug() << "Starting tournament with" << players.size() << "players for tournament ID:" << tournamentId;
+    for (const Player &player : players)
+    {
+        qDebug() << "  Player:" << player.getName();
+    }
 
     // Update tournament status to "active"
     Tournament tournament = database->getTournamentById(tournamentId);
@@ -303,11 +309,11 @@ void MainWindow::onStartTournamentClicked()
         // Generate initial pairings based on selected pairing system
         if (settings->getPairingSystem() == "swiss")
         {
-            generateSwissPairings();
+            generateSwissPairings(players);
         }
         else
         {
-            generateRoundRobinPairings();
+            generateRoundRobinPairings(players);
         }
 
         // Update UI
@@ -883,20 +889,21 @@ void MainWindow::showAddPlayerDialog()
 
     if (ok && !name.isEmpty())
     {
-        // Check if player already exists
-        QList<Player> players = database->getAllPlayers();
+        // Check if player already exists in the current tournament
+        int tournamentId = getCurrentTournamentId();
+        QList<Player> players = database->getPlayersForTournament(tournamentId);
         for (const Player &player : players)
         {
             if (player.getName() == name)
             {
                 QMessageBox::warning(this, "Duplicate Player",
-                                     "A player with this name already exists.");
+                                     "A player with this name already exists in this tournament.");
                 return;
             }
         }
 
-        // Add player to database
-        int playerId = database->addPlayer(name);
+        // Add player to database and associate with current tournament
+        int playerId = database->addPlayerToTournament(name, tournamentId);
         if (playerId == -1)
         {
             QMessageBox::critical(this, "Error", "Failed to add player to database.");
@@ -1123,8 +1130,8 @@ void MainWindow::onPlayerSelectionChanged()
 
 void MainWindow::updatePlayerList()
 {
-    QList<Player> players = database->getAllPlayers();
     int tournamentId = getCurrentTournamentId();
+    QList<Player> players = database->getPlayersForTournament(tournamentId);
     QList<Match> matches = database->getAllMatches(tournamentId);
 
     // Calculate points for each player
@@ -1494,9 +1501,10 @@ std::vector<std::vector<Pair>> roundRobinPairings(std::vector<std::string> playe
     return rounds;
 }
 
-void MainWindow::generateRoundRobinPairings()
+void MainWindow::generateRoundRobinPairings(const QList<Player> &players)
 {
-    QList<Player> players = database->getAllPlayers();
+    int tournamentId = getCurrentTournamentId();
+    QList<Match> matches = database->getAllMatches(tournamentId);
 
     // We need at least 3 players to generate pairings
     if (players.size() < 3)
@@ -1515,7 +1523,6 @@ void MainWindow::generateRoundRobinPairings()
     std::vector<std::vector<Pair>> pairings = roundRobinPairings(playerNames);
 
     // Clear existing matches for this tournament
-    int tournamentId = getCurrentTournamentId();
     database->deleteMatchesForTournament(tournamentId);
 
     // Reset match ID sequence for this tournament to ensure match IDs start at 1
@@ -1555,9 +1562,8 @@ void MainWindow::generateRoundRobinPairings()
     }
 }
 
-void MainWindow::generateSwissPairings()
+void MainWindow::generateSwissPairings(const QList<Player> &players)
 {
-    QList<Player> players = database->getAllPlayers();
     int tournamentId = getCurrentTournamentId();
     QList<Match> matches = database->getAllMatches(tournamentId);
 
@@ -1581,8 +1587,8 @@ void MainWindow::generateSwissPairings()
         }
     }
     int currentRound = maxRounds + 1;
-
-    // Check if we've reached the maximum number of rounds
+    
+    // Ensure we don't exceed the maximum number of rounds
     if (currentRound > settings->getSwissRounds())
     {
         mainStatusBar->showMessage(QString("Maximum number of Swiss rounds (%1) reached").arg(settings->getSwissRounds()));
@@ -2092,6 +2098,151 @@ void MainWindow::onTournamentSelectionChanged(int index)
     }
 
     mainStatusBar->showMessage(QString("Selected tournament: %1").arg(tournament.getName()));
+}
+
+void MainWindow::onTournamentContextMenuRequested(const QPoint &pos)
+{
+    // Get the item at the position
+    int index = tournamentSelector->currentIndex();
+    if (index < 0)
+        return;
+
+    // Get the tournament ID
+    int tournamentId = tournamentSelector->itemData(index).toInt();
+
+    // Don't allow editing/deleting the last tournament
+    QList<Tournament> tournaments = database->getAllTournaments();
+    if (tournaments.size() <= 1)
+    {
+        QMessageBox::information(this, "Cannot Modify Tournament",
+                                 "You cannot edit or delete the last tournament. At least one tournament must exist.");
+        return;
+    }
+
+    // Create context menu
+    QMenu *contextMenu = new QMenu(this);
+
+    // Add edit action
+    QAction *editAction = contextMenu->addAction("Edit Tournament");
+    connect(editAction, &QAction::triggered, this, &MainWindow::onEditTournamentClicked);
+
+    // Add delete action
+    QAction *deleteAction = contextMenu->addAction("Delete Tournament");
+    connect(deleteAction, &QAction::triggered, this, &MainWindow::onDeleteTournamentClicked);
+
+    // Store the tournament ID for use in the action handlers
+    editAction->setData(tournamentId);
+    deleteAction->setData(tournamentId);
+
+    // Show context menu
+    contextMenu->exec(tournamentSelector->mapToGlobal(pos));
+
+    // Clean up
+    contextMenu->deleteLater();
+}
+
+void MainWindow::onEditTournamentClicked()
+{
+    // Get the sender action
+    QAction *action = qobject_cast<QAction *>(sender());
+    if (!action)
+        return;
+
+    // Get the tournament ID from the action data
+    int tournamentId = action->data().toInt();
+
+    // Get current tournament name
+    Tournament tournament = database->getTournamentById(tournamentId);
+    QString currentName = tournament.getName();
+
+    // Show input dialog for new name
+    bool ok;
+    QString newName = QInputDialog::getText(this, "Edit Tournament",
+                                            "Enter new tournament name:",
+                                            QLineEdit::Normal, currentName, &ok);
+
+    if (ok && !newName.isEmpty() && newName != currentName)
+    {
+        // Check if new name already exists
+        QList<Tournament> tournaments = database->getAllTournaments();
+        for (const Tournament &t : tournaments)
+        {
+            if (t.getId() != tournamentId && t.getName() == newName)
+            {
+                QMessageBox::warning(this, "Duplicate Tournament",
+                                     "A tournament with this name already exists.");
+                return;
+            }
+        }
+
+        // Update tournament in database
+        tournament.setName(newName);
+        if (database->updateTournament(tournament))
+        {
+            // Update tournament selector
+            populateTournamentSelector();
+
+            // Select the edited tournament
+            for (int i = 0; i < tournamentSelector->count(); ++i)
+            {
+                if (tournamentSelector->itemData(i).toInt() == tournamentId)
+                {
+                    tournamentSelector->setCurrentIndex(i);
+                    break;
+                }
+            }
+
+            mainStatusBar->showMessage("Tournament updated successfully");
+        }
+        else
+        {
+            QMessageBox::critical(this, "Error", "Failed to update tournament.");
+        }
+    }
+}
+
+void MainWindow::onDeleteTournamentClicked()
+{
+    // Get the sender action
+    QAction *action = qobject_cast<QAction *>(sender());
+    if (!action)
+        return;
+
+    // Get the tournament ID from the action data
+    int tournamentId = action->data().toInt();
+
+    // Get tournament name
+    Tournament tournament = database->getTournamentById(tournamentId);
+    QString tournamentName = tournament.getName();
+
+    // Confirm deletion
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, "Confirm Delete",
+                                  QString("Are you sure you want to delete tournament '%1'? This will also delete all associated players, matches, and results.").arg(tournamentName),
+                                  QMessageBox::Yes | QMessageBox::No);
+
+    if (reply == QMessageBox::Yes)
+    {
+        // Delete tournament from database
+        if (database->deleteTournament(tournamentId))
+        {
+            // Update tournament selector
+            populateTournamentSelector();
+
+            // Select the first tournament if any exist
+            if (tournamentSelector->count() > 0)
+            {
+                tournamentSelector->setCurrentIndex(0);
+                onTournamentSelectionChanged(0);
+            }
+
+            mainStatusBar->showMessage("Tournament deleted successfully");
+        }
+        else
+        {
+            QMessageBox::critical(this, "Error", "Failed to delete tournament.");
+        }
+    }
 }
 
 void MainWindow::populateTournamentSelector()

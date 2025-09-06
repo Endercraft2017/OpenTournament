@@ -561,4 +561,5 @@ CMakeFiles/OpenTournament.dir/src/MainWindow.cpp.obj: \
  H:/Qt/6.9.2/mingw_64/include/QtWidgets/QDialogButtonBox \
  H:/Qt/6.9.2/mingw_64/include/QtWidgets/qdialogbuttonbox.h \
  H:/Qt/6.9.2/mingw_64/include/QtWidgets/QSpinBox \
- H:/Qt/6.9.2/mingw_64/include/QtWidgets/qspinbox.h
+ H:/Qt/6.9.2/mingw_64/include/QtWidgets/qspinbox.h \
+ H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/iostream

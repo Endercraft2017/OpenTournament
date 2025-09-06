@@ -38,10 +38,18 @@ public:
 
     // Player operations
     int addPlayer(const QString &name, int seed = 0);
+    int addPlayerToTournament(const QString &name, int tournamentId, int seed = 0);
     QList<Player> getAllPlayers();
     Player getPlayerById(int id);
     bool updatePlayer(const Player &player);
     bool deletePlayer(int id);
+
+    // Player-tournament operations
+    bool addPlayerToTournament(int playerId, int tournamentId);
+    bool removePlayerFromTournament(int playerId, int tournamentId);
+    QList<Player> getPlayersForTournament(int tournamentId);
+    bool isPlayerInTournament(int playerId, int tournamentId);
+    int getPlayerTournamentCount(int playerId);
 
     // Match operations
     int addMatch(int tournamentId, int round, int p1, int p2);

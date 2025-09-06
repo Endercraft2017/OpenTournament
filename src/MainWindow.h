@@ -49,6 +49,9 @@ private slots:
     void onTiebreakerClicked();                   // New slot for tiebreaker button
     void onAddTournamentClicked();                // New slot for add tournament button
     void onTournamentSelectionChanged(int index); // New slot for tournament selection
+    void onTournamentContextMenuRequested(const QPoint &pos); // New slot for tournament context menu
+    void onEditTournamentClicked(); // New slot for editing tournament
+    void onDeleteTournamentClicked(); // New slot for deleting tournament
 
     // Theme and icon slots
     void onFusionDarkSelected();
@@ -108,9 +111,11 @@ private:
     void updateMatchTabs();
     void showAddPlayerDialog();
     void showConfirmationDialog(const QString &message);
-    void generateRoundRobinPairings();
-    void generateSwissPairings(); // New method for Swiss pairing
-    void updateLeaderboard();
+     void generateRoundRobinPairings(const QList<Player> &players); // Modified to accept players parameter
+     void generateSwissPairings(const QList<Player> &players); // Modified to accept players parameter
+
+
+     void updateLeaderboard();
     void exportToCSV(const QString &filename);
     void showSettingsDialog();             // New method for showing settings dialog
     void calculateAndDisplayTiebreakers(); // New method for calculating tiebreakers

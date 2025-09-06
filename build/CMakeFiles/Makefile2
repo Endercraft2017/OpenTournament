@@ -83,8 +83,8 @@ clean: CMakeFiles/OpenTournament_autogen.dir/clean
 # Target rules for target CMakeFiles/OpenTournament.dir
 
 # All Build rule for target.
-CMakeFiles/OpenTournament.dir/all: CMakeFiles/OpenTournament_autogen_timestamp_deps.dir/all
 CMakeFiles/OpenTournament.dir/all: CMakeFiles/OpenTournament_autogen.dir/all
+CMakeFiles/OpenTournament.dir/all: CMakeFiles/OpenTournament_autogen_timestamp_deps.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\OpenTournament.dir\build.make CMakeFiles/OpenTournament.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\OpenTournament.dir\build.make CMakeFiles/OpenTournament.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=I:\VS_Code_Programs\Portfolio\Desktop-Applications\OpenTournament\build\CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11 "Built target OpenTournament"

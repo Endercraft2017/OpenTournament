@@ -154,6 +154,23 @@ bool Database::initializeSchema()
         return false;
     }
 
+    // Create player_tournaments linking table
+    QString createPlayerTournamentsTable = R"(
+        CREATE TABLE IF NOT EXISTS player_tournaments (
+            player_id INTEGER NOT NULL,
+            tournament_id INTEGER NOT NULL,
+            PRIMARY KEY (player_id, tournament_id),
+            FOREIGN KEY (player_id) REFERENCES players(id) ON DELETE CASCADE,
+            FOREIGN KEY (tournament_id) REFERENCES tournaments(id) ON DELETE CASCADE
+        )
+    )";
+
+    if (!query.exec(createPlayerTournamentsTable))
+    {
+        qDebug() << "Failed to create player_tournaments table:" << query.lastError().text();
+        return false;
+    }
+
     return true;
 }
 
@@ -172,6 +189,59 @@ int Database::addPlayer(const QString &name, int seed)
     }
 
     return query.lastInsertId().toInt();
+}
+
+int Database::addPlayerToTournament(const QString &name, int tournamentId, int seed)
+{
+    // Begin transaction for atomicity
+    db.transaction();
+
+    // Add player to players table
+    QSqlQuery query(db);
+    query.prepare("INSERT OR IGNORE INTO players (name, seed) VALUES (?, ?)");
+    query.addBindValue(name);
+    query.addBindValue(seed);
+
+    if (!query.exec())
+    {
+        qDebug() << "Failed to add player:" << query.lastError().text();
+        db.rollback();
+        return -1;
+    }
+
+    // Get the player ID (either newly inserted or existing)
+    query.prepare("SELECT id FROM players WHERE name = ?");
+    query.addBindValue(name);
+
+    if (!query.exec() || !query.next())
+    {
+        qDebug() << "Failed to get player ID:" << query.lastError().text();
+        db.rollback();
+        return -1;
+    }
+
+    int playerId = query.value(0).toInt();
+
+    // Associate player with tournament
+    query.prepare("INSERT OR IGNORE INTO player_tournaments (player_id, tournament_id) VALUES (?, ?)");
+    query.addBindValue(playerId);
+    query.addBindValue(tournamentId);
+
+    if (!query.exec())
+    {
+        qDebug() << "Failed to associate player with tournament:" << query.lastError().text();
+        db.rollback();
+        return -1;
+    }
+
+    // Commit transaction
+    if (!db.commit())
+    {
+        qDebug() << "Failed to commit add player transaction:" << db.lastError().text();
+        return -1;
+    }
+
+    return playerId;
 }
 
 QList<Player> Database::getAllPlayers()
@@ -234,16 +304,138 @@ bool Database::updatePlayer(const Player &player)
 bool Database::deletePlayer(int id)
 {
     QSqlQuery query(db);
-    query.prepare("DELETE FROM players WHERE id = ?");
+
+    // Begin transaction for atomicity
+    db.transaction();
+
+    // Check how many tournaments this player is in
+    int tournamentCount = getPlayerTournamentCount(id);
+
+    // Delete player_tournaments associations (handled by CASCADE, but we'll do it explicitly)
+    query.prepare("DELETE FROM player_tournaments WHERE player_id = ?");
     query.addBindValue(id);
 
     if (!query.exec())
     {
-        qDebug() << "Failed to delete player:" << query.lastError().text();
+        qDebug() << "Failed to delete player tournament associations:" << query.lastError().text();
+        db.rollback();
+        return false;
+    }
+
+    // If player is not in any tournaments, delete the player itself
+    // Note: With CASCADE DELETE, the player would be automatically deleted when removed from all tournaments
+    // But we're not using CASCADE DELETE on players to allow players to exist without tournaments
+    if (tournamentCount == 0)
+    {
+        query.prepare("DELETE FROM players WHERE id = ?");
+        query.addBindValue(id);
+
+        if (!query.exec())
+        {
+            qDebug() << "Failed to delete player:" << query.lastError().text();
+            db.rollback();
+            return false;
+        }
+    }
+
+    // Commit transaction
+    if (!db.commit())
+    {
+        qDebug() << "Failed to commit player deletion transaction:" << db.lastError().text();
         return false;
     }
 
     return query.numRowsAffected() > 0;
+}
+
+// Player-tournament operations
+bool Database::addPlayerToTournament(int playerId, int tournamentId)
+{
+    QSqlQuery query(db);
+    query.prepare("INSERT OR IGNORE INTO player_tournaments (player_id, tournament_id) VALUES (?, ?)");
+    query.addBindValue(playerId);
+    query.addBindValue(tournamentId);
+
+    if (!query.exec())
+    {
+        qDebug() << "Failed to add player tournament:" << query.lastError().text();
+        return false;
+    }
+
+    return query.numRowsAffected() > 0;
+}
+
+bool Database::removePlayerFromTournament(int playerId, int tournamentId)
+{
+    QSqlQuery query(db);
+    query.prepare("DELETE FROM player_tournaments WHERE player_id = ? AND tournament_id = ?");
+    query.addBindValue(playerId);
+    query.addBindValue(tournamentId);
+
+    if (!query.exec())
+    {
+        qDebug() << "Failed to remove player from tournament:" << query.lastError().text();
+        return false;
+    }
+
+    return query.numRowsAffected() > 0;
+}
+
+QList<Player> Database::getPlayersForTournament(int tournamentId)
+{
+    QList<Player> players;
+    QSqlQuery query(db);
+    query.prepare("SELECT p.id, p.name, p.seed FROM players p "
+                  "JOIN player_tournaments pt ON p.id = pt.player_id "
+                  "WHERE pt.tournament_id = ? ORDER BY p.name");
+    query.addBindValue(tournamentId);
+
+    if (!query.exec())
+    {
+        qDebug() << "Failed to get players for tournament:" << query.lastError().text();
+        return players;
+    }
+
+    while (query.next())
+    {
+        int id = query.value(0).toInt();
+        QString name = query.value(1).toString();
+        int seed = query.value(2).toInt();
+        players.append(Player(id, name, seed));
+    }
+
+    return players;
+}
+
+bool Database::isPlayerInTournament(int playerId, int tournamentId)
+{
+    QSqlQuery query(db);
+    query.prepare("SELECT 1 FROM player_tournaments WHERE player_id = ? AND tournament_id = ?");
+    query.addBindValue(playerId);
+    query.addBindValue(tournamentId);
+
+    if (!query.exec())
+    {
+        qDebug() << "Failed to check if player is in tournament:" << query.lastError().text();
+        return false;
+    }
+
+    return query.next(); // Returns true if a row was found
+}
+
+int Database::getPlayerTournamentCount(int playerId)
+{
+    QSqlQuery query(db);
+    query.prepare("SELECT COUNT(*) FROM player_tournaments WHERE player_id = ?");
+    query.addBindValue(playerId);
+
+    if (!query.exec() || !query.next())
+    {
+        qDebug() << "Failed to get player tournament count:" << query.lastError().text();
+        return 0;
+    }
+
+    return query.value(0).toInt();
 }
 
 // Match operations
@@ -577,12 +769,69 @@ bool Database::completeTournament(int id)
 bool Database::deleteTournament(int id)
 {
     QSqlQuery query(db);
+
+    // Begin transaction for atomicity
+    db.transaction();
+
+    // Delete matches for this tournament
+    query.prepare("DELETE FROM matches WHERE tournament_id = ?");
+    query.addBindValue(id);
+
+    if (!query.exec())
+    {
+        qDebug() << "Failed to delete matches for tournament:" << query.lastError().text();
+        db.rollback();
+        return false;
+    }
+
+    // Delete tournament results for this tournament
+    query.prepare("DELETE FROM tournament_results WHERE tournament_id = ?");
+    query.addBindValue(id);
+
+    if (!query.exec())
+    {
+        qDebug() << "Failed to delete tournament results:" << query.lastError().text();
+        db.rollback();
+        return false;
+    }
+
+    // Delete player_tournaments associations (handled by CASCADE, but we'll do it explicitly for clarity)
+    query.prepare("DELETE FROM player_tournaments WHERE tournament_id = ?");
+    query.addBindValue(id);
+
+    if (!query.exec())
+    {
+        qDebug() << "Failed to delete player tournament associations:" << query.lastError().text();
+        db.rollback();
+        return false;
+    }
+
+    // Delete match_id_sequence entries for this tournament
+    query.prepare("DELETE FROM match_id_sequence WHERE tournament_id = ?");
+    query.addBindValue(id);
+
+    if (!query.exec())
+    {
+        qDebug() << "Failed to delete match ID sequence entries:" << query.lastError().text();
+        db.rollback();
+        return false;
+    }
+
+    // Delete the tournament itself
     query.prepare("DELETE FROM tournaments WHERE id = ?");
     query.addBindValue(id);
 
     if (!query.exec())
     {
         qDebug() << "Failed to delete tournament:" << query.lastError().text();
+        db.rollback();
+        return false;
+    }
+
+    // Commit transaction
+    if (!db.commit())
+    {
+        qDebug() << "Failed to commit tournament deletion transaction:" << db.lastError().text();
         return false;
     }
 

@@ -14,6 +14,7 @@ public:
     // Getters
     QString getPairingSystem() const;
     bool getAutoStartTournament() const;
+    int getSwissRounds() const; // Getter for Swiss pairing rounds
 
     // Theme settings
     QString getTheme() const;
@@ -27,6 +28,7 @@ public:
     // Setters
     void setPairingSystem(const QString &system);
     void setAutoStartTournament(bool autoStart);
+    void setSwissRounds(int rounds); // Setter for Swiss pairing rounds
 
     // Theme settings
     void setTheme(const QString &theme);
@@ -44,6 +46,7 @@ public:
 private:
     QString pairingSystem; // "round_robin" or "swiss"
     bool autoStartTournament;
+    int swissRounds; // Member for Swiss pairing rounds
 
     // Theme settings
     QString theme;   // "fusion_dark", "fusion_light", "custom"

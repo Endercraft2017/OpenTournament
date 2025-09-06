@@ -464,6 +464,8 @@ CMakeFiles/OpenTournament.dir/src/MainWindow.cpp.obj: \
  H:/Qt/6.9.2/mingw_64/include/QtGui/qpen.h \
  H:/Qt/6.9.2/mingw_64/include/QtGui/qtextoption.h \
  H:/Qt/6.9.2/mingw_64/include/QtWidgets/qdialog.h \
+ H:/Qt/6.9.2/mingw_64/include/QtWidgets/QComboBox \
+ H:/Qt/6.9.2/mingw_64/include/QtWidgets/qcombobox.h \
  I:\VS_Code_Programs\Portfolio\Desktop-Applications\OpenTournament\src\Database.h \
  H:/Qt/6.9.2/mingw_64/include/QtSql/QSqlDatabase \
  H:/Qt/6.9.2/mingw_64/include/QtSql/qsqldatabase.h \
@@ -558,5 +560,5 @@ CMakeFiles/OpenTournament.dir/src/MainWindow.cpp.obj: \
  H:/Qt/6.9.2/mingw_64/include/QtWidgets/qcheckbox.h \
  H:/Qt/6.9.2/mingw_64/include/QtWidgets/QDialogButtonBox \
  H:/Qt/6.9.2/mingw_64/include/QtWidgets/qdialogbuttonbox.h \
- H:/Qt/6.9.2/mingw_64/include/QtWidgets/QComboBox \
- H:/Qt/6.9.2/mingw_64/include/QtWidgets/qcombobox.h
+ H:/Qt/6.9.2/mingw_64/include/QtWidgets/QSpinBox \
+ H:/Qt/6.9.2/mingw_64/include/QtWidgets/qspinbox.h

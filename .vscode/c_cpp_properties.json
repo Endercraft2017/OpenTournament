@@ -1,88 +1,23 @@
 {
     "configurations": [
         {
-            "name": "Linux",
+            "name": "Win32",
             "includePath": [
                 "${workspaceFolder}/**",
-                "/usr/include/qt6",
-                "/usr/include/qt6/QtCore",
-                "/usr/include/qt6/QtGui",
-                "/usr/include/qt6/QtWidgets",
-                "/usr/include/qt6/QtSql",
-                "/usr/include/x86_64-linux-gnu/qt6",
-                "/usr/include/x86_64-linux-gnu/qt6/QtCore",
-                "/usr/include/x86_64-linux-gnu/qt6/QtGui",
-                "/usr/include/x86_64-linux-gnu/qt6/QtWidgets",
-                "/usr/include/x86_64-linux-gnu/qt6/QtSql"
-            ],
-            "defines": [],
-            "compilerPath": "/usr/bin/g++",
-            "cStandard": "c17",
-            "cppStandard": "c++17",
-            "intelliSenseMode": "linux-gcc-x64"
-        },
-        {
-            "name": "Win32-MSVC",
-            "includePath": [
-                "${workspaceFolder}/**",
-                "C:/Qt/6.5.0/msvc2019_64/include",
-                "C:/Qt/6.5.0/msvc2019_64/include/QtCore",
-                "C:/Qt/6.5.0/msvc2019_64/include/QtGui",
-                "C:/Qt/6.5.0/msvc2019_64/include/QtWidgets",
-                "C:/Qt/6.5.0/msvc2019_64/include/QtSql",
-                "C:/Qt/Tools/QtCreator/share/qtcreator/cplusplus/wrappedQtHeaders",
-                "C:/Qt/Tools/QtCreator/share/qtcreator/cplusplus/wrappedQtHeaders/QtCore"
+                "H:/Qt/6.9.2/mingw_64/include",
+                "H:/Qt/6.9.2/mingw_64/include/QtCore",
+                "H:/Qt/6.9.2/mingw_64/include/QtGui",
+                "H:/Qt/6.9.2/mingw_64/include/QtWidgets",
+                "H:/Qt/6.9.2/mingw_64/include/QtSql"
             ],
             "defines": [
-                "WIN32",
-                "_WINDOWS"
+                "UNICODE",
+                "_UNICODE"
             ],
-            "compilerPath": "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.34.31931/bin/Hostx64/x64/cl.exe",
-            "cStandard": "c17",
+            "compilerPath": "H:/Qt/Tools/mingw1310_64/bin/g++.exe",
+            "cStandard": "c11",
             "cppStandard": "c++17",
-            "intelliSenseMode": "windows-msvc-x64"
-        },
-        {
-            "name": "Win32-MinGW",
-            "includePath": [
-                "${workspaceFolder}/**",
-                "C:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++",
-                "C:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/x86_64-w64-mingw32",
-                "C:/Qt/6.5.0/mingw_64/include",
-                "C:/Qt/6.5.0/mingw_64/include/QtCore",
-                "C:/Qt/6.5.0/mingw_64/include/QtGui",
-                "C:/Qt/6.5.0/mingw_64/include/QtWidgets",
-                "C:/Qt/6.5.0/mingw_64/include/QtSql"
-            ],
-            "defines": [
-                "WIN32",
-                "_WINDOWS"
-            ],
-            "compilerPath": "C:/Qt/Tools/mingw1120_64/bin/g++.exe",
-            "cStandard": "c17",
-            "cppStandard": "c++17",
-            "intelliSenseMode": "windows-gcc-x64"
-        },
-        {
-            "name": "Mac",
-            "includePath": [
-                "${workspaceFolder}/**",
-                "/opt/homebrew/include/qt6",
-                "/opt/homebrew/include/qt6/QtCore",
-                "/opt/homebrew/include/qt6/QtGui",
-                "/opt/homebrew/include/qt6/QtWidgets",
-                "/opt/homebrew/include/qt6/QtSql",
-                "/usr/local/include/qt6",
-                "/usr/local/include/qt6/QtCore",
-                "/usr/local/include/qt6/QtGui",
-                "/usr/local/include/qt6/QtWidgets",
-                "/usr/local/include/qt6/QtSql"
-            ],
-            "defines": [],
-            "compilerPath": "/usr/bin/clang++",
-            "cStandard": "c17",
-            "cppStandard": "c++17",
-            "intelliSenseMode": "macos-clang-arm64"
+            "intelliSenseMode": "gcc-x64"
         }
     ],
     "version": 4

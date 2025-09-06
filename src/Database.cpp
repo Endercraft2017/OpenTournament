@@ -127,6 +127,33 @@ bool Database::initializeSchema()
         return false;
     }
 
+    // Create tournament_results table to store completed tournament data
+    QString createTournamentResultsTable = R"(
+        CREATE TABLE IF NOT EXISTS tournament_results (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            tournament_id INTEGER NOT NULL,
+            player_id INTEGER NOT NULL,
+            player_name TEXT NOT NULL,
+            final_rank INTEGER NOT NULL,
+            points REAL NOT NULL,
+            wins INTEGER NOT NULL,
+            losses INTEGER NOT NULL,
+            draws INTEGER NOT NULL,
+            buchholz_cut_one REAL,
+            sonneborn_berger REAL,
+            number_of_wins INTEGER,
+            cumulative_opponent_score REAL,
+            FOREIGN KEY (tournament_id) REFERENCES tournaments(id),
+            FOREIGN KEY (player_id) REFERENCES players(id)
+        )
+    )";
+
+    if (!query.exec(createTournamentResultsTable))
+    {
+        qDebug() << "Failed to create tournament_results table:" << query.lastError().text();
+        return false;
+    }
+
     return true;
 }
 
@@ -653,4 +680,95 @@ bool Database::resetMatchIdSequence(int tournamentId)
     }
 
     return true;
+}
+
+bool Database::saveTournamentResults(int tournamentId, const QList<TournamentResult> &results)
+{
+    QSqlQuery query(db);
+
+    // Begin transaction for atomicity
+    db.transaction();
+
+    // Delete any existing results for this tournament
+    query.prepare("DELETE FROM tournament_results WHERE tournament_id = ?");
+    query.addBindValue(tournamentId);
+
+    if (!query.exec())
+    {
+        qDebug() << "Failed to delete existing tournament results:" << query.lastError().text();
+        db.rollback();
+        return false;
+    }
+
+    // Insert new results
+    query.prepare("INSERT INTO tournament_results (tournament_id, player_id, player_name, final_rank, points, wins, losses, draws, buchholz_cut_one, sonneborn_berger, number_of_wins, cumulative_opponent_score) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+
+    for (const TournamentResult &result : results)
+    {
+        query.addBindValue(tournamentId);
+        query.addBindValue(result.playerId);
+        query.addBindValue(result.playerName);
+        query.addBindValue(result.finalRank);
+        query.addBindValue(result.points);
+        query.addBindValue(result.wins);
+        query.addBindValue(result.losses);
+        query.addBindValue(result.draws);
+        query.addBindValue(result.buchholzCutOne);
+        query.addBindValue(result.sonnebornBerger);
+        query.addBindValue(result.numberOfWins);
+        query.addBindValue(result.cumulativeOpponentScore);
+
+        if (!query.exec())
+        {
+            qDebug() << "Failed to insert tournament result:" << query.lastError().text();
+            db.rollback();
+            return false;
+        }
+
+        // Prepare for next iteration
+        query.prepare("INSERT INTO tournament_results (tournament_id, player_id, player_name, final_rank, points, wins, losses, draws, buchholz_cut_one, sonneborn_berger, number_of_wins, cumulative_opponent_score) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    }
+
+    // Commit transaction
+    if (!db.commit())
+    {
+        qDebug() << "Failed to commit tournament results transaction:" << db.lastError().text();
+        return false;
+    }
+
+    return true;
+}
+
+QList<TournamentResult> Database::getTournamentResults(int tournamentId)
+{
+    QList<TournamentResult> results;
+    QSqlQuery query(db);
+    query.prepare("SELECT player_id, player_name, final_rank, points, wins, losses, draws, buchholz_cut_one, sonneborn_berger, number_of_wins, cumulative_opponent_score FROM tournament_results WHERE tournament_id = ? ORDER BY final_rank");
+    query.addBindValue(tournamentId);
+
+    if (!query.exec())
+    {
+        qDebug() << "Failed to get tournament results:" << query.lastError().text();
+        return results;
+    }
+
+    while (query.next())
+    {
+        TournamentResult result;
+        result.playerId = query.value(0).toInt();
+        result.playerName = query.value(1).toString();
+        result.finalRank = query.value(2).toInt();
+        result.points = query.value(3).toDouble();
+        result.wins = query.value(4).toInt();
+        result.losses = query.value(5).toInt();
+        result.draws = query.value(6).toInt();
+        result.buchholzCutOne = query.value(7).toDouble();
+        result.sonnebornBerger = query.value(8).toDouble();
+        result.numberOfWins = query.value(9).toInt();
+        result.cumulativeOpponentScore = query.value(10).toDouble();
+
+        results.append(result);
+    }
+
+    return results;
 }

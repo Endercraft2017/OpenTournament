@@ -14,6 +14,7 @@
 #include <QPoint>
 #include <QMenu>
 #include <QInputDialog>
+#include <QComboBox>
 
 #include "Database.h"
 #include "Player.h"
@@ -43,9 +44,11 @@ private slots:
     void onPlayerContextMenuRequested(const QPoint &pos);
     void onEditPlayer();
     void onDeletePlayer();
-    void onStartTournamentClicked(); // New slot for start tournament button
-    void onEndTournamentClicked();   // New slot for end tournament button
-    void onTiebreakerClicked();      // New slot for tiebreaker button
+    void onStartTournamentClicked();              // New slot for start tournament button
+    void onEndTournamentClicked();                // New slot for end tournament button
+    void onTiebreakerClicked();                   // New slot for tiebreaker button
+    void onAddTournamentClicked();                // New slot for add tournament button
+    void onTournamentSelectionChanged(int index); // New slot for tournament selection
 
     // Theme and icon slots
     void onFusionDarkSelected();
@@ -62,6 +65,7 @@ private:
     QTableWidget *playerTable;
     QTabWidget *roundTabs;
     QStatusBar *mainStatusBar;
+    QComboBox *tournamentSelector; // New tournament selector
 
     // Actions
     QAction *newTournamentAction;
@@ -85,6 +89,7 @@ private:
     QPushButton *startTournamentButton; // New start tournament button
     QPushButton *endTournamentButton;   // New end tournament button
     QPushButton *tiebreakerButton;      // New tiebreaker button
+    QPushButton *addTournamentButton;   // New add tournament button
 
     // Data managers
     Database *database;
@@ -110,6 +115,7 @@ private:
     void showSettingsDialog();             // New method for showing settings dialog
     void calculateAndDisplayTiebreakers(); // New method for calculating tiebreakers
     void showTiebreakerSettingsDialog();   // New method for showing tiebreaker settings dialog
+    void populateTournamentSelector();     // New method for populating tournament selector
 
     // Theme and icon methods
     void setDefaultIcons();

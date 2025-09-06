@@ -7,7 +7,7 @@
 				{
 					"build" : ".",
 					"hasInstallRule" : true,
-					"jsonFile" : "directory-.-Debug-a52c2fceacca1f438a0c.json",
+					"jsonFile" : "directory-.-Debug-fee3e86b8d7e9727d5fe.json",
 					"minimumCMakeVersion" : 
 					{
 						"string" : "3.16"
@@ -44,7 +44,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "OpenTournament::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-OpenTournament-Debug-a3190a64cf011621db60.json",
+					"jsonFile" : "target-OpenTournament-Debug-c0c2f6b28c03fca54e62.json",
 					"name" : "OpenTournament",
 					"projectIndex" : 0
 				},

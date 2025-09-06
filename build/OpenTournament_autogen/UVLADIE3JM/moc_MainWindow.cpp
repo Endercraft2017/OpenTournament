@@ -55,6 +55,9 @@ template <> constexpr inline auto MainWindow::qt_create_metaobjectdata<qt_meta_t
         "onStartTournamentClicked",
         "onEndTournamentClicked",
         "onTiebreakerClicked",
+        "onAddTournamentClicked",
+        "onTournamentSelectionChanged",
+        "index",
         "onFusionDarkSelected",
         "onFusionLightSelected",
         "onFusionWhiteSelected",
@@ -92,18 +95,24 @@ template <> constexpr inline auto MainWindow::qt_create_metaobjectdata<qt_meta_t
         QtMocHelpers::SlotData<void()>(14, 2, QMC::AccessPrivate, QMetaType::Void),
         // Slot 'onTiebreakerClicked'
         QtMocHelpers::SlotData<void()>(15, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'onFusionDarkSelected'
+        // Slot 'onAddTournamentClicked'
         QtMocHelpers::SlotData<void()>(16, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'onFusionLightSelected'
-        QtMocHelpers::SlotData<void()>(17, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'onFusionWhiteSelected'
-        QtMocHelpers::SlotData<void()>(18, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'onCustomQssSelected'
+        // Slot 'onTournamentSelectionChanged'
+        QtMocHelpers::SlotData<void(int)>(17, 2, QMC::AccessPrivate, QMetaType::Void, {{
+            { QMetaType::Int, 18 },
+        }}),
+        // Slot 'onFusionDarkSelected'
         QtMocHelpers::SlotData<void()>(19, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'onDefaultIconsSelected'
+        // Slot 'onFusionLightSelected'
         QtMocHelpers::SlotData<void()>(20, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'onModernIconsSelected'
+        // Slot 'onFusionWhiteSelected'
         QtMocHelpers::SlotData<void()>(21, 2, QMC::AccessPrivate, QMetaType::Void),
+        // Slot 'onCustomQssSelected'
+        QtMocHelpers::SlotData<void()>(22, 2, QMC::AccessPrivate, QMetaType::Void),
+        // Slot 'onDefaultIconsSelected'
+        QtMocHelpers::SlotData<void()>(23, 2, QMC::AccessPrivate, QMetaType::Void),
+        // Slot 'onModernIconsSelected'
+        QtMocHelpers::SlotData<void()>(24, 2, QMC::AccessPrivate, QMetaType::Void),
     };
     QtMocHelpers::UintData qt_properties {
     };
@@ -140,12 +149,14 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 10: _t->onStartTournamentClicked(); break;
         case 11: _t->onEndTournamentClicked(); break;
         case 12: _t->onTiebreakerClicked(); break;
-        case 13: _t->onFusionDarkSelected(); break;
-        case 14: _t->onFusionLightSelected(); break;
-        case 15: _t->onFusionWhiteSelected(); break;
-        case 16: _t->onCustomQssSelected(); break;
-        case 17: _t->onDefaultIconsSelected(); break;
-        case 18: _t->onModernIconsSelected(); break;
+        case 13: _t->onAddTournamentClicked(); break;
+        case 14: _t->onTournamentSelectionChanged((*reinterpret_cast< std::add_pointer_t<int>>(_a[1]))); break;
+        case 15: _t->onFusionDarkSelected(); break;
+        case 16: _t->onFusionLightSelected(); break;
+        case 17: _t->onFusionWhiteSelected(); break;
+        case 18: _t->onCustomQssSelected(); break;
+        case 19: _t->onDefaultIconsSelected(); break;
+        case 20: _t->onModernIconsSelected(); break;
         default: ;
         }
     }
@@ -170,14 +181,14 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 19)
+        if (_id < 21)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 19;
+        _id -= 21;
     }
     if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 19)
+        if (_id < 21)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 19;
+        _id -= 21;
     }
     return _id;
 }

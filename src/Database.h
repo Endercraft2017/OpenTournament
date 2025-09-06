@@ -8,6 +8,22 @@
 #include "Match.h"
 #include "Tournament.h"
 
+// Structure to hold tournament results data
+struct TournamentResult
+{
+    int playerId;
+    QString playerName;
+    int finalRank;
+    double points;
+    int wins;
+    int losses;
+    int draws;
+    double buchholzCutOne;
+    double sonnebornBerger;
+    int numberOfWins;
+    double cumulativeOpponentScore;
+};
+
 class Database
 {
 public:
@@ -49,6 +65,10 @@ public:
     bool deleteTournament(int id);
     bool startTournament(int id);
     bool completeTournament(int id);
+
+    // Tournament results operations
+    bool saveTournamentResults(int tournamentId, const QList<TournamentResult> &results);
+    QList<TournamentResult> getTournamentResults(int tournamentId);
 
     // Utility methods
     bool initializeSchema();

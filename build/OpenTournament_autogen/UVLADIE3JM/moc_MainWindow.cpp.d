@@ -203,6 +203,7 @@ I:/VS_Code_Programs/Portfolio/Desktop-Applications/OpenTournament/build/OpenTour
   H:/Qt/6.9.2/mingw_64/include/QtSql/qtsql-config.h \
   H:/Qt/6.9.2/mingw_64/include/QtSql/qtsqlexports.h \
   H:/Qt/6.9.2/mingw_64/include/QtSql/qtsqlglobal.h \
+  H:/Qt/6.9.2/mingw_64/include/QtWidgets/QComboBox \
   H:/Qt/6.9.2/mingw_64/include/QtWidgets/QInputDialog \
   H:/Qt/6.9.2/mingw_64/include/QtWidgets/QMainWindow \
   H:/Qt/6.9.2/mingw_64/include/QtWidgets/QMenu \
@@ -218,6 +219,7 @@ I:/VS_Code_Programs/Portfolio/Desktop-Applications/OpenTournament/build/OpenTour
   H:/Qt/6.9.2/mingw_64/include/QtWidgets/qabstractscrollarea.h \
   H:/Qt/6.9.2/mingw_64/include/QtWidgets/qabstractslider.h \
   H:/Qt/6.9.2/mingw_64/include/QtWidgets/qabstractspinbox.h \
+  H:/Qt/6.9.2/mingw_64/include/QtWidgets/qcombobox.h \
   H:/Qt/6.9.2/mingw_64/include/QtWidgets/qdialog.h \
   H:/Qt/6.9.2/mingw_64/include/QtWidgets/qframe.h \
   H:/Qt/6.9.2/mingw_64/include/QtWidgets/qinputdialog.h \

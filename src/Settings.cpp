@@ -6,6 +6,7 @@
 
 Settings::Settings()
     : pairingSystem("round_robin"), autoStartTournament(false),
+      swissRounds(5), // Default to 5 rounds for Swiss pairing
       theme("fusion_dark"), iconSet("default"),
       useSeriesTiebreakers(false), singleTiebreaker(0)
 {
@@ -73,6 +74,11 @@ bool Settings::getAutoStartTournament() const
     return autoStartTournament;
 }
 
+int Settings::getSwissRounds() const
+{
+    return swissRounds;
+}
+
 void Settings::setPairingSystem(const QString &system)
 {
     pairingSystem = system;
@@ -83,6 +89,11 @@ void Settings::setAutoStartTournament(bool autoStart)
     autoStartTournament = autoStart;
 }
 
+void Settings::setSwissRounds(int rounds)
+{
+    swissRounds = rounds;
+}
+
 bool Settings::load()
 {
     QSettings settings(getSettingsFilePath(), QSettings::IniFormat);
@@ -90,6 +101,7 @@ bool Settings::load()
     // Load settings
     pairingSystem = settings.value("pairingSystem", "round_robin").toString();
     autoStartTournament = settings.value("autoStartTournament", false).toBool();
+    swissRounds = settings.value("swissRounds", 5).toInt(); // Load Swiss rounds setting
 
     // Load theme settings
     theme = settings.value("theme", "fusion_dark").toString();
@@ -110,6 +122,7 @@ bool Settings::save() const
     // Save settings
     settings.setValue("pairingSystem", pairingSystem);
     settings.setValue("autoStartTournament", autoStartTournament);
+    settings.setValue("swissRounds", swissRounds); // Save Swiss rounds setting
 
     // Save theme settings
     settings.setValue("theme", theme);

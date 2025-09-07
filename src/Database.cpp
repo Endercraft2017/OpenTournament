@@ -75,7 +75,7 @@ bool Database::initializeSchema()
         CREATE TABLE IF NOT EXISTS tournaments (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT,
-            pairing_system TEXT DEFAULT 'round_robin',
+            pairing_system TEXT DEFAULT NULL,
             status TEXT DEFAULT 'setup',
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             started_at TIMESTAMP NULL,

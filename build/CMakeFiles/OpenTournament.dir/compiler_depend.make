@@ -3580,83 +3580,23 @@ CMakeFiles/OpenTournament.dir/src/main.cpp.obj: I:/VS_Code_Programs/Portfolio/De
   I:/VS_Code_Programs/Portfolio/Desktop-Applications/OpenTournament/src/Tournament.h
 
 OpenTournament_autogen/timestamp: H:/Python/Lib/site-packages/cmake/data/bin/cmake.exe \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/CMakeCXXCompiler.cmake.in \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/CMakeCXXCompilerABI.cpp \
   H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/CMakeCXXInformation.cmake \
   H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/CMakeCheckCompilerFlagCommonPatterns.cmake \
   H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/CMakeCommonLanguageInclude.cmake \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/CMakeCompilerIdDetection.cmake \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/CMakeDetermineCXXCompiler.cmake \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/CMakeDetermineCompiler.cmake \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/CMakeDetermineCompilerABI.cmake \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/CMakeDetermineCompilerId.cmake \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/CMakeDetermineCompilerSupport.cmake \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/CMakeDetermineRCCompiler.cmake \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/CMakeDetermineSystem.cmake \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/CMakeFindBinUtils.cmake \
   H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/CMakeFindDependencyMacro.cmake \
   H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/CMakeGenericSystem.cmake \
   H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/CMakeInitializeConfigs.cmake \
   H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/CMakeLanguageInformation.cmake \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/CMakeMinGWFindMake.cmake \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/CMakeParseImplicitIncludeInfo.cmake \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/CMakeParseImplicitLinkInfo.cmake \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/CMakeParseLibraryArchitecture.cmake \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/CMakeRCCompiler.cmake.in \
   H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/CMakeRCInformation.cmake \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/CMakeSystem.cmake.in \
   H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/CMakeSystemSpecificInformation.cmake \
   H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/CMakeSystemSpecificInitialize.cmake \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/CMakeTestCXXCompiler.cmake \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/CMakeTestCompilerCommon.cmake \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/CMakeTestRCCompiler.cmake \
   H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/CheckCXXCompilerFlag.cmake \
   H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/CheckCXXSourceCompiles.cmake \
   H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/CheckIncludeFileCXX.cmake \
   H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/CheckLibraryExists.cmake \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/ADSP-DetermineCompiler.cmake \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/ARMCC-DetermineCompiler.cmake \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/ARMClang-DetermineCompiler.cmake \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/AppleClang-DetermineCompiler.cmake \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/Borland-DetermineCompiler.cmake \
   H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/CMakeCommonCompilerMacros.cmake \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/Clang-DetermineCompiler.cmake \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/Clang-DetermineCompilerInternal.cmake \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/Compaq-CXX-DetermineCompiler.cmake \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/Cray-DetermineCompiler.cmake \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/CrayClang-DetermineCompiler.cmake \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/Embarcadero-DetermineCompiler.cmake \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/Fujitsu-DetermineCompiler.cmake \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/FujitsuClang-DetermineCompiler.cmake \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/GHS-DetermineCompiler.cmake \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/GNU-CXX-DetermineCompiler.cmake \
   H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/GNU-CXX.cmake \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/GNU-FindBinUtils.cmake \
   H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/GNU.cmake \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/HP-CXX-DetermineCompiler.cmake \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/IAR-DetermineCompiler.cmake \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/IBMCPP-CXX-DetermineVersionInternal.cmake \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/IBMClang-CXX-DetermineCompiler.cmake \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/Intel-DetermineCompiler.cmake \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/IntelLLVM-DetermineCompiler.cmake \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/LCC-CXX-DetermineCompiler.cmake \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/MSVC-DetermineCompiler.cmake \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/NVHPC-DetermineCompiler.cmake \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/NVIDIA-DetermineCompiler.cmake \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/OpenWatcom-DetermineCompiler.cmake \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/OrangeC-DetermineCompiler.cmake \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/PGI-DetermineCompiler.cmake \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/PathScale-DetermineCompiler.cmake \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/SCO-DetermineCompiler.cmake \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/SunPro-CXX-DetermineCompiler.cmake \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/TI-DetermineCompiler.cmake \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/TIClang-DetermineCompiler.cmake \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/Tasking-DetermineCompiler.cmake \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/VisualAge-CXX-DetermineCompiler.cmake \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/Watcom-DetermineCompiler.cmake \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/XL-CXX-DetermineCompiler.cmake \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/XLClang-CXX-DetermineCompiler.cmake \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/zOS-CXX-DetermineCompiler.cmake \
   H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/FindPackageHandleStandardArgs.cmake \
   H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/FindPackageMessage.cmake \
   H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/FindThreads.cmake \
@@ -3664,17 +3604,13 @@ OpenTournament_autogen/timestamp: H:/Python/Lib/site-packages/cmake/data/bin/cma
   H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/GNUInstallDirs.cmake \
   H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Internal/CMakeCXXLinkerInformation.cmake \
   H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Internal/CMakeCommonLinkerInformation.cmake \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Internal/CMakeDetermineLinkerId.cmake \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Internal/CMakeInspectCXXLinker.cmake \
   H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Internal/CheckCompilerFlag.cmake \
   H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Internal/CheckFlagCommonConfig.cmake \
   H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Internal/CheckSourceCompiles.cmake \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Internal/FeatureTesting.cmake \
   H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Platform/Linker/GNU.cmake \
   H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Platform/Linker/Windows-CXX.cmake \
   H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Platform/Linker/Windows-GNU-CXX.cmake \
   H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Platform/Linker/Windows-GNU.cmake \
-  H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Platform/Windows-Determine-CXX.cmake \
   H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Platform/Windows-GNU-CXX-ABI.cmake \
   H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Platform/Windows-GNU-CXX.cmake \
   H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Platform/Windows-GNU.cmake \
@@ -4387,8 +4323,6 @@ H:/Qt/6.9.2/mingw_64/lib/cmake/Qt6Sql/Qt6QIBaseDriverPluginTargets.cmake:
 
 H:/Qt/6.9.2/mingw_64/lib/cmake/Qt6Gui/Qt6QSvgIconPluginAdditionalTargetInfo.cmake:
 
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/SCO-DetermineCompiler.cmake:
-
 OpenTournament_autogen/mocs_compilation.cpp:
 
 H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/utility:
@@ -4425,8 +4359,6 @@ H:/Qt/6.9.2/mingw_64/include/QtWidgets/QRadioButton:
 
 H:/Qt/6.9.2/mingw_64/include/QtCore/qbytearraylist.h:
 
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/IBMCPP-CXX-DetermineVersionInternal.cmake:
-
 H:/Qt/6.9.2/mingw_64/include/QtCore/qatomic_cxx11.h:
 
 H:/Qt/6.9.2/mingw_64/include/QtCore/qatomic.h:
@@ -4453,8 +4385,6 @@ H:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/signal.h:
 
 H:/Qt/6.9.2/mingw_64/include/QtCore/QSize:
 
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Internal/FeatureTesting.cmake:
-
 H:/Qt/6.9.2/mingw_64/include/QtCore/QSizeF:
 
 H:/Qt/6.9.2/mingw_64/include/QtCore/q20functional.h:
@@ -4468,8 +4398,6 @@ H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stl_
 H:/Qt/6.9.2/mingw_64/include/QtCore/q17memory.h:
 
 H:/Qt/6.9.2/mingw_64/include/QtCore/q20algorithm.h:
-
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/GNU-FindBinUtils.cmake:
 
 H:/Qt/6.9.2/mingw_64/include/QtCore/qdebug.h:
 
@@ -4496,8 +4424,6 @@ H:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/swprintf.inl:
 H:/Qt/6.9.2/mingw_64/lib/cmake/Qt6WidgetsPrivate/Qt6WidgetsPrivateAdditionalTargetInfo.cmake:
 
 H:/Qt/6.9.2/mingw_64/lib/cmake/Qt6Sql/Qt6SqlAdditionalTargetInfo.cmake:
-
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/AppleClang-DetermineCompiler.cmake:
 
 H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/CMakeCheckCompilerFlagCommonPatterns.cmake:
 
@@ -4530,8 +4456,6 @@ H:/Qt/6.9.2/mingw_64/include/QtCore/qarraydatapointer.h:
 H:/Qt/6.9.2/mingw_64/include/QtCore/qalgorithms.h:
 
 H:/Qt/6.9.2/mingw_64/include/QtCore/qconstructormacros.h:
-
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/PathScale-DetermineCompiler.cmake:
 
 H:/Qt/6.9.2/mingw_64/include/QtCore/qttranslation.h:
 
@@ -4623,15 +4547,11 @@ H:/Qt/6.9.2/mingw_64/include/QtWidgets/qtwidgetsglobal.h:
 
 H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/tr1/legendre_function.tcc:
 
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/ADSP-DetermineCompiler.cmake:
-
 H:/Qt/6.9.2/mingw_64/include/QtCore/qcontiguouscache.h:
 
 H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stl_algobase.h:
 
 H:/Qt/6.9.2/mingw_64/include/QtCore/qcoreapplication.h:
-
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/CMakeDetermineCompilerId.cmake:
 
 H:/Qt/6.9.2/mingw_64/include/QtCore/qcoreapplication_platform.h:
 
@@ -4645,8 +4565,6 @@ H:/Qt/6.9.2/mingw_64/lib/cmake/Qt6Gui/Qt6QOffscreenIntegrationPluginConfig.cmake
 
 H:/Qt/6.9.2/mingw_64/include/QtCore/qelapsedtimer.h:
 
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/NVIDIA-DetermineCompiler.cmake:
-
 H:/Qt/6.9.2/mingw_64/include/QtCore/qdatetime.h:
 
 H:/Qt/6.9.2/mingw_64/include/QtCore/qfloat16.h:
@@ -4654,8 +4572,6 @@ H:/Qt/6.9.2/mingw_64/include/QtCore/qfloat16.h:
 H:/Qt/6.9.2/mingw_64/include/QtCore/qfunctionpointer.h:
 
 H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stl_uninitialized.h:
-
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/Watcom-DetermineCompiler.cmake:
 
 H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stl_multimap.h:
 
@@ -4727,8 +4643,6 @@ H:/Qt/6.9.2/mingw_64/include/QtCore/qline.h:
 
 H:/Qt/6.9.2/mingw_64/include/QtCore/qshareddata_impl.h:
 
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/zOS-CXX-DetermineCompiler.cmake:
-
 H:/Qt/6.9.2/mingw_64/include/QtCore/qlist.h:
 
 H:/Qt/6.9.2/mingw_64/include/QtGui/qtguiexports.h:
@@ -4758,8 +4672,6 @@ H:/Qt/6.9.2/mingw_64/include/QtGui/qvalidator.h:
 H:/Qt/6.9.2/mingw_64/include/QtCore/qmargins.h:
 
 H:/Qt/6.9.2/mingw_64/include/QtCore/qtconfigmacros.h:
-
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/CMakeSystem.cmake.in:
 
 H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/mm_malloc.h:
 
@@ -4836,8 +4748,6 @@ H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/tr1/modif
 H:/Qt/6.9.2/mingw_64/include/QtCore/qpair.h:
 
 H:/Qt/6.9.2/mingw_64/include/QtCore/qpoint.h:
-
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/CMakeParseLibraryArchitecture.cmake:
 
 H:/Qt/6.9.2/mingw_64/include/QtCore/qprocessordetection.h:
 
@@ -4995,8 +4905,6 @@ H:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/stdio.h:
 
 H:/Qt/6.9.2/mingw_64/include/QtCore/qttypetraits.h:
 
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/CrayClang-DetermineCompiler.cmake:
-
 H:/Qt/6.9.2/mingw_64/include/QtCore/qtversion.h:
 
 H:/Qt/6.9.2/mingw_64/lib/cmake/Qt6Widgets/Qt6WidgetsTargets.cmake:
@@ -5055,8 +4963,6 @@ H:/Qt/6.9.2/mingw_64/include/QtGui/qevent.h:
 
 I:/VS_Code_Programs/Portfolio/Desktop-Applications/OpenTournament/src/Database.h:
 
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/HP-CXX-DetermineCompiler.cmake:
-
 H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/CheckIncludeFileCXX.cmake:
 
 H:/Qt/6.9.2/mingw_64/include/QtGui/qeventpoint.h:
@@ -5064,8 +4970,6 @@ H:/Qt/6.9.2/mingw_64/include/QtGui/qeventpoint.h:
 H:/Qt/6.9.2/mingw_64/include/QtGui/qfont.h:
 
 H:/Qt/6.9.2/mingw_64/include/QtWidgets/qframe.h:
-
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/Clang-DetermineCompilerInternal.cmake:
 
 H:/Qt/6.9.2/mingw_64/include/QtGui/qfontmetrics.h:
 
@@ -5127,8 +5031,6 @@ H:/Qt/6.9.2/mingw_64/include/QtGui/qscreen.h:
 
 H:/Qt/6.9.2/mingw_64/lib/cmake/Qt6Sql/Qt6QMimerSQLDriverPluginTargets-relwithdebinfo.cmake:
 
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/GHS-DetermineCompiler.cmake:
-
 H:/Qt/6.9.2/mingw_64/include/QtGui/qscreen_platform.h:
 
 H:/Qt/6.9.2/mingw_64/include/QtGui/qtextcursor.h:
@@ -5140,8 +5042,6 @@ H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/hash
 H:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/ctype.h:
 
 H:/Qt/6.9.2/mingw_64/include/QtGui/qtextoption.h:
-
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/CMakeParseImplicitLinkInfo.cmake:
 
 H:/Qt/6.9.2/mingw_64/include/QtGui/qtgui-config.h:
 
@@ -5253,8 +5153,6 @@ H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/stdint.h:
 
 H:/Qt/6.9.2/mingw_64/lib/cmake/Qt6SqlPrivate/Qt6SqlPrivateConfig.cmake:
 
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/NVHPC-DetermineCompiler.cmake:
-
 H:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/assert.h:
 
 H:/Qt/6.9.2/mingw_64/include/QtWidgets/qmenu.h:
@@ -5294,8 +5192,6 @@ H:/Qt/6.9.2/mingw_64/lib/cmake/Qt6Sql/Qt6QPSQLDriverPluginConfig.cmake:
 H:/Qt/6.9.2/mingw_64/include/QtWidgets/qlayoutitem.h:
 
 H:/Qt/6.9.2/mingw_64/include/QtWidgets/qtoolbar.h:
-
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/TIClang-DetermineCompiler.cmake:
 
 I:/VS_Code_Programs/Portfolio/Desktop-Applications/OpenTournament/src/Tiebreaker.cpp:
 
@@ -5383,8 +5279,6 @@ H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/variant:
 
 H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/initializer_list:
 
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/ARMClang-DetermineCompiler.cmake:
-
 H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stl_multiset.h:
 
 H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/localefwd.h:
@@ -5415,13 +5309,9 @@ H:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/stdlib.h:
 
 H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/parse_numbers.h:
 
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/CMakeRCCompiler.cmake.in:
-
 H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/optional:
 
 H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/postypes.h:
-
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/IntelLLVM-DetermineCompiler.cmake:
 
 H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/predefined_ops.h:
 
@@ -5451,8 +5341,6 @@ H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stl_
 
 H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stl_iterator_base_types.h:
 
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/OpenWatcom-DetermineCompiler.cmake:
-
 H:/Qt/6.9.2/mingw_64/include/QtWidgets/QTextEdit:
 
 H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/locale_facets_nonio.tcc:
@@ -5469,8 +5357,6 @@ H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stl_
 
 H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/x86_64-w64-mingw32/bits/gthr-default.h:
 
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/VisualAge-CXX-DetermineCompiler.cmake:
-
 H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stl_tempbuf.h:
 
 H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stl_vector.h:
@@ -5481,13 +5367,9 @@ H:/Qt/6.9.2/mingw_64/include/QtCore/qdir.h:
 
 H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/streambuf.tcc:
 
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/SunPro-CXX-DetermineCompiler.cmake:
-
 H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/string_view.tcc:
 
 H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stringfwd.h:
-
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/Tasking-DetermineCompiler.cmake:
 
 H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/CMakeSystemSpecificInformation.cmake:
 
@@ -5509,8 +5391,6 @@ H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/climits:
 
 H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/syslimits.h:
 
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/Fujitsu-DetermineCompiler.cmake:
-
 H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/clocale:
 
 H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/compare:
@@ -5526,10 +5406,6 @@ H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/cstring:
 H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/cwchar:
 
 H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Internal/CheckSourceCompiles.cmake:
-
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/LCC-CXX-DetermineCompiler.cmake:
-
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/Borland-DetermineCompiler.cmake:
 
 H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/debug/debug.h:
 
@@ -5568,8 +5444,6 @@ H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/stdexcept
 H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/stdlib.h:
 
 H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/streambuf:
-
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/CMakeCXXCompilerABI.cpp:
 
 H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/string:
 
@@ -5611,8 +5485,6 @@ H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/x86_64-w6
 
 H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/x86_64-w64-mingw32/bits/os_defines.h:
 
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/Cray-DetermineCompiler.cmake:
-
 H:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/limits.h:
 
 H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Internal/CheckCompilerFlag.cmake:
@@ -5632,8 +5504,6 @@ H:/Qt/6.9.2/mingw_64/lib/cmake/Qt6Gui/Qt6GuiVersionlessAliasTargets.cmake:
 H:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/corecrt_stdio_config.h:
 
 H:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/crtdefs.h:
-
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/CMakeFindBinUtils.cmake:
 
 H:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/errno.h:
 
@@ -5684,8 +5554,6 @@ H:/Qt/6.9.2/mingw_64/include/QtCore/qdirlisting.h:
 H:/Qt/6.9.2/mingw_64/lib/cmake/Qt6Gui/Qt6QGifPluginTargets-relwithdebinfo.cmake:
 
 H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/CheckCXXCompilerFlag.cmake:
-
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/CMakeDetermineRCCompiler.cmake:
 
 H:/Qt/6.9.2/mingw_64/include/QtSql/QSqlQuery:
 
@@ -5783,10 +5651,6 @@ H:/Qt/6.9.2/mingw_64/include/QtWidgets/qspinbox.h:
 
 H:/Qt/6.9.2/mingw_64/lib/cmake/Qt6Sql/Qt6QPSQLDriverPluginAdditionalTargetInfo.cmake:
 
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/Clang-DetermineCompiler.cmake:
-
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/CMakeDetermineCXXCompiler.cmake:
-
 H:/Qt/6.9.2/mingw_64/include/QtWidgets/qsplitter.h:
 
 I:/VS_Code_Programs/Portfolio/Desktop-Applications/OpenTournament/src/Settings.cpp:
@@ -5794,8 +5658,6 @@ I:/VS_Code_Programs/Portfolio/Desktop-Applications/OpenTournament/src/Settings.c
 H:/Qt/6.9.2/mingw_64/lib/cmake/Qt6CorePrivate/Qt6CorePrivateConfigVersion.cmake:
 
 H:/Qt/6.9.2/mingw_64/include/QtCore/QSettings:
-
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/XLClang-CXX-DetermineCompiler.cmake:
 
 H:/Qt/6.9.2/mingw_64/include/QtCore/qsettings.h:
 
@@ -5807,27 +5669,9 @@ H:/Qt/6.9.2/mingw_64/include/QtGui/QPalette:
 
 H:/Python/Lib/site-packages/cmake/data/bin/cmake.exe:
 
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/CMakeCXXCompiler.cmake.in:
-
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/CMakeCompilerIdDetection.cmake:
-
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/CMakeDetermineCompiler.cmake:
-
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/CMakeDetermineCompilerABI.cmake:
-
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/CMakeDetermineCompilerSupport.cmake:
-
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/CMakeDetermineSystem.cmake:
-
 H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Internal/CMakeCXXLinkerInformation.cmake:
 
 H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/CMakeLanguageInformation.cmake:
-
-H:/Qt/6.9.2/mingw_64/lib/cmake/Qt6Widgets/Qt6WidgetsConfigVersion.cmake:
-
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/CMakeMinGWFindMake.cmake:
-
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/CMakeParseImplicitIncludeInfo.cmake:
 
 H:/Qt/6.9.2/mingw_64/lib/cmake/Qt6Sql/Qt6SqlPlugins.cmake:
 
@@ -5835,51 +5679,15 @@ H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/CMakeRCInformatio
 
 H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/CMakeSystemSpecificInitialize.cmake:
 
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/CMakeTestCXXCompiler.cmake:
-
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/CMakeTestCompilerCommon.cmake:
-
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/CMakeTestRCCompiler.cmake:
-
 H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/CheckCXXSourceCompiles.cmake:
 
 H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/CheckLibraryExists.cmake:
 
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/ARMCC-DetermineCompiler.cmake:
-
 H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/CMakeCommonCompilerMacros.cmake:
-
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/Compaq-CXX-DetermineCompiler.cmake:
-
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/Embarcadero-DetermineCompiler.cmake:
-
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/FujitsuClang-DetermineCompiler.cmake:
-
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/GNU-CXX-DetermineCompiler.cmake:
 
 H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/GNU-CXX.cmake:
 
 H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/GNU.cmake:
-
-H:/Qt/6.9.2/mingw_64/lib/cmake/Qt6/QtPublicSbomCpeHelpers.cmake:
-
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/IAR-DetermineCompiler.cmake:
-
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/IBMClang-CXX-DetermineCompiler.cmake:
-
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/Intel-DetermineCompiler.cmake:
-
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/MSVC-DetermineCompiler.cmake:
-
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/OrangeC-DetermineCompiler.cmake:
-
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/PGI-DetermineCompiler.cmake:
-
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/TI-DetermineCompiler.cmake:
-
-H:/Qt/6.9.2/mingw_64/lib/cmake/Qt6WidgetsTools/Qt6WidgetsToolsDependencies.cmake:
-
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Compiler/XL-CXX-DetermineCompiler.cmake:
 
 H:/Qt/6.9.2/mingw_64/lib/cmake/Qt6CoreTools/Qt6CoreToolsTargets.cmake:
 
@@ -5888,12 +5696,6 @@ H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/FindPackageMessag
 H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/FindThreads.cmake:
 
 H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/FindVulkan.cmake:
-
-H:/Qt/6.9.2/mingw_64/lib/cmake/Qt6WidgetsTools/Qt6WidgetsToolsConfig.cmake:
-
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Internal/CMakeDetermineLinkerId.cmake:
-
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Internal/CMakeInspectCXXLinker.cmake:
 
 H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Internal/CheckFlagCommonConfig.cmake:
 
@@ -5904,10 +5706,6 @@ H:/Qt/6.9.2/mingw_64/lib/cmake/Qt6Widgets/Qt6WidgetsMacros.cmake:
 H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Platform/Linker/Windows-CXX.cmake:
 
 H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Platform/Linker/Windows-GNU-CXX.cmake:
-
-H:/Qt/6.9.2/mingw_64/lib/cmake/Qt6EntryPointPrivate/Qt6EntryPointPrivateTargets-relwithdebinfo.cmake:
-
-H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Platform/Windows-Determine-CXX.cmake:
 
 H:/Python/Lib/site-packages/cmake/data/share/cmake-4.0/Modules/Platform/Windows-GNU-CXX-ABI.cmake:
 
@@ -5967,6 +5765,8 @@ H:/Qt/6.9.2/mingw_64/lib/cmake/Qt6/QtPublicFindPackageHelpers.cmake:
 
 H:/Qt/6.9.2/mingw_64/lib/cmake/Qt6/QtPublicPluginHelpers.cmake:
 
+H:/Qt/6.9.2/mingw_64/lib/cmake/Qt6/QtPublicSbomCpeHelpers.cmake:
+
 H:/Qt/6.9.2/mingw_64/lib/cmake/Qt6/QtPublicSbomDepHelpers.cmake:
 
 H:/Qt/6.9.2/mingw_64/lib/cmake/Qt6/QtPublicSbomHelpers.cmake:
@@ -6014,6 +5814,8 @@ H:/Qt/6.9.2/mingw_64/lib/cmake/Qt6CoreTools/Qt6CoreToolsTargets-relwithdebinfo.c
 H:/Qt/6.9.2/mingw_64/lib/cmake/Qt6CoreTools/Qt6CoreToolsVersionlessTargets.cmake:
 
 H:/Qt/6.9.2/mingw_64/lib/cmake/Qt6EntryPointPrivate/Qt6EntryPointPrivateAdditionalTargetInfo.cmake:
+
+H:/Qt/6.9.2/mingw_64/lib/cmake/Qt6EntryPointPrivate/Qt6EntryPointPrivateTargets-relwithdebinfo.cmake:
 
 H:/Qt/6.9.2/mingw_64/lib/cmake/Qt6EntryPointPrivate/Qt6EntryPointPrivateVersionlessAliasTargets.cmake:
 
@@ -6129,6 +5931,8 @@ H:/Qt/6.9.2/mingw_64/lib/cmake/Qt6Widgets/Qt6QModernWindowsStylePluginTargets.cm
 
 H:/Qt/6.9.2/mingw_64/lib/cmake/Qt6Widgets/Qt6WidgetsAdditionalTargetInfo.cmake:
 
+H:/Qt/6.9.2/mingw_64/lib/cmake/Qt6Widgets/Qt6WidgetsConfigVersion.cmake:
+
 H:/Qt/6.9.2/mingw_64/lib/cmake/Qt6Widgets/Qt6WidgetsConfigVersionImpl.cmake:
 
 H:/Qt/6.9.2/mingw_64/lib/cmake/Qt6Widgets/Qt6WidgetsDependencies.cmake:
@@ -6139,9 +5943,13 @@ H:/Qt/6.9.2/mingw_64/lib/cmake/Qt6Widgets/Qt6WidgetsTargets-relwithdebinfo.cmake
 
 H:/Qt/6.9.2/mingw_64/lib/cmake/Qt6WidgetsTools/Qt6WidgetsToolsAdditionalTargetInfo.cmake:
 
+H:/Qt/6.9.2/mingw_64/lib/cmake/Qt6WidgetsTools/Qt6WidgetsToolsConfig.cmake:
+
 H:/Qt/6.9.2/mingw_64/lib/cmake/Qt6WidgetsTools/Qt6WidgetsToolsConfigVersion.cmake:
 
 H:/Qt/6.9.2/mingw_64/lib/cmake/Qt6WidgetsTools/Qt6WidgetsToolsConfigVersionImpl.cmake:
+
+H:/Qt/6.9.2/mingw_64/lib/cmake/Qt6WidgetsTools/Qt6WidgetsToolsDependencies.cmake:
 
 H:/Qt/6.9.2/mingw_64/lib/cmake/Qt6WidgetsTools/Qt6WidgetsToolsTargets-relwithdebinfo.cmake:
 

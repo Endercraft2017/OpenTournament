@@ -286,8 +286,17 @@ void MainWindow::setupToolbar()
 
 void MainWindow::onStartTournamentClicked()
 {
+    // Static variable to prevent multiple executions
+    static bool isExecuting = false;
+    if (isExecuting)
+    {
+        return;
+    }
+    isExecuting = true;
+
     // Get current tournament ID
     int tournamentId = getCurrentTournamentId();
+    QString pairingSystem = settings->getPairingSystem();
 
     // Check if there are enough players in the current tournament
     QList<Player> players = database->getPlayersForTournament(tournamentId);
@@ -295,23 +304,20 @@ void MainWindow::onStartTournamentClicked()
     {
         QMessageBox::warning(this, "Insufficient Players",
                              "At least 3 players are required to start a tournament.");
-    }
-    // Debug output
-    qDebug() << "Starting tournament with" << players.size() << "players for tournament ID:" << tournamentId;
-    for (const Player &player : players)
-    {
-        qDebug() << "  Player:" << player.getName();
+        isExecuting = false;
+        return;
     }
 
     // Update tournament status to "active"
     Tournament tournament = database->getTournamentById(tournamentId);
     tournament.setStatus(Tournament::Active);
     tournament.setStartedAt(QDateTime::currentDateTime());
+    tournament.setPairingSystem(pairingSystem);
 
     if (database->updateTournament(tournament))
     {
         // Generate initial pairings based on selected pairing system
-        if (settings->getPairingSystem() == "swiss")
+        if (pairingSystem == "swiss")
         {
             generateSwissPairings(players);
         }
@@ -322,6 +328,7 @@ void MainWindow::onStartTournamentClicked()
 
         // Update UI
         updateMatchTabs();
+
         updateLeaderboard();
 
         // Enable tournament end button
@@ -331,8 +338,10 @@ void MainWindow::onStartTournamentClicked()
     }
     else
     {
+        qDebug() << "database->updateTournament() failed";
         QMessageBox::critical(this, "Error", "Failed to start tournament.");
     }
+    isExecuting = false;
 }
 
 void MainWindow::onEndTournamentClicked()
@@ -943,6 +952,12 @@ void MainWindow::onResetTournamentClicked()
         // Reset tournament only
         if (database->resetDatabase(tournamentId))
         {
+            // Update tournament status back to setup
+            Tournament tournament = database->getTournamentById(tournamentId);
+            tournament.setStatus(Tournament::Setup);
+            tournament.setStartedAt(QDateTime()); // Clear started at time
+            database->updateTournament(tournament);
+
             updatePlayerList();
             updateMatchTabs();
             mainStatusBar->showMessage("Tournament reset successfully");
@@ -957,7 +972,7 @@ void MainWindow::onResetTournamentClicked()
         // Reset tournament and remove all players
         QMessageBox::StandardButton confirmReply;
         confirmReply = QMessageBox::question(this, "Confirm Reset and Remove",
-                                             "This will clear all match results AND remove all players. Continue?",
+                                             "This will clear all match results AND remove all players from this tournament. Continue?",
                                              QMessageBox::Yes | QMessageBox::No);
 
         if (confirmReply == QMessageBox::Yes)
@@ -965,16 +980,23 @@ void MainWindow::onResetTournamentClicked()
             // Reset database
             if (database->resetDatabase(tournamentId))
             {
-                // Delete all players
-                QList<Player> players = database->getAllPlayers();
+                // Remove all players from this tournament only
+                QList<Player> players = database->getPlayersForTournament(tournamentId);
+                int playerCount = players.size();
                 for (const Player &player : players)
                 {
-                    database->deletePlayer(player.getId());
+                    database->removePlayerFromTournament(player.getId(), tournamentId);
                 }
+
+                // Update tournament status back to setup
+                Tournament tournament = database->getTournamentById(tournamentId);
+                tournament.setStatus(Tournament::Setup);
+                tournament.setStartedAt(QDateTime()); // Clear started at time
+                database->updateTournament(tournament);
 
                 updatePlayerList();
                 updateMatchTabs();
-                mainStatusBar->showMessage("Tournament and players reset successfully");
+                mainStatusBar->showMessage(QString("Tournament and %1 players reset successfully").arg(playerCount));
             }
             else
             {
@@ -1582,17 +1604,16 @@ void MainWindow::generateSwissPairings(const QList<Player> &players)
     // Calculate current standings
     QList<SwissPlayer> standings = calculateStandings(players, matches);
 
-    // Determine round number (number of matches each player has played + 1)
-    int maxRounds = 0;
-    for (const SwissPlayer &player : standings)
+    // Determine the next round number (max existing round + 1)
+    int maxRound = 0;
+    for (const Match &match : matches)
     {
-        int playerRounds = player.wins + player.losses + player.draws;
-        if (playerRounds > maxRounds)
+        if (match.getRound() > maxRound)
         {
-            maxRounds = playerRounds;
+            maxRound = match.getRound();
         }
     }
-    int currentRound = maxRounds + 1;
+    int currentRound = maxRound + 1;
 
     // Ensure we don't exceed the maximum number of rounds
     if (currentRound > settings->getSwissRounds())
@@ -1604,13 +1625,7 @@ void MainWindow::generateSwissPairings(const QList<Player> &players)
     // Generate pairings for current round
     QList<SwissPair> pairs = generateSwissRound(standings);
 
-    // Clear existing matches for this tournament
-    database->deleteMatchesForTournament(tournamentId);
-
-    // Reset match ID sequence for this tournament to ensure match IDs start at 1
-    database->resetMatchIdSequence(tournamentId);
-
-    // Create matches in database
+    // Add new matches to database (without deleting existing ones)
     for (const SwissPair &pair : pairs)
     {
         database->addMatch(tournamentId, currentRound, pair.p1Id, pair.p2Id);
@@ -1748,7 +1763,7 @@ void MainWindow::updateMatchTabs()
         // Add tab
         roundTabs->addTab(table, QString("Round %1").arg(round));
     }
-    
+
     // Add "+" button for Swiss tournaments if conditions are met
     Tournament tournament = database->getTournamentById(tournamentId);
     if (tournament.getPairingSystem() == "swiss" && tournament.getStatus() == Tournament::Active)
@@ -1758,13 +1773,13 @@ void MainWindow::updateMatchTabs()
         // 2. All matches in the last completed round have results (or it's the first round)
         bool canAddRound = true;
         int maxRound = 0;
-        
+
         // Find the maximum round number
         if (!rounds.isEmpty())
         {
             maxRound = rounds.last();
         }
-        
+
         // Check if we've reached the Swiss rounds limit
         if (maxRound >= settings->getSwissRounds())
         {
@@ -1783,19 +1798,19 @@ void MainWindow::updateMatchTabs()
                 }
             }
         }
-        
+
         // Add "+" button if conditions are met
         if (canAddRound)
         {
             QWidget *plusWidget = new QWidget();
             QVBoxLayout *layout = new QVBoxLayout(plusWidget);
             layout->setAlignment(Qt::AlignCenter);
-            
+
             QPushButton *plusButton = new QPushButton("+");
             plusButton->setFixedSize(50, 50);
             plusButton->setStyleSheet("font-size: 20px; font-weight: bold;");
             connect(plusButton, &QPushButton::clicked, this, &MainWindow::onAddSwissRoundClicked);
-            
+
             layout->addWidget(plusButton);
             roundTabs->addTab(plusWidget, "+");
         }
@@ -2328,16 +2343,73 @@ void MainWindow::onAddSwissRoundClicked()
 {
     // Get current tournament ID
     int tournamentId = getCurrentTournamentId();
-    
+
+    // Get the current tournament
+    Tournament tournament = database->getTournamentById(tournamentId);
+
+    // Check if tournament is active
+    if (tournament.getStatus() != Tournament::Active)
+    {
+        mainStatusBar->showMessage("Tournament is not active");
+        return;
+    }
+
+    // Check if pairing system is Swiss
+    if (tournament.getPairingSystem() != "swiss")
+    {
+        mainStatusBar->showMessage("Tournament is not using Swiss pairing system");
+        return;
+    }
+
+    // Get all matches for this tournament
+    QList<Match> matches = database->getAllMatches(tournamentId);
+
+    // Find the maximum round number
+    int maxRound = 0;
+    for (const Match &match : matches)
+    {
+        if (match.getRound() > maxRound)
+        {
+            maxRound = match.getRound();
+        }
+    }
+
+    // Check if we've reached the Swiss rounds limit
+    if (maxRound >= settings->getSwissRounds())
+    {
+        mainStatusBar->showMessage(QString("Maximum number of Swiss rounds (%1) reached").arg(settings->getSwissRounds()));
+        return;
+    }
+
+    // Check if all matches in the current round have results
+    if (maxRound > 0)
+    {
+        bool allMatchesPlayed = true;
+        for (const Match &match : matches)
+        {
+            if (match.getRound() == maxRound && !match.isPlayed())
+            {
+                allMatchesPlayed = false;
+                break;
+            }
+        }
+
+        if (!allMatchesPlayed)
+        {
+            mainStatusBar->showMessage("All matches in the current round must have results before adding a new round");
+            return;
+        }
+    }
+
     // Get players for this tournament
     QList<Player> players = database->getPlayersForTournament(tournamentId);
-    
+
     // Generate next Swiss round
     generateSwissPairings(players);
-    
+
     // Update UI
     updateMatchTabs();
     updateLeaderboard();
-    
+
     mainStatusBar->showMessage("Added new Swiss round");
 }

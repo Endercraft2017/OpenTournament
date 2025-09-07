@@ -27,6 +27,7 @@ set(SOURCES
     src/Tournament.cpp
     src/Tiebreaker.cpp
     src/Settings.cpp
+    resources.qrc
 )
 
 set(HEADERS
@@ -38,7 +39,12 @@ set(HEADERS
     src/Tiebreaker.h
 )
 
-add_executable(OpenTournament ${SOURCES} ${HEADERS})
+# Add Windows resource file for executable icon
+if(WIN32)
+    set(APP_ICON_RESOURCE_WINDOWS "app_icon.rc")
+endif()
+
+add_executable(OpenTournament ${SOURCES} ${HEADERS} ${APP_ICON_RESOURCE_WINDOWS})
 
 target_link_libraries(OpenTournament PRIVATE Qt6::Core Qt6::Gui Qt6::Widgets Qt6::Sql)
 

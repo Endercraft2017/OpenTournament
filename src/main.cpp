@@ -2,6 +2,7 @@
 #include <QFile>
 #include <QStyleFactory>
 #include <QPalette>
+#include <QIcon>
 #include "MainWindow.h"
 
 void setFusionDark(QApplication &app)
@@ -67,6 +68,9 @@ void setCustomQss(QApplication &app)
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
+
+    // Set application icon
+    app.setWindowIcon(QIcon(":/icons/app_icon.png"));
 
     setFusionDark(app); // default theme
 

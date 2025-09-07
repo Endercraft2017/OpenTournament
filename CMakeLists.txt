@@ -44,7 +44,7 @@ if(WIN32)
     set(APP_ICON_RESOURCE_WINDOWS "app_icon.rc")
 endif()
 
-add_executable(OpenTournament ${SOURCES} ${HEADERS} ${APP_ICON_RESOURCE_WINDOWS})
+add_executable(OpenTournament WIN32 ${SOURCES} ${HEADERS} ${APP_ICON_RESOURCE_WINDOWS})
 
 target_link_libraries(OpenTournament PRIVATE Qt6::Core Qt6::Gui Qt6::Widgets Qt6::Sql)
 

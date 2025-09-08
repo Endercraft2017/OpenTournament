@@ -15,6 +15,8 @@
 #include <QMenu>
 #include <QInputDialog>
 #include <QComboBox>
+#include <QDesktopServices>
+#include <QUrl>
 
 #include "Database.h"
 #include "Player.h"
@@ -36,7 +38,6 @@ public:
 private slots:
     void onAddPlayerClicked();
     void onResetTournamentClicked();
-    void onNewTournamentClicked();
     void onExportResultsClicked();
     void onMatchResultClicked();
     void onEditMatchClicked();
@@ -44,21 +45,22 @@ private slots:
     void onPlayerContextMenuRequested(const QPoint &pos);
     void onEditPlayer();
     void onDeletePlayer();
-    void onStartTournamentClicked();              // New slot for start tournament button
-    void onEndTournamentClicked();                // New slot for end tournament button
-    void onTiebreakerClicked();                   // New slot for tiebreaker button
-    void onAddTournamentClicked();                // New slot for add tournament button
-    void onTournamentSelectionChanged(int index); // New slot for tournament selection
+    void onStartTournamentClicked();                          // New slot for start tournament button
+    void onEndTournamentClicked();                            // New slot for end tournament button
+    void onTiebreakerClicked();                               // New slot for tiebreaker button
+    void onAddTournamentClicked();                            // New slot for add tournament button
+    void onTournamentSelectionChanged(int index);             // New slot for tournament selection
     void onTournamentContextMenuRequested(const QPoint &pos); // New slot for tournament context menu
-    void onEditTournamentClicked(); // New slot for editing tournament
-    void onDeleteTournamentClicked(); // New slot for deleting tournament
-    void onAddSwissRoundClicked(); // New slot for adding Swiss round
+    void onEditTournamentClicked();                           // New slot for editing tournament
+    void onDeleteTournamentClicked();                         // New slot for deleting tournament
+    void onAddSwissRoundClicked();                            // New slot for adding Swiss round
 
     // Theme and icon slots
     void onFusionDarkSelected();
     void onFusionLightSelected();
     void onFusionWhiteSelected();
-    void onCustomQssSelected();
+    void onAbyssThemeSelected();
+    void onDarkHighContrastThemeSelected();
     void onDefaultIconsSelected();
     void onModernIconsSelected();
 
@@ -72,7 +74,6 @@ private:
     QComboBox *tournamentSelector; // New tournament selector
 
     // Actions
-    QAction *newTournamentAction;
     QAction *exportResultsAction;
     QAction *exitAction;
     QAction *aboutAction;
@@ -82,7 +83,8 @@ private:
     QAction *fusionDarkAction;
     QAction *fusionLightAction;
     QAction *fusionWhiteAction;
-    QAction *customQssAction;
+    QAction *abyssThemeAction;
+    QAction *darkHighContrastThemeAction;
     QAction *defaultIconsAction;
     QAction *modernIconsAction;
 
@@ -112,11 +114,10 @@ private:
     void updateMatchTabs();
     void showAddPlayerDialog();
     void showConfirmationDialog(const QString &message);
-     void generateRoundRobinPairings(const QList<Player> &players); // Modified to accept players parameter
-     void generateSwissPairings(const QList<Player> &players); // Modified to accept players parameter
+    void generateRoundRobinPairings(const QList<Player> &players); // Modified to accept players parameter
+    void generateSwissPairings(const QList<Player> &players);      // Modified to accept players parameter
 
-
-     void updateLeaderboard();
+    void updateLeaderboard();
     void exportToCSV(const QString &filename);
     void showSettingsDialog();             // New method for showing settings dialog
     void calculateAndDisplayTiebreakers(); // New method for calculating tiebreakers

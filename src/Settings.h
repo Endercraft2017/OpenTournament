@@ -49,7 +49,7 @@ private:
     int swissRounds; // Member for Swiss pairing rounds
 
     // Theme settings
-    QString theme;   // "fusion_dark", "fusion_light", "custom"
+    QString theme;   // "fusion_dark", "fusion_light", "abyss", "dark_high_contrast"
     QString iconSet; // "default", "modern"
 
     // Tiebreaker settings

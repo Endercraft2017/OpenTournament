@@ -3,6 +3,7 @@
 #include <QStyleFactory>
 #include <QPalette>
 #include <QIcon>
+#include <QDebug>
 #include "MainWindow.h"
 
 void setFusionDark(QApplication &app)
@@ -55,27 +56,28 @@ void setFusionWhite(QApplication &app)
     app.setStyleSheet("");
 }
 
-void setCustomQss(QApplication &app)
-{
-    QFile file("styles/custom.qss");
-    if (file.open(QFile::ReadOnly))
-    {
-        QString style = QLatin1String(file.readAll());
-        app.setStyleSheet(style);
-    }
-}
 
 int main(int argc, char *argv[])
 {
+    qDebug() << "Starting application...";
     QApplication app(argc, argv);
+    qDebug() << "QApplication created";
 
     // Set application icon
     app.setWindowIcon(QIcon(":/icons/app_icon.png"));
+    qDebug() << "Application icon set";
 
+    // Load settings to get the saved theme
+    // For now, we'll use Fusion Dark as default, but in a real implementation
+    // we would load the saved theme from settings
     setFusionDark(app); // default theme
+    qDebug() << "Theme set";
 
+    qDebug() << "Creating MainWindow...";
     MainWindow window;
+    qDebug() << "MainWindow created";
     window.show();
+    qDebug() << "MainWindow shown";
 
     return app.exec();
 }

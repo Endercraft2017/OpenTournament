@@ -7,7 +7,7 @@
 Settings::Settings()
     : pairingSystem("round_robin"), autoStartTournament(false),
       swissRounds(5), // Default to 5 rounds for Swiss pairing
-      theme("fusion_dark"), iconSet("default"),
+      theme("abyss"), iconSet("default"),
       useSeriesTiebreakers(false), singleTiebreaker(0)
 {
 }
@@ -104,7 +104,7 @@ bool Settings::load()
     swissRounds = settings.value("swissRounds", 5).toInt(); // Load Swiss rounds setting
 
     // Load theme settings
-    theme = settings.value("theme", "fusion_dark").toString();
+    theme = settings.value("theme", "abyss").toString();
     iconSet = settings.value("iconSet", "default").toString();
 
     // Load tiebreaker settings

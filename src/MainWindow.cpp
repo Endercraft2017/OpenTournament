@@ -13,6 +13,28 @@
 #include <QDateTime>
 #include <QTextStream>
 #include <QFile>
+#include <QVBoxLayout>
+#include <QPushButton>
+void setAbyssTheme(QApplication &app)
+{
+    // Use the Abyss QSS theme we've defined
+    QFile file(":/styles/abyss.qss");
+    if (file.open(QFile::ReadOnly))
+    {
+        QString style = QLatin1String(file.readAll());
+        app.setStyleSheet(style);
+    }
+}
+void setDarkHighContrastTheme(QApplication &app)
+{
+    // Use the Dark High Contrast QSS theme we've defined
+    QFile file(":/styles/dark_high_contrast.qss");
+    if (file.open(QFile::ReadOnly))
+    {
+        QString style = QLatin1String(file.readAll());
+        app.setStyleSheet(style);
+    }
+}
 #include <QDir>
 #include <QGroupBox>
 #include <QRadioButton>
@@ -31,7 +53,8 @@
 void setFusionDark(QApplication &app);
 void setFusionLight(QApplication &app);
 void setFusionWhite(QApplication &app);
-void setCustomQss(QApplication &app);
+void setAbyssTheme(QApplication &app);
+void setDarkHighContrastTheme(QApplication &app);
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), database(new Database()), settings(new Settings()), app(qApp)
@@ -92,12 +115,10 @@ void MainWindow::setupMenu()
 
     // File menu
     QMenu *fileMenu = menuBar->addMenu("&File");
-    newTournamentAction = fileMenu->addAction("&New Tournament");
     exportResultsAction = fileMenu->addAction("&Export Results");
     fileMenu->addSeparator();
     exitAction = fileMenu->addAction("E&xit");
 
-    connect(newTournamentAction, &QAction::triggered, this, &MainWindow::onNewTournamentClicked);
     connect(exportResultsAction, &QAction::triggered, this, &MainWindow::onExportResultsClicked);
     connect(exitAction, &QAction::triggered, this, &QMainWindow::close);
 
@@ -106,12 +127,14 @@ void MainWindow::setupMenu()
     fusionDarkAction = themeMenu->addAction("Fusion Dark");
     fusionLightAction = themeMenu->addAction("Fusion Light");
     fusionWhiteAction = themeMenu->addAction("Fusion White");
-    customQssAction = themeMenu->addAction("Custom QSS");
+    abyssThemeAction = themeMenu->addAction("Abyss");
+    darkHighContrastThemeAction = themeMenu->addAction("Dark High Contrast");
 
     connect(fusionDarkAction, &QAction::triggered, this, &MainWindow::onFusionDarkSelected);
     connect(fusionLightAction, &QAction::triggered, this, &MainWindow::onFusionLightSelected);
     connect(fusionWhiteAction, &QAction::triggered, this, &MainWindow::onFusionWhiteSelected);
-    connect(customQssAction, &QAction::triggered, this, &MainWindow::onCustomQssSelected);
+    connect(abyssThemeAction, &QAction::triggered, this, &MainWindow::onAbyssThemeSelected);
+    connect(darkHighContrastThemeAction, &QAction::triggered, this, &MainWindow::onDarkHighContrastThemeSelected);
 
     // Icons menu
     QMenu *iconsMenu = menuBar->addMenu("&Icons");
@@ -130,9 +153,36 @@ void MainWindow::setupMenu()
     QMenu *helpMenu = menuBar->addMenu("&Help");
     aboutAction = helpMenu->addAction("&About");
     connect(aboutAction, &QAction::triggered, [this]()
-            { QMessageBox::about(this, "About OpenTournament",
-                                 "OpenTournament v0.1\n\n"
-                                 "A desktop application for managing tournament brackets using a round-robin pairing system."); });
+            {
+                // Create custom about dialog
+                QDialog aboutDialog(this);
+                aboutDialog.setWindowTitle("About OpenTournament");
+                aboutDialog.setFixedSize(400, 200);
+                
+                // Create layout
+                QVBoxLayout *layout = new QVBoxLayout(&aboutDialog);
+                
+                // Create text label
+                QLabel *label = new QLabel(
+                    "OpenTournament v0.1\n\n"
+                    "OpenTournament is a desktop application for managing tournament brackets with support for multiple tournaments, various pairing systems, and comprehensive result tracking.\n\n"
+                    "For more information, please see the README file:", &aboutDialog);
+                label->setWordWrap(true);
+                layout->addWidget(label);
+                
+                // Create hyperlink label
+                QLabel *linkLabel = new QLabel("<a href='https://github.com/Endercraft2017/OpenTournament'>GitHub Repository</a>", &aboutDialog);
+                linkLabel->setOpenExternalLinks(true);
+                layout->addWidget(linkLabel);
+                
+                // Create OK button
+                QPushButton *okButton = new QPushButton("OK", &aboutDialog);
+                connect(okButton, &QPushButton::clicked, &aboutDialog, &QDialog::accept);
+                layout->addWidget(okButton);
+                
+                // Show dialog
+                aboutDialog.exec();
+            });
 }
 
 void MainWindow::onFusionDarkSelected()
@@ -159,12 +209,20 @@ void MainWindow::onFusionWhiteSelected()
     mainStatusBar->showMessage("Theme set to Fusion White");
 }
 
-void MainWindow::onCustomQssSelected()
+void MainWindow::onAbyssThemeSelected()
 {
-    setCustomQss(*app);
-    settings->setTheme("custom");
+    setAbyssTheme(*app);
+    settings->setTheme("abyss");
     settings->save();
-    mainStatusBar->showMessage("Theme set to Custom QSS");
+    mainStatusBar->showMessage("Theme set to Abyss");
+}
+
+void MainWindow::onDarkHighContrastThemeSelected()
+{
+    setDarkHighContrastTheme(*app);
+    settings->setTheme("dark_high_contrast");
+    settings->save();
+    mainStatusBar->showMessage("Theme set to Dark High Contrast");
 }
 
 void MainWindow::onDefaultIconsSelected()
@@ -197,47 +255,12 @@ void MainWindow::setDefaultIcons()
 void MainWindow::setModernIcons()
 {
     // Load custom icons from icons/ directory
-    addPlayerButton->setIcon(QIcon("icons/add.png"));
-    resetTournamentButton->setIcon(QIcon("icons/reset.png"));
-    exportResultsButton->setIcon(QIcon("icons/export.png"));
-    startTournamentButton->setIcon(QIcon("icons/start.png"));
-    endTournamentButton->setIcon(QIcon("icons/end.png"));
-    tiebreakerButton->setIcon(QIcon("icons/tiebreaker.png"));
-}
-
-void MainWindow::onNewTournamentClicked()
-{
-    // Show input dialog for tournament name
-    bool ok;
-    QString name = QInputDialog::getText(this, "Add Tournament",
-                                         "Enter tournament name:", QLineEdit::Normal,
-                                         "", &ok);
-
-    if (ok && !name.isEmpty())
-    {
-        // Add tournament to database
-        int tournamentId = database->addTournament(name);
-        if (tournamentId == -1)
-        {
-            QMessageBox::critical(this, "Error", "Failed to add tournament to database.");
-            return;
-        }
-
-        // Update tournament selector
-        populateTournamentSelector();
-
-        // Select the newly added tournament
-        for (int i = 0; i < tournamentSelector->count(); ++i)
-        {
-            if (tournamentSelector->itemData(i).toInt() == tournamentId)
-            {
-                tournamentSelector->setCurrentIndex(i);
-                break;
-            }
-        }
-
-        mainStatusBar->showMessage("Tournament added successfully");
-    }
+    addPlayerButton->setIcon(QIcon(":/icons/add.png"));
+    resetTournamentButton->setIcon(QIcon(":/icons/reset.png"));
+    exportResultsButton->setIcon(QIcon(":/icons/export.png"));
+    startTournamentButton->setIcon(QIcon(":/icons/start.png"));
+    endTournamentButton->setIcon(QIcon(":/icons/end.png"));
+    tiebreakerButton->setIcon(QIcon(":/icons/tiebreaker.png"));
 }
 
 void MainWindow::setupToolbar()
@@ -1035,11 +1058,12 @@ void MainWindow::exportToCSV(const QString &filename)
     out << "Player,Points,Wins,Losses,Draws\n";
 
     // Get player statistics for current tournament
-    QList<Player> players = database->getAllPlayers();
     int tournamentId = getCurrentTournamentId();
+    QList<Player> players = database->getAllPlayers();
+    QList<Player> tournamentPlayers = database->getPlayersForTournament(tournamentId);
     QList<Match> matches = database->getAllMatches(tournamentId);
 
-    for (const Player &player : players)
+    for (const Player &player : tournamentPlayers)
     {
         int wins = 0, losses = 0, draws = 0;
 
@@ -1976,7 +2000,8 @@ void MainWindow::showSettingsDialog()
     themeComboBox->addItem("Fusion Dark", "fusion_dark");
     themeComboBox->addItem("Fusion Light", "fusion_light");
     themeComboBox->addItem("Fusion White", "fusion_white");
-    themeComboBox->addItem("Custom QSS", "custom");
+    themeComboBox->addItem("Abyss", "abyss");
+    themeComboBox->addItem("Dark High Contrast", "dark_high_contrast");
 
     // Set current selection based on settings
     QString currentTheme = settings->getTheme();
@@ -2074,9 +2099,13 @@ void MainWindow::showSettingsDialog()
         {
             setFusionWhite(*app);
         }
-        else if (selectedTheme == "custom")
+        else if (selectedTheme == "abyss")
         {
-            setCustomQss(*app);
+            setAbyssTheme(*app);
+        }
+        else if (selectedTheme == "dark_high_contrast")
+        {
+            setDarkHighContrastTheme(*app);
         }
 
         // Update icon settings
